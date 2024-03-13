@@ -19,7 +19,7 @@ import (
 	"palworld/rpc/goods/model"
 )
 
-func newGoods(db *gorm.DB, opts ...gen.DOOption) goods {
+func newGood(db *gorm.DB, opts ...gen.DOOption) goods {
 	_good := goods{}
 
 	_good.goodDo.UseDB(db, opts...)
@@ -42,7 +42,7 @@ func newGoods(db *gorm.DB, opts ...gen.DOOption) goods {
 	return _good
 }
 
-// good 物品
+// goods 物品
 type goods struct {
 	goodDo
 
@@ -121,35 +121,35 @@ func (g goods) replaceDB(db *gorm.DB) goods {
 
 type goodDo struct{ gen.DO }
 
-type IGoodsDo interface {
+type IGoodDo interface {
 	gen.SubQuery
-	Debug() IGoodsDo
-	WithContext(ctx context.Context) IGoodsDo
+	Debug() IGoodDo
+	WithContext(ctx context.Context) IGoodDo
 	WithResult(fc func(tx gen.Dao)) gen.ResultInfo
 	ReplaceDB(db *gorm.DB)
-	ReadDB() IGoodsDo
-	WriteDB() IGoodsDo
+	ReadDB() IGoodDo
+	WriteDB() IGoodDo
 	As(alias string) gen.Dao
-	Session(config *gorm.Session) IGoodsDo
+	Session(config *gorm.Session) IGoodDo
 	Columns(cols ...field.Expr) gen.Columns
-	Clauses(conds ...clause.Expression) IGoodsDo
-	Not(conds ...gen.Condition) IGoodsDo
-	Or(conds ...gen.Condition) IGoodsDo
-	Select(conds ...field.Expr) IGoodsDo
-	Where(conds ...gen.Condition) IGoodsDo
-	Order(conds ...field.Expr) IGoodsDo
-	Distinct(cols ...field.Expr) IGoodsDo
-	Omit(cols ...field.Expr) IGoodsDo
-	Join(table schema.Tabler, on ...field.Expr) IGoodsDo
-	LeftJoin(table schema.Tabler, on ...field.Expr) IGoodsDo
-	RightJoin(table schema.Tabler, on ...field.Expr) IGoodsDo
-	Group(cols ...field.Expr) IGoodsDo
-	Having(conds ...gen.Condition) IGoodsDo
-	Limit(limit int) IGoodsDo
-	Offset(offset int) IGoodsDo
+	Clauses(conds ...clause.Expression) IGoodDo
+	Not(conds ...gen.Condition) IGoodDo
+	Or(conds ...gen.Condition) IGoodDo
+	Select(conds ...field.Expr) IGoodDo
+	Where(conds ...gen.Condition) IGoodDo
+	Order(conds ...field.Expr) IGoodDo
+	Distinct(cols ...field.Expr) IGoodDo
+	Omit(cols ...field.Expr) IGoodDo
+	Join(table schema.Tabler, on ...field.Expr) IGoodDo
+	LeftJoin(table schema.Tabler, on ...field.Expr) IGoodDo
+	RightJoin(table schema.Tabler, on ...field.Expr) IGoodDo
+	Group(cols ...field.Expr) IGoodDo
+	Having(conds ...gen.Condition) IGoodDo
+	Limit(limit int) IGoodDo
+	Offset(offset int) IGoodDo
 	Count() (count int64, err error)
-	Scopes(funcs ...func(gen.Dao) gen.Dao) IGoodsDo
-	Unscoped() IGoodsDo
+	Scopes(funcs ...func(gen.Dao) gen.Dao) IGoodDo
+	Unscoped() IGoodDo
 	Create(values ...*model.Goods) error
 	CreateInBatches(values []*model.Goods, batchSize int) error
 	Save(values ...*model.Goods) error
@@ -168,109 +168,109 @@ type IGoodsDo interface {
 	UpdateColumnSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	UpdateColumns(value interface{}) (info gen.ResultInfo, err error)
 	UpdateFrom(q gen.SubQuery) gen.Dao
-	Attrs(attrs ...field.AssignExpr) IGoodsDo
-	Assign(attrs ...field.AssignExpr) IGoodsDo
-	Joins(fields ...field.RelationField) IGoodsDo
-	Preload(fields ...field.RelationField) IGoodsDo
+	Attrs(attrs ...field.AssignExpr) IGoodDo
+	Assign(attrs ...field.AssignExpr) IGoodDo
+	Joins(fields ...field.RelationField) IGoodDo
+	Preload(fields ...field.RelationField) IGoodDo
 	FirstOrInit() (*model.Goods, error)
 	FirstOrCreate() (*model.Goods, error)
 	FindByPage(offset int, limit int) (result []*model.Goods, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
-	Returning(value interface{}, columns ...string) IGoodsDo
+	Returning(value interface{}, columns ...string) IGoodDo
 	UnderlyingDB() *gorm.DB
 	schema.Tabler
 }
 
-func (g goodDo) Debug() IGoodsDo {
+func (g goodDo) Debug() IGoodDo {
 	return g.withDO(g.DO.Debug())
 }
 
-func (g goodDo) WithContext(ctx context.Context) IGoodsDo {
+func (g goodDo) WithContext(ctx context.Context) IGoodDo {
 	return g.withDO(g.DO.WithContext(ctx))
 }
 
-func (g goodDo) ReadDB() IGoodsDo {
+func (g goodDo) ReadDB() IGoodDo {
 	return g.Clauses(dbresolver.Read)
 }
 
-func (g goodDo) WriteDB() IGoodsDo {
+func (g goodDo) WriteDB() IGoodDo {
 	return g.Clauses(dbresolver.Write)
 }
 
-func (g goodDo) Session(config *gorm.Session) IGoodsDo {
+func (g goodDo) Session(config *gorm.Session) IGoodDo {
 	return g.withDO(g.DO.Session(config))
 }
 
-func (g goodDo) Clauses(conds ...clause.Expression) IGoodsDo {
+func (g goodDo) Clauses(conds ...clause.Expression) IGoodDo {
 	return g.withDO(g.DO.Clauses(conds...))
 }
 
-func (g goodDo) Returning(value interface{}, columns ...string) IGoodsDo {
+func (g goodDo) Returning(value interface{}, columns ...string) IGoodDo {
 	return g.withDO(g.DO.Returning(value, columns...))
 }
 
-func (g goodDo) Not(conds ...gen.Condition) IGoodsDo {
+func (g goodDo) Not(conds ...gen.Condition) IGoodDo {
 	return g.withDO(g.DO.Not(conds...))
 }
 
-func (g goodDo) Or(conds ...gen.Condition) IGoodsDo {
+func (g goodDo) Or(conds ...gen.Condition) IGoodDo {
 	return g.withDO(g.DO.Or(conds...))
 }
 
-func (g goodDo) Select(conds ...field.Expr) IGoodsDo {
+func (g goodDo) Select(conds ...field.Expr) IGoodDo {
 	return g.withDO(g.DO.Select(conds...))
 }
 
-func (g goodDo) Where(conds ...gen.Condition) IGoodsDo {
+func (g goodDo) Where(conds ...gen.Condition) IGoodDo {
 	return g.withDO(g.DO.Where(conds...))
 }
 
-func (g goodDo) Order(conds ...field.Expr) IGoodsDo {
+func (g goodDo) Order(conds ...field.Expr) IGoodDo {
 	return g.withDO(g.DO.Order(conds...))
 }
 
-func (g goodDo) Distinct(cols ...field.Expr) IGoodsDo {
+func (g goodDo) Distinct(cols ...field.Expr) IGoodDo {
 	return g.withDO(g.DO.Distinct(cols...))
 }
 
-func (g goodDo) Omit(cols ...field.Expr) IGoodsDo {
+func (g goodDo) Omit(cols ...field.Expr) IGoodDo {
 	return g.withDO(g.DO.Omit(cols...))
 }
 
-func (g goodDo) Join(table schema.Tabler, on ...field.Expr) IGoodsDo {
+func (g goodDo) Join(table schema.Tabler, on ...field.Expr) IGoodDo {
 	return g.withDO(g.DO.Join(table, on...))
 }
 
-func (g goodDo) LeftJoin(table schema.Tabler, on ...field.Expr) IGoodsDo {
+func (g goodDo) LeftJoin(table schema.Tabler, on ...field.Expr) IGoodDo {
 	return g.withDO(g.DO.LeftJoin(table, on...))
 }
 
-func (g goodDo) RightJoin(table schema.Tabler, on ...field.Expr) IGoodsDo {
+func (g goodDo) RightJoin(table schema.Tabler, on ...field.Expr) IGoodDo {
 	return g.withDO(g.DO.RightJoin(table, on...))
 }
 
-func (g goodDo) Group(cols ...field.Expr) IGoodsDo {
+func (g goodDo) Group(cols ...field.Expr) IGoodDo {
 	return g.withDO(g.DO.Group(cols...))
 }
 
-func (g goodDo) Having(conds ...gen.Condition) IGoodsDo {
+func (g goodDo) Having(conds ...gen.Condition) IGoodDo {
 	return g.withDO(g.DO.Having(conds...))
 }
 
-func (g goodDo) Limit(limit int) IGoodsDo {
+func (g goodDo) Limit(limit int) IGoodDo {
 	return g.withDO(g.DO.Limit(limit))
 }
 
-func (g goodDo) Offset(offset int) IGoodsDo {
+func (g goodDo) Offset(offset int) IGoodDo {
 	return g.withDO(g.DO.Offset(offset))
 }
 
-func (g goodDo) Scopes(funcs ...func(gen.Dao) gen.Dao) IGoodsDo {
+func (g goodDo) Scopes(funcs ...func(gen.Dao) gen.Dao) IGoodDo {
 	return g.withDO(g.DO.Scopes(funcs...))
 }
 
-func (g goodDo) Unscoped() IGoodsDo {
+func (g goodDo) Unscoped() IGoodDo {
 	return g.withDO(g.DO.Unscoped())
 }
 
@@ -336,22 +336,22 @@ func (g goodDo) FindInBatches(result *[]*model.Goods, batchSize int, fc func(tx 
 	return g.DO.FindInBatches(result, batchSize, fc)
 }
 
-func (g goodDo) Attrs(attrs ...field.AssignExpr) IGoodsDo {
+func (g goodDo) Attrs(attrs ...field.AssignExpr) IGoodDo {
 	return g.withDO(g.DO.Attrs(attrs...))
 }
 
-func (g goodDo) Assign(attrs ...field.AssignExpr) IGoodsDo {
+func (g goodDo) Assign(attrs ...field.AssignExpr) IGoodDo {
 	return g.withDO(g.DO.Assign(attrs...))
 }
 
-func (g goodDo) Joins(fields ...field.RelationField) IGoodsDo {
+func (g goodDo) Joins(fields ...field.RelationField) IGoodDo {
 	for _, _f := range fields {
 		g = *g.withDO(g.DO.Joins(_f))
 	}
 	return &g
 }
 
-func (g goodDo) Preload(fields ...field.RelationField) IGoodsDo {
+func (g goodDo) Preload(fields ...field.RelationField) IGoodDo {
 	for _, _f := range fields {
 		g = *g.withDO(g.DO.Preload(_f))
 	}

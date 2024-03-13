@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"palworld/rpc/goods/dao"
-
 	"palworld/rpc/goods/internal/config"
 	"palworld/rpc/goods/internal/server"
 	"palworld/rpc/goods/internal/svc"

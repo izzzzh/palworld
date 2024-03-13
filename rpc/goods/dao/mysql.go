@@ -5,6 +5,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"log"
+	"palworld/rpc/goods/model"
 )
 
 var Db *gorm.DB
@@ -29,6 +30,7 @@ func NewDB(dataSource string) (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
+	db.AutoMigrate(&model.Goods{})
 	log.Println("数据库连接成功")
 	return db, nil
 }

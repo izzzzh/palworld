@@ -16,49 +16,34 @@ import (
 )
 
 var (
-	Q         = new(Query)
-	Attribute *attribute
-	Goods      *goods
-	Pal       *pal
-	Skill     *skill
+	Q    = new(Query)
+	Goods *goods
 )
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
-	Attribute = &Q.Attribute
 	Goods = &Q.Goods
-	Pal = &Q.Pal
-	Skill = &Q.Skill
 }
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
-		db:        db,
-		Attribute: newAttribute(db, opts...),
-		Goods:      newGoods(db, opts...),
-		Pal:       newPal(db, opts...),
-		Skill:     newSkill(db, opts...),
+		db:   db,
+		Goods: newGood(db, opts...),
 	}
 }
 
 type Query struct {
 	db *gorm.DB
 
-	Attribute attribute
-	Goods      goods
-	Pal       pal
-	Skill     skill
+	Goods goods
 }
 
 func (q *Query) Available() bool { return q.db != nil }
 
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
-		db:        db,
-		Attribute: q.Attribute.clone(db),
-		Goods:      q.Goods.clone(db),
-		Pal:       q.Pal.clone(db),
-		Skill:     q.Skill.clone(db),
+		db:   db,
+		Goods: q.Goods.clone(db),
 	}
 }
 
@@ -72,27 +57,18 @@ func (q *Query) WriteDB() *Query {
 
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
-		db:        db,
-		Attribute: q.Attribute.replaceDB(db),
-		Goods:      q.Goods.replaceDB(db),
-		Pal:       q.Pal.replaceDB(db),
-		Skill:     q.Skill.replaceDB(db),
+		db:   db,
+		Goods: q.Goods.replaceDB(db),
 	}
 }
 
 type queryCtx struct {
-	Attribute IAttributeDo
-	Goods      IGoodsDo
-	Pal       IPalDo
-	Skill     ISkillDo
+	Goods IGoodDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
-		Attribute: q.Attribute.WithContext(ctx),
-		Goods:      q.Goods.WithContext(ctx),
-		Pal:       q.Pal.WithContext(ctx),
-		Skill:     q.Skill.WithContext(ctx),
+		Goods: q.Goods.WithContext(ctx),
 	}
 }
 

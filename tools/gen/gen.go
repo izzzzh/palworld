@@ -8,7 +8,7 @@ import (
 
 func main() {
 	g := gen.NewGenerator(gen.Config{
-		OutPath: "./rpc/pal_mate/dao",
+		OutPath: "./rpc/goods/dao",
 		Mode:    gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface, // 生成模式
 	})
 
@@ -17,7 +17,7 @@ func main() {
 
 	g.ApplyBasic(
 		// 从当前数据库中生成所有表的结构
-		g.GenerateModel("pal_mate_map"),
+		g.GenerateModel("goods"),
 	)
 
 	// 生成代码
