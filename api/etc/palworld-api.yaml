@@ -1,0 +1,18 @@
+Name: palworld-api
+Host: 0.0.0.0
+Port: 8888
+
+PalRpcConf:
+  Endpoints:
+    - 127.0.0.1:2000
+  NonBlock: true
+
+GoodsRpcConf:
+  Endpoints:
+    - 127.0.0.1:2001
+  NonBlock: true
+
+PalMateRpcConf:
+  Endpoints:
+    - 127.0.0.1:2002
+  NonBlock: true

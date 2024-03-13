@@ -1,0 +1,79 @@
+syntax = "v1"
+import "./base.api"
+
+type GetPalReq {
+    ID int64 `path:"id"`
+}
+
+type Skill {
+    ID int64 `json:"id"`
+    Name string `json:"name"`
+    Desc string `json:"desc"`
+    CT int64 `json:"ct"`
+    Power int64 `json:"power"`
+}
+
+type Ability {
+    ID int64 `json:"id"`
+    Name string `json:"name"`
+    Level int64 `json:"level"`
+}
+
+type Pal {
+    ID int64 `json:"id"`
+    Number string `json:"number"`
+    Name string `json:"name"`
+    Icon string `json:"icon"`
+    AttributeIds []int64 `json:"attribute_ids"`
+    HP int64 `json:"hp"`
+    Energy int64 `json:"energy"`
+    Defensively int64 `json:"defensively"`
+    Abilities []Ability `json:"abilities"`
+    Eat int64 `json:"eat"`
+    PassiveSkill Skill `json:"passive_skill"`
+    ActiveSkills []Skill `json:"active_skills"`
+}
+
+type GetPalResp {
+    Base
+    Data Pal `json:"data"`
+}
+
+type ListPalReq {
+    Name string `json:"name,optional"`
+    AttributeId int64 `json:"attribute_id,optional"`
+    Page int64 `json:"page,optional"`
+}
+
+type ListPal {
+    ID int64 `json:"id"`
+    Number string `json:"number"`
+    Name string `json:"name"`
+    Icon string `json:"icon"`
+    AttributeIds []int64 `json:"attribute_ids"`
+    HP int64 `json:"hp"`
+    Energy int64 `json:"energy"`
+    Defensively int64 `json:"defensively"`
+    Abilities []Ability `json:"abilities"`
+    Eat int64 `json:"eat"`
+}
+
+type ListPalResp {
+    Base
+    Data []ListPal `json:"data"`
+}
+
+@server(
+    prefix : /api/v1
+    group: pal
+)
+
+service palworld-api {
+    @doc "帕鲁详情"
+    @handler GetPalHandler
+    get /pal/:id (GetPalReq) returns (GetPalResp)
+
+    @doc "帕鲁列表"
+    @handler ListPalHandler
+    get /pal (ListPalReq) returns (ListPalResp)
+}

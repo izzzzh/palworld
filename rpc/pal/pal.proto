@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package pal;
+option go_package = "./pal";
+
+message ListPalReq {
+  int64 attribute_id = 1;
+  string name = 2;
+}
+
+message ListPal {
+  int64 id = 1;
+  string number = 2;
+  string name = 3;
+  string icon = 4;
+  repeated int64 attribute_ids = 5;
+  int64 hp = 6;
+  int64 energy = 7;
+  int64 defensively = 8;
+  repeated Ability  abilities = 9;
+  int64 eat = 10;
+}
+
+message ListPalResp {
+  int64 code = 1 ;
+  string message = 2;
+  repeated ListPal data = 3;
+}
+
+message GetPalReq {
+  int64 id = 1;
+}
+
+message GetPalResp {
+  int64 code = 1 ;
+  string message = 2;
+  Pal data = 3;
+}
+
+message Skill {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  int64 ct = 4;
+  int64 score = 5;
+  int64 attribute_id = 6;
+}
+
+message Ability {
+  int64 id = 1;
+  string name = 2;
+  int64 level = 3;
+}
+
+message Pal {
+  int64 id = 1;
+  string number = 2;
+  string name = 3;
+  string icon = 4;
+  repeated int64 attribute_ids = 5;
+  int64 hp = 6;
+  int64 energy = 7;
+  int64 defensively = 8;
+  repeated Ability  abilities = 9;
+  int64 eat = 10;
+  Skill passive_skill = 11;
+  repeated Skill active_skills = 12;
+}
+
+
+service PalServer {
+  rpc GetPal(GetPalReq) returns(GetPalResp);
+  rpc ListPal(ListPalReq) returns(ListPalResp);
+}

@@ -1,0 +1,45 @@
+syntax = "v1"
+
+info(
+    title: "type title here"
+    desc: "type desc here"
+    author: "type author here"
+    email: "type email here"
+    version: "type version here"
+)
+
+type ListPalMateReq {
+    ParentOne int64 `json:"parent_one,optional" form:"parent_one,optional"`
+    ParentTwo int64 `json:"parent_two,optional" form:"parent_two,optional"`
+    Result int64 `json:"result,optional" form:"result,optional"`
+    Page int `json:"page,optional" form:"page,optional"`
+}
+
+type MateInfo {
+    ID int64 `json:"id"`
+    Name string `json:"name"`
+    Icon string `json:"icon"`
+}
+
+type PalMate {
+    ParentOne MateInfo `json:"parent_one"`
+    ParentTwo MateInfo `json:"parent_two"`
+    Result MateInfo `json:"result"`
+}
+
+type ListPalMateResp {
+    Base
+    Data []*PalMate `json:"data"`
+}
+
+@server(
+    prefix : /api/v1
+    group: pal_mate
+)
+
+
+service palworld-api {
+    @doc "帕鲁配对"
+    @handler ListPalMateHandler
+    get /pal-mate (ListPalMateReq) returns (ListPalMateResp)
+}

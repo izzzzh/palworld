@@ -1,0 +1,40 @@
+syntax = "v1"
+import "./base.api"
+
+type ListGoodsreq {
+    Name string `json:"name,optional"`
+    Types int `json:"types,optional"`
+}
+
+type Material {
+    ID int64 `json:"id"`
+    Name string `json:"name"`
+    Count int `json:"count"`
+}
+
+type ListGoods {
+    ID int64 `json:"id"`
+    Name string `json:"name"`
+    Image string `json:"image"`
+    Description string `json:"description"`
+    Quality int32 `json:"quality"`
+    Workload int32 `json:"workload"`
+    Materials []Material `json:"materials"`
+    Types int32 `json:"types"`
+}
+
+type ListGoodsResp {
+    Base
+    Data []ListGoods `json:"data"`
+}
+
+@server(
+    prefix : /api/v1
+    group: goods
+)
+
+service palworld-api {
+    @doc "物品列表"
+    @handler ListGoodsHandler
+    get /goods (ListGoodsreq) returns (ListGoodsResp)
+}

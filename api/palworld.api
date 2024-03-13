@@ -1,0 +1,6 @@
+syntax = "v1"
+
+import "./api/pal.api"
+import "./api/skill.api"
+import "./api/goods.api"
+import "./api/pal-mate.api"

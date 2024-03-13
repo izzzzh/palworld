@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package pal_mate;
+option go_package = "./pal_mate";
+
+message ListPalMateReq {
+  int64 parent_one = 1;
+  int64 parent_two = 2;
+  int64 result = 3;
+  int32 page = 4;
+}
+
+message Pal {
+  int64 id = 1;
+  string name = 2;
+  string icon = 3;
+}
+
+message PalMate {
+  Pal parent_one = 1;
+  Pal parent_two = 2;
+  Pal result = 3;
+}
+
+message ListPalMateResp {
+  int64 code = 1 ;
+  string message = 2;
+  repeated PalMate data = 3;
+}
+
+service PalMateServer {
+  rpc ListPalMate(ListPalMateReq) returns(ListPalMateResp);
+}

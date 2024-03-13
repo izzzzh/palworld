@@ -1,0 +1,209 @@
+{
+  "status": 1,
+  "data": {
+    "hasMore": 1,
+    "list": [
+      {
+        "id": 1,
+        "type": "装饰",
+        "name": "水属性抵抗戒指",
+        "icon": "T_itemicon_Accessory_AquaResist_1",
+        "price": 0,
+        "weight": 2,
+        "max_stack": 1,
+        "desc": "可稍微减轻水属性伤害的装饰。"
+      },
+      {
+        "id": 2,
+        "type": "装饰",
+        "name": "水属性抵抗戒指+1",
+        "icon": "T_itemicon_Accessory_AquaResist_1",
+        "price": 0,
+        "weight": 2,
+        "max_stack": 1,
+        "desc": "可减轻水属性伤害的装饰。"
+      },
+      {
+        "id": 3,
+        "type": "装饰",
+        "name": "水属性抵抗戒指+2",
+        "icon": "T_itemicon_Accessory_AquaResist_1",
+        "price": 0,
+        "weight": 2,
+        "max_stack": 1,
+        "desc": "可大大减轻水属性伤害的装饰。"
+      },
+      {
+        "id": 4,
+        "type": "装饰",
+        "name": "攻击吊坠",
+        "icon": "T_itemicon_Accessory_AT_1",
+        "price": 0,
+        "weight": 2,
+        "max_stack": 1,
+        "desc": "可提升少量攻击力的装饰。"
+      },
+      {
+        "id": 5,
+        "type": "装饰",
+        "name": "攻击吊坠+1",
+        "icon": "T_itemicon_Accessory_AT_1",
+        "price": 0,
+        "weight": 2,
+        "max_stack": 1,
+        "desc": "可提升攻击力的装饰。"
+      },
+      {
+        "id": 6,
+        "type": "装饰",
+        "name": "攻击吊坠+2",
+        "icon": "T_itemicon_Accessory_AT_1",
+        "price": 0,
+        "weight": 2,
+        "max_stack": 1,
+        "desc": "可提升大量攻击力的装饰。"
+      },
+      {
+        "id": 7,
+        "type": "装饰",
+        "name": "耐热内衣",
+        "icon": "T_itemicon_Accessory_CoolResist_1",
+        "price": 0,
+        "weight": 2,
+        "max_stack": 1,
+        "desc": "拥有少量耐热效果的装饰。"
+      },
+      {
+        "id": 8,
+        "type": "装饰",
+        "name": "耐热内衣+1",
+        "icon": "T_itemicon_Accessory_CoolResist_1",
+        "price": 0,
+        "weight": 2,
+        "max_stack": 1,
+        "desc": "拥有耐热效果的装饰。"
+      },
+      {
+        "id": 9,
+        "type": "装饰",
+        "name": "耐热内衣+2",
+        "icon": "T_itemicon_Accessory_CoolResist_1",
+        "price": 0,
+        "weight": 2,
+        "max_stack": 1,
+        "desc": "拥有很强耐热效果的装饰。"
+      },
+      {
+        "id": 10,
+        "type": "装饰",
+        "name": "暗属性抵抗戒指",
+        "icon": "T_itemicon_Accessory_DarkResist_1",
+        "price": 0,
+        "weight": 2,
+        "max_stack": 1,
+        "desc": "可稍微减轻暗属性伤害的装饰。"
+      },
+      {
+        "id": 11,
+        "type": "装饰",
+        "name": "暗属性抵抗戒指+1",
+        "icon": "T_itemicon_Accessory_DarkResist_1",
+        "price": 0,
+        "weight": 2,
+        "max_stack": 1,
+        "desc": "可减轻暗属性伤害的装饰。"
+      },
+      {
+        "id": 12,
+        "type": "装饰",
+        "name": "暗属性抵抗戒指+2",
+        "icon": "T_itemicon_Accessory_DarkResist_1",
+        "price": 0,
+        "weight": 2,
+        "max_stack": 1,
+        "desc": "可大大减轻暗属性伤害的装饰。"
+      },
+      {
+        "id": 13,
+        "type": "装饰",
+        "name": "防御吊坠",
+        "icon": "T_itemicon_Accessory_defense_1",
+        "price": 0,
+        "weight": 2,
+        "max_stack": 1,
+        "desc": "可提升少量防御力的装饰。"
+      },
+      {
+        "id": 14,
+        "type": "装饰",
+        "name": "防御吊坠+1",
+        "icon": "T_itemicon_Accessory_defense_1",
+        "price": 0,
+        "weight": 2,
+        "max_stack": 1,
+        "desc": "可提升防御力的装饰。"
+      },
+      {
+        "id": 15,
+        "type": "装饰",
+        "name": "防御吊坠+2",
+        "icon": "T_itemicon_Accessory_defense_1",
+        "price": 0,
+        "weight": 2,
+        "max_stack": 1,
+        "desc": "可提升大量防御力的装饰。"
+      },
+      {
+        "id": 16,
+        "type": "装饰",
+        "name": "龙属性抵抗戒指",
+        "icon": "T_itemicon_Accessory_DragonResist_1",
+        "price": 0,
+        "weight": 2,
+        "max_stack": 1,
+        "desc": "可稍微减轻龙属性伤害的装饰。"
+      },
+      {
+        "id": 17,
+        "type": "装饰",
+        "name": "龙属性抵抗戒指+1",
+        "icon": "T_itemicon_Accessory_DragonResist_1",
+        "price": 0,
+        "weight": 2,
+        "max_stack": 1,
+        "desc": "可减轻龙属性伤害的装饰。"
+      },
+      {
+        "id": 18,
+        "type": "装饰",
+        "name": "龙属性抵抗戒指+2",
+        "icon": "T_itemicon_Accessory_DragonResist_1",
+        "price": 0,
+        "weight": 2,
+        "max_stack": 1,
+        "desc": "可大大减轻龙属性伤害的装饰。"
+      },
+      {
+        "id": 19,
+        "type": "装饰",
+        "name": "地属性抵抗戒指",
+        "icon": "T_itemicon_Accessory_EarthResist_1",
+        "price": 0,
+        "weight": 2,
+        "max_stack": 1,
+        "desc": "可稍微减轻地属性伤害的装饰。"
+      },
+      {
+        "id": 20,
+        "type": "装饰",
+        "name": "地属性抵抗戒指+1",
+        "icon": "T_itemicon_Accessory_EarthResist_1",
+        "price": 0,
+        "weight": 2,
+        "max_stack": 1,
+        "desc": "可减轻地属性伤害的装饰。"
+      }
+    ]
+  },
+  "info": ""
+}
