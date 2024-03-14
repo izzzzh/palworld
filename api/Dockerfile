@@ -16,7 +16,7 @@ COPY . .
 RUN go mod tidy
 RUN go mod download
 COPY ./api/etc /app/etc
-RUN go build -ldflags="-s -w" -o /app/palworld ./palworld
+RUN go build -ldflags="-s -w" -o /app/palworld ./api
 
 
 FROM scratch
