@@ -1,4 +1,4 @@
-FROM golang:alpine AS builder
+FROM golang:1.19-alpine AS builder
 
 LABEL stage=gobuilder
 
@@ -12,10 +12,11 @@ WORKDIR /build
 
 ADD go.mod .
 ADD go.sum .
-RUN go mod download
 COPY . .
-COPY ./etc /app/etc
-RUN go build -ldflags="-s -w" -o /app/pal .
+RUN go mod tidy
+RUN go mod download
+COPY ./rpc/pal/etc /app/etc
+RUN go build -ldflags="-s -w" -o /app/pal ./rpc/pal
 
 
 FROM scratch

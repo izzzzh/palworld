@@ -2,8 +2,7 @@ Name: pal.rpc
 ListenOn: 0.0.0.0:2000
 Etcd:
   Hosts:
-    - 127.0.0.1:2379
+    - etcd:2379
   Key: pal.rpc
 
-
-DataSource: "root:123456@tcp(127.0.0.1:3306)/palworld?charset=utf8mb4&parseTime=True&loc=Local"
+DataSource: "root:admin@123@tcp(mysql:3306)/palworld?charset=utf8mb4&parseTime=True&loc=Local"
