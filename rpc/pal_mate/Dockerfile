@@ -12,10 +12,11 @@ WORKDIR /build
 
 ADD go.mod .
 ADD go.sum .
-RUN go mod download
 COPY . .
-COPY ./etc /app/etc
-RUN go build -ldflags="-s -w" -o /app/pal_mate .
+RUN go mod tidy
+RUN go mod download
+COPY ./rpc/pal_mate/etc /app/etc
+RUN go build -ldflags="-s -w" -o /app/pal_mate ./rpc/pal_mate
 
 
 FROM scratch

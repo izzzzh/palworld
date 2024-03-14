@@ -2,12 +2,12 @@ Name: palmate.rpc
 ListenOn: 0.0.0.0:2002
 Etcd:
   Hosts:
-    - 127.0.0.1:2379
+    - etcd:2379
   Key: palmate.rpc
 
-DataSource: "root:123456@tcp(127.0.0.1:3306)/palworld?charset=utf8mb4&parseTime=True&loc=Local"
+DataSource: "root:admin@123@tcp(mysql:3306)/palworld?charset=utf8mb4&parseTime=True&loc=Local"
 
 PalRpcConf:
   Endpoints:
-    - 127.0.0.1:2000
+    - pal:2000
   NonBlock: true

@@ -4,15 +4,15 @@ Port: 8888
 
 PalRpcConf:
   Endpoints:
-    - pal:2000
+    - 127.0.0.1:2000
   NonBlock: true
 
 GoodsRpcConf:
   Endpoints:
-    - goods:2001
+    - 127.0.0.1:2001
   NonBlock: true
 
 PalMateRpcConf:
   Endpoints:
-    - palmate:2002
+    - 127.0.0.1:2002
   NonBlock: true

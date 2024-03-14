@@ -1,4 +1,4 @@
-FROM golang:alpine AS builder
+FROM golang:1.19-alpine AS builder
 
 LABEL stage=gobuilder
 
@@ -12,10 +12,11 @@ WORKDIR /build
 
 ADD go.mod .
 ADD go.sum .
-RUN go mod download
 COPY . .
-COPY ./etc /app/etc
-RUN go build -ldflags="-s -w" -o /app/api .
+RUN go mod tidy
+RUN go mod download
+COPY ./api/etc /app/etc
+RUN go build -ldflags="-s -w" -o /app/palworld ./palworld
 
 
 FROM scratch
@@ -25,7 +26,7 @@ COPY --from=builder /usr/share/zoneinfo/Asia/Shanghai /usr/share/zoneinfo/Asia/S
 ENV TZ Asia/Shanghai
 
 WORKDIR /app
-COPY --from=builder /app/api /app/api
+COPY --from=builder /app/palworld /app/palworld
 COPY --from=builder /app/etc /app/etc
 
-CMD ["./api", "-f", "etc/palworld-api.yaml"]
+CMD ["./palworld", "-f", "etc/palworld-api.yaml"]
