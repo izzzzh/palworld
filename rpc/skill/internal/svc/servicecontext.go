@@ -1,6 +1,6 @@
 package svc
 
-import "skill/internal/config"
+import "palworld/rpc/skill/internal/config"
 
 type ServiceContext struct {
 	Config config.Config

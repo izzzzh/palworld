@@ -67,7 +67,6 @@ message Pal {
   repeated Skill active_skills = 12;
 }
 
-
 service PalServer {
   rpc GetPal(GetPalReq) returns(GetPalResp);
   rpc ListPal(ListPalReq) returns(ListPalResp);

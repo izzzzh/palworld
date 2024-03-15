@@ -14,5 +14,5 @@ GoodsRpcConf:
 
 PalMateRpcConf:
   Endpoints:
-    - palmate:2002
+    - pal-mate:2002
   NonBlock: true

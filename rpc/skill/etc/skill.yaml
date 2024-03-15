@@ -1,6 +1,8 @@
 Name: skill.rpc
-ListenOn: 0.0.0.0:8080
+ListenOn: 0.0.0.0:2003
 Etcd:
   Hosts:
-  - 127.0.0.1:2379
+  - etcd:2379
   Key: skill.rpc
+
+DataSource: "root:admin@123@tcp(mysql:3306)/palworld?charset=utf8mb4&parseTime=True&loc=Local"

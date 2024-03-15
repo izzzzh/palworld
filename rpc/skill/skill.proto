@@ -1,16 +1,39 @@
 syntax = "proto3";
 
 package skill;
-option go_package="./skill";
+option go_package = "./skill";
 
-message Request {
-  string ping = 1;
+message GetSkillReq {
+  int64 id = 1;
 }
 
-message Response {
-  string pong = 1;
+message Skill {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  int32 ct = 4;
+  int32 power = 5;
+  int32 attribute_id = 6;
 }
 
-service Skill {
-  rpc Ping(Request) returns(Response);
+message GetSkillResp {
+  int64 code = 1 ;
+  string message = 2;
+  Skill data = 3;
 }
+
+message ListSkillReq {
+  int32 attribute_id = 1;
+}
+
+message ListSkillResp {
+  int64 code = 1 ;
+  string message = 2;
+  repeated Skill data = 3;
+}
+
+service SkillServer {
+  rpc GetSkill(GetSkillReq) returns(GetSkillResp);
+  rpc ListSkill(ListSkillReq) returns(ListSkillResp);
+}
+

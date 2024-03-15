@@ -8,7 +8,7 @@ import (
 
 func main() {
 	g := gen.NewGenerator(gen.Config{
-		OutPath: "./rpc/goods/dao",
+		OutPath: "./rpc/skill/dao",
 		Mode:    gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface, // 生成模式
 	})
 
@@ -17,7 +17,7 @@ func main() {
 
 	g.ApplyBasic(
 		// 从当前数据库中生成所有表的结构
-		g.GenerateModel("goods"),
+		g.GenerateModel("skill"),
 	)
 
 	// 生成代码
