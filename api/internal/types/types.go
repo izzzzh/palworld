@@ -5,14 +5,6 @@ type GetPalReq struct {
 	ID int64 `path:"id"`
 }
 
-type Skill struct {
-	ID    int64  `json:"id"`
-	Name  string `json:"name"`
-	Desc  string `json:"desc"`
-	CT    int64  `json:"ct"`
-	Power int64  `json:"power"`
-}
-
 type Ability struct {
 	ID    int64  `json:"id"`
 	Name  string `json:"name"`
@@ -20,18 +12,19 @@ type Ability struct {
 }
 
 type Pal struct {
-	ID           int64     `json:"id"`
-	Number       string    `json:"number"`
-	Name         string    `json:"name"`
-	Icon         string    `json:"icon"`
-	AttributeIds []int64   `json:"attribute_ids"`
-	HP           int64     `json:"hp"`
-	Energy       int64     `json:"energy"`
-	Defensively  int64     `json:"defensively"`
-	Abilities    []Ability `json:"abilities"`
-	Eat          int64     `json:"eat"`
-	PassiveSkill Skill     `json:"passive_skill"`
-	ActiveSkills []Skill   `json:"active_skills"`
+	ID               int64     `json:"id"`
+	Number           string    `json:"number"`
+	Name             string    `json:"name"`
+	Icon             string    `json:"icon"`
+	AttributeIds     []int64   `json:"attribute_ids"`
+	HP               int64     `json:"hp"`
+	Energy           int64     `json:"energy"`
+	Defensively      int64     `json:"defensively"`
+	Abilities        []Ability `json:"abilities"`
+	Eat              int64     `json:"eat"`
+	PassiveSkill     string    `json:"passive_skill"`
+	PassiveSkillDesc string    `json:"passive_skill_desc"`
+	ActiveSkills     []Skill   `json:"active_skills"`
 }
 
 type GetPalResp struct {
@@ -66,6 +59,24 @@ type ListPalResp struct {
 type Base struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
+}
+
+type Skill struct {
+	ID          int64  `json:"id"`
+	Name        string `json:"name"`
+	Desc        string `json:"desc"`
+	CT          int32  `json:"ct"`
+	Power       int32  `json:"power"`
+	AttributeID int32  `json:"attribute_id"`
+}
+
+type ListSkillReq struct {
+	AttributeID int32 `json:"attribute_id,optional"`
+}
+
+type ListSkillResp struct {
+	Base
+	Data []Skill `json:"data"`
 }
 
 type ListGoodsreq struct {

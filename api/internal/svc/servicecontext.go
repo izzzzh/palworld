@@ -6,6 +6,7 @@ import (
 	"palworld/rpc/goods/goodsserver"
 	"palworld/rpc/pal/palserver"
 	"palworld/rpc/pal_mate/palmateserver"
+	"palworld/rpc/skill/skillserver"
 )
 
 type ServiceContext struct {
@@ -13,6 +14,7 @@ type ServiceContext struct {
 	PalRpc     palserver.PalServer
 	GoodsRpc   goodsserver.GoodsServer
 	PalMateRpc palmateserver.PalMateServer
+	SkillRpc   skillserver.SkillServer
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -21,5 +23,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		PalRpc:     palserver.NewPalServer(zrpc.MustNewClient(c.PalRpcConf)),
 		GoodsRpc:   goodsserver.NewGoodsServer(zrpc.MustNewClient(c.GoodsRpcConf)),
 		PalMateRpc: palmateserver.NewPalMateServer(zrpc.MustNewClient(c.PalMateRpcConf)),
+		SkillRpc:   skillserver.NewSkillServer(zrpc.MustNewClient(c.SkillRpcConf)),
 	}
 }

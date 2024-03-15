@@ -16,3 +16,8 @@ PalMateRpcConf:
   Endpoints:
     - pal-mate:2002
   NonBlock: true
+
+SkillRpcConf:
+  Endpoints:
+    - skill:2003
+  NonBlock: true

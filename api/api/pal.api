@@ -5,14 +5,6 @@ type GetPalReq {
     ID int64 `path:"id"`
 }
 
-type Skill {
-    ID int64 `json:"id"`
-    Name string `json:"name"`
-    Desc string `json:"desc"`
-    CT int64 `json:"ct"`
-    Power int64 `json:"power"`
-}
-
 type Ability {
     ID int64 `json:"id"`
     Name string `json:"name"`
@@ -30,7 +22,8 @@ type Pal {
     Defensively int64 `json:"defensively"`
     Abilities []Ability `json:"abilities"`
     Eat int64 `json:"eat"`
-    PassiveSkill Skill `json:"passive_skill"`
+    PassiveSkill string `json:"passive_skill"`
+    PassiveSkillDesc string `json:"passive_skill_desc"`
     ActiveSkills []Skill `json:"active_skills"`
 }
 

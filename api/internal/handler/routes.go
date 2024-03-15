@@ -7,6 +7,7 @@ import (
 	goods "palworld/api/internal/handler/goods"
 	pal "palworld/api/internal/handler/pal"
 	pal_mate "palworld/api/internal/handler/pal_mate"
+	skill "palworld/api/internal/handler/skill"
 	"palworld/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -24,6 +25,17 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodGet,
 				Path:    "/pal",
 				Handler: pal.ListPalHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api/v1"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodGet,
+				Path:    "/skill",
+				Handler: skill.ListSkillHandler(serverCtx),
 			},
 		},
 		rest.WithPrefix("/api/v1"),

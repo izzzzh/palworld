@@ -12,3 +12,12 @@ type Base {
     Code int `json:"code"`
     Message string `json:"message"`
 }
+
+type Skill {
+    ID int64 `json:"id"`
+    Name string `json:"name"`
+    Desc string `json:"desc"`
+    CT int32 `json:"ct"`
+    Power int32 `json:"power"`
+    AttributeID int32 `json:"attribute_id"`
+}

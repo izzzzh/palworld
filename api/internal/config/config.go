@@ -10,4 +10,5 @@ type Config struct {
 	PalRpcConf     zrpc.RpcClientConf
 	GoodsRpcConf   zrpc.RpcClientConf
 	PalMateRpcConf zrpc.RpcClientConf
+	SkillRpcConf   zrpc.RpcClientConf
 }
