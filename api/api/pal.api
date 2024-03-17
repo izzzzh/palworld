@@ -17,11 +17,11 @@ type Pal {
     Name string `json:"name"`
     Icon string `json:"icon"`
     AttributeIds []int64 `json:"attribute_ids"`
-    HP int64 `json:"hp"`
-    Energy int64 `json:"energy"`
-    Defensively int64 `json:"defensively"`
+    HP int32 `json:"hp"`
+    Energy int32 `json:"energy"`
+    Defensively int32 `json:"defensively"`
     Abilities []Ability `json:"abilities"`
-    Eat int64 `json:"eat"`
+    Eat int32 `json:"eat"`
     PassiveSkill string `json:"passive_skill"`
     PassiveSkillDesc string `json:"passive_skill_desc"`
     ActiveSkills []Skill `json:"active_skills"`

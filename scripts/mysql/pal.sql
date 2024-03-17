@@ -12,7 +12,6 @@ CREATE TABLE pal
     abilities     json comment '工作能力',
     eat           int                   default 0 comment '消耗',
     passive_skill int comment '被动技能',
-    active_skills varchar(255) comment '主动技能',
     level         int                   default 0 comment '级别（孵蛋大小）',
     UNIQUE name_index (name),
     PRIMARY KEY (id)

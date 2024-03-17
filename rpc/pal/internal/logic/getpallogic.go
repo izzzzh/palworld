@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"github.com/zeromicro/go-zero/core/logx"
 	"net/http"
@@ -36,22 +37,30 @@ func (l *GetPalLogic) GetPal(in *pal.GetPalReq) (*pal.GetPalResp, error) {
 		return nil, err
 	}
 	ret := &pal.GetPalResp{}
-	ret.Code = http.StatusOK
-	ret.Message = "ok"
 	var attIds []int64
 	for _, val := range strings.Split(resp.AttributeIds, ",") {
 		attId, _ := strconv.Atoi(val)
 		attIds = append(attIds, int64(attId))
 	}
+	var abilities = make([]*pal.Ability, 0)
+	if err := json.Unmarshal([]byte(resp.Abilities), &abilities); err != nil {
+		ret.Code = http.StatusInternalServerError
+		ret.Message = err.Error()
+		return ret, nil
+	}
+	ret.Code = http.StatusOK
+	ret.Message = "ok"
 	ret.Data = &pal.Pal{
 		Id:           resp.ID,
 		Number:       resp.Number,
 		Name:         resp.Name,
 		Icon:         resp.Icon,
 		AttributeIds: attIds,
-		Hp:           int64(resp.Hp),
-		Energy:       int64(resp.Energy),
-		Defensively:  int64(resp.Defensively),
+		Hp:           resp.Hp,
+		Energy:       resp.Energy,
+		Defensively:  resp.Defensively,
+		Eat:          resp.Eat,
+		Abilities:    abilities,
 	}
 	return ret, nil
 }

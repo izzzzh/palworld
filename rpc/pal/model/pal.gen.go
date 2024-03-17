@@ -20,7 +20,6 @@ type Pal struct {
 	Abilities    string `gorm:"column:abilities;comment:工作能力" json:"abilities"`                  // 工作能力
 	Eat          int32  `gorm:"column:eat;comment:消耗" json:"eat"`                                // 消耗
 	PassiveSkill int32  `gorm:"column:passive_skill;comment:被动技能" json:"passive_skill"`          // 被动技能
-	ActiveSkills string `gorm:"column:active_skills;comment:主动技能" json:"active_skills"`          // 主动技能
 	Level        int32  `gorm:"column:level;comment:级别（孵蛋大小）" json:"level"`                      // 级别（孵蛋大小）
 }
 

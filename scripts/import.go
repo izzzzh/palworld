@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/360EntSecGroup-Skylar/excelize"
 	"gorm.io/driver/mysql"
@@ -20,9 +21,11 @@ type Pal struct {
 	EnName       string `json:"en_name"`
 	Icon         string `json:"icon"`
 	AttributeIds string `json:"attribute_ids"`
+	Abilities    string `json:"abilities"`
 	HP           int    `json:"hp"`
 	Energy       int    `json:"energy"`
 	Defensively  int    `json:"defensively"`
+	Eat          int    `json:"eat"`
 }
 
 type Skill struct {
@@ -63,8 +66,73 @@ var mapAttribute = map[string]int{
 	"水":  9,
 }
 
+type Abillity struct {
+	Name  string `json:"name"`
+	Level int    `json:"level"`
+	Icon  int    `json:"icon"`
+}
+
+var mapAbility = map[int]string{
+	7:  "生火",
+	8:  "浇水",
+	9:  "种植",
+	10: "发电",
+	11: "手工",
+	12: "采集",
+	13: "伐木",
+	14: "挖矿",
+	15: "制药",
+	16: "冷却",
+	17: "牧场",
+	18: "搬运",
+}
+
 func main() {
-	insertMap()
+	updatePal()
+}
+
+func updatePal() {
+	f, err := excelize.OpenFile("scripts/data/palworld.xlsx")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	rows := f.GetRows("帕鲁工作技能表")
+
+	dsn := "root:123456@tcp(127.0.0.1:3306)/palworld?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	pals := make([]*Pal, 0)
+	db.Table("pal").Find(&pals)
+	palMap := make(map[string]*Pal)
+	for i, val := range pals {
+		palMap[val.Name] = pals[i]
+	}
+	for i, row := range rows {
+		if i > 1 {
+			abilities := make([]Abillity, 0)
+			for j := 7; j < 19; j++ {
+				val, _ := strconv.Atoi(row[j])
+				if val > 0 {
+					abilities = append(abilities, Abillity{
+						Name:  mapAbility[j],
+						Level: val,
+						Icon:  j - 6,
+					})
+				}
+			}
+			jsonA, _ := json.Marshal(abilities)
+			eat, _ := strconv.Atoi(row[4])
+			p := palMap[row[2]]
+			p.Eat = eat
+			p.Abilities = string(jsonA)
+			db.Table("pal").Updates(&p)
+		}
+	}
 }
 
 func insertMap() {
@@ -90,19 +158,6 @@ func insertMap() {
 
 	for i, row := range rows {
 		if i > 1 && row[6] == "1" {
-			one := palMap[row[1]]
-			two := palMap[row[3]]
-			result := palMap[row[5]]
-
-			palM := &PalMateMap{
-				ParentOne: one,
-				ParentTwo: two,
-				Result:    result,
-			}
-			err := db.Table("pal_mate_map").Create(palM)
-			if err != nil {
-				fmt.Println(err)
-			}
 		}
 	}
 }

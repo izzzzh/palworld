@@ -36,15 +36,25 @@ func (l *GetPalLogic) GetPal(req *types.GetPalReq) (*types.GetPalResp, error) {
 	}
 	ret.Code = http.StatusOK
 	ret.Message = "ok"
+	abilities := make([]types.Ability, 0)
+	for _, val := range resp.Data.Abilities {
+		abilities = append(abilities, types.Ability{
+			ID:    val.Id,
+			Name:  val.Name,
+			Level: val.Level,
+		})
+	}
 	ret.Data = types.Pal{
 		ID:           resp.Data.Id,
 		Name:         resp.Data.Name,
 		Number:       resp.Data.Number,
 		Icon:         resp.Data.Icon,
-		HP:           resp.Data.Hp,
 		AttributeIds: resp.Data.AttributeIds,
+		HP:           resp.Data.Hp,
 		Energy:       resp.Data.Energy,
 		Defensively:  resp.Data.Defensively,
+		Abilities:    abilities,
+		Eat:          resp.Data.Eat,
 	}
 	return ret, nil
 }
