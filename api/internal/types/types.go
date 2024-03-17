@@ -6,7 +6,7 @@ type GetPalReq struct {
 }
 
 type Ability struct {
-	ID    int64  `json:"id"`
+	Icon  int32  `json:"icon"`
 	Name  string `json:"name"`
 	Level int64  `json:"level"`
 }

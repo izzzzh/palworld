@@ -47,7 +47,7 @@ message Skill {
 }
 
 message Ability {
-  int64 icon = 1;
+  int32 icon = 1;
   string name = 2;
   int64 level = 3;
 }

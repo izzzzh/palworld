@@ -39,7 +39,7 @@ func (l *GetPalLogic) GetPal(req *types.GetPalReq) (*types.GetPalResp, error) {
 	abilities := make([]types.Ability, 0)
 	for _, val := range resp.Data.Abilities {
 		abilities = append(abilities, types.Ability{
-			ID:    val.Id,
+			Icon:  val.Icon,
 			Name:  val.Name,
 			Level: val.Level,
 		})
