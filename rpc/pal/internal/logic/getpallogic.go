@@ -83,7 +83,7 @@ func getPalSkillsByID(ctx context.Context, id int64) ([]*pal.Skill, error) {
 	skills := make([]*pal.Skill, 0)
 	err := psm.WithContext(ctx).Select(s.ID, s.Name, s.Ct, s.Description, s.Power, s.AttributeID).
 		LeftJoin(s, psm.SkillID.
-			EqCol(s.ID)).Select().Where(psm.PalID.Eq(id)).Scan(skills)
+			EqCol(s.ID)).Where(psm.PalID.Eq(id)).Scan(skills)
 	if err != nil {
 		return nil, err
 	}
