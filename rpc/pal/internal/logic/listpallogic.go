@@ -44,19 +44,24 @@ func (l *ListPalLogic) ListPal(in *pal.ListPalReq) (*pal.ListPalResp, error) {
 	ret.Message = "ok"
 	listPals := make([]*pal.ListPal, 0)
 	for _, val := range pals {
-		var attIds []int64
-		for _, attId := range strings.Split(val.AttributeIds, ",") {
-			id, _ := strconv.ParseInt(attId, 10, 64)
-			attIds = append(attIds, id)
-		}
+		ParseAttributeIDs(val.AttributeIds)
 		listPals = append(listPals, &pal.ListPal{
 			Id:           val.ID,
 			Number:       val.Number,
 			Name:         val.Name,
 			Icon:         val.Icon,
-			AttributeIds: attIds,
+			AttributeIds: ParseAttributeIDs(val.AttributeIds),
 		})
 	}
 	ret.Data = listPals
 	return ret, nil
+}
+
+func ParseAttributeIDs(ids string) []int32 {
+	var attIds []int32
+	for _, attId := range strings.Split(ids, ",") {
+		id, _ := strconv.Atoi(attId)
+		attIds = append(attIds, int32(id))
+	}
+	return attIds
 }

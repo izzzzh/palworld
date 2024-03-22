@@ -9,8 +9,6 @@ import (
 	"palworld/rpc/pal/dao"
 	"palworld/rpc/pal/internal/svc"
 	"palworld/rpc/pal/pb/pal"
-	"strconv"
-	"strings"
 )
 
 type GetPalLogic struct {
@@ -37,11 +35,6 @@ func (l *GetPalLogic) GetPal(in *pal.GetPalReq) (*pal.GetPalResp, error) {
 		return nil, err
 	}
 	ret := &pal.GetPalResp{}
-	var attIds []int64
-	for _, val := range strings.Split(resp.AttributeIds, ",") {
-		attId, _ := strconv.Atoi(val)
-		attIds = append(attIds, int64(attId))
-	}
 	var abilities = make([]*pal.Ability, 0)
 	if err := json.Unmarshal([]byte(resp.Abilities), &abilities); err != nil {
 		ret.Code = http.StatusInternalServerError
@@ -63,7 +56,7 @@ func (l *GetPalLogic) GetPal(in *pal.GetPalReq) (*pal.GetPalResp, error) {
 		Number:       resp.Number,
 		Name:         resp.Name,
 		Icon:         resp.Icon,
-		AttributeIds: attIds,
+		AttributeIds: ParseAttributeIDs(resp.AttributeIds),
 		Hp:           resp.Hp,
 		Energy:       resp.Energy,
 		Defensively:  resp.Defensively,
