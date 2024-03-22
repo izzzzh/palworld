@@ -16,34 +16,44 @@ import (
 )
 
 var (
-	Q   = new(Query)
-	Pal *pal
+	Q           = new(Query)
+	Pal         *pal
+	PalSkillMap *palSkillMap
+	Skill       *skill
 )
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
 	Pal = &Q.Pal
+	PalSkillMap = &Q.PalSkillMap
+	Skill = &Q.Skill
 }
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
-		db:  db,
-		Pal: newPal(db, opts...),
+		db:          db,
+		Pal:         newPal(db, opts...),
+		PalSkillMap: newPalSkillMap(db, opts...),
+		Skill:       newSkill(db, opts...),
 	}
 }
 
 type Query struct {
 	db *gorm.DB
 
-	Pal pal
+	Pal         pal
+	PalSkillMap palSkillMap
+	Skill       skill
 }
 
 func (q *Query) Available() bool { return q.db != nil }
 
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
-		db:  db,
-		Pal: q.Pal.clone(db),
+		db:          db,
+		Pal:         q.Pal.clone(db),
+		PalSkillMap: q.PalSkillMap.clone(db),
+		Skill:       q.Skill.clone(db),
 	}
 }
 
@@ -57,18 +67,24 @@ func (q *Query) WriteDB() *Query {
 
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
-		db:  db,
-		Pal: q.Pal.replaceDB(db),
+		db:          db,
+		Pal:         q.Pal.replaceDB(db),
+		PalSkillMap: q.PalSkillMap.replaceDB(db),
+		Skill:       q.Skill.replaceDB(db),
 	}
 }
 
 type queryCtx struct {
-	Pal IPalDo
+	Pal         IPalDo
+	PalSkillMap IPalSkillMapDo
+	Skill       ISkillDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
-		Pal: q.Pal.WithContext(ctx),
+		Pal:         q.Pal.WithContext(ctx),
+		PalSkillMap: q.PalSkillMap.WithContext(ctx),
+		Skill:       q.Skill.WithContext(ctx),
 	}
 }
 

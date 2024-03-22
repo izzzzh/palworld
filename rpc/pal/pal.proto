@@ -14,11 +14,6 @@ message ListPal {
   string name = 3;
   string icon = 4;
   repeated int64 attribute_ids = 5;
-  int64 hp = 6;
-  int64 energy = 7;
-  int64 defensively = 8;
-  repeated Ability  abilities = 9;
-  int64 eat = 10;
 }
 
 message ListPalResp {
@@ -41,8 +36,8 @@ message Skill {
   int64 id = 1;
   string name = 2;
   string description = 3;
-  int64 ct = 4;
-  int64 score = 5;
+  int32 ct = 4;
+  int32 power = 5;
   int64 attribute_id = 6;
 }
 
@@ -63,6 +58,10 @@ message Pal {
   int32 defensively = 8;
   repeated Ability abilities = 9;
   int32 eat = 10;
+  string description = 11;
+  string passive = 12;
+  string passive_desc = 14;
+  repeated Skill skills = 15;
 }
 
 service PalServer {

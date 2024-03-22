@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/360EntSecGroup-Skylar/excelize"
+	"github.com/PuerkitoBio/goquery"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"io"
@@ -26,9 +27,13 @@ type Pal struct {
 	Energy       int    `json:"energy"`
 	Defensively  int    `json:"defensively"`
 	Eat          int    `json:"eat"`
+	Passive      string `json:"passive"`
+	PassiveDesc  string `json:"passive_desc"`
+	Description  string `json:"description"`
 }
 
 type Skill struct {
+	ID          int64  `json:"id"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	AttributeId int    `json:"attribute_id"`
@@ -87,8 +92,88 @@ var mapAbility = map[int]string{
 	18: "搬运",
 }
 
+type PalSkillMap struct {
+	ID      int64 `json:"id"`
+	PalID   int64 `json:"pal_id"`
+	SkillID int64 `json:"skill_id"`
+}
+
 func main() {
-	updatePal()
+	updateGoods()
+}
+
+func updateGoods() {
+	resp, err := http.Get("https://wiki.biligame.com/palworld/%E9%81%93%E5%85%B7%E4%B8%80%E8%A7%88")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	dom, err := goquery.NewDocumentFromReader(resp.Body)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	dom.Find(".smwtype_wpg").Each(func(i int, s *goquery.Selection) {
+		goodsResp, err := http.Get("https://wiki.biligame.com/palworld" + s.Text())
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		goodsDom, err := goquery.NewDocumentFromReader(goodsResp.Body)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+
+	})
+
+}
+
+func insertPalSkillMap() {
+	dsn := "root:123456@tcp(127.0.0.1:3306)/palworld?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	pals := make([]*Pal, 0)
+	db.Table("pal").Find(&pals)
+
+	skills := make([]*Skill, 0)
+	db.Table("skill").Find(&skills)
+
+	skillMap := make(map[string]int64)
+	for _, val := range skills {
+		skillMap[val.Name] = val.ID
+	}
+
+	for i := range pals {
+		pal := pals[i]
+		resp, err := http.Get("https://wiki.biligame.com/palworld/" + pal.Name)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+
+		dom, err := goquery.NewDocumentFromReader(resp.Body)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		regexp.MustCompile(`^\n`)
+		dom.Find(".palworld-textbox").Each(func(i int, s *goquery.Selection) {
+			if i > 1 {
+				t := s.Text()
+				reg := regexp.MustCompile(`\n`)
+				// 替换所有空行为空字符串
+				output := reg.ReplaceAllString(t, " ")
+				strs := strings.Split(output, " ")
+				sName := strs[1][3:]
+				id := skillMap[sName]
+				psm := &PalSkillMap{
+					PalID:   pal.ID,
+					SkillID: id,
+				}
+				db.Table("pal_skill_map").Create(&psm)
+			}
+		})
+	}
 }
 
 func updatePal() {

@@ -39,16 +39,11 @@ type ListPalReq struct {
 }
 
 type ListPal struct {
-	ID           int64     `json:"id"`
-	Number       string    `json:"number"`
-	Name         string    `json:"name"`
-	Icon         string    `json:"icon"`
-	AttributeIds []int64   `json:"attribute_ids"`
-	HP           int64     `json:"hp"`
-	Energy       int64     `json:"energy"`
-	Defensively  int64     `json:"defensively"`
-	Abilities    []Ability `json:"abilities"`
-	Eat          int64     `json:"eat"`
+	ID           int64   `json:"id"`
+	Number       string  `json:"number"`
+	Name         string  `json:"name"`
+	Icon         string  `json:"icon"`
+	AttributeIds []int64 `json:"attribute_ids"`
 }
 
 type ListPalResp struct {
@@ -67,7 +62,7 @@ type Skill struct {
 	Desc        string `json:"desc"`
 	CT          int32  `json:"ct"`
 	Power       int32  `json:"power"`
-	AttributeID int32  `json:"attribute_id"`
+	AttributeID int64  `json:"attribute_id"`
 }
 
 type ListSkillReq struct {

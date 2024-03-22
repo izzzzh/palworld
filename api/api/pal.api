@@ -44,11 +44,6 @@ type ListPal {
     Name string `json:"name"`
     Icon string `json:"icon"`
     AttributeIds []int64 `json:"attribute_ids"`
-    HP int64 `json:"hp"`
-    Energy int64 `json:"energy"`
-    Defensively int64 `json:"defensively"`
-    Abilities []Ability `json:"abilities"`
-    Eat int64 `json:"eat"`
 }
 
 type ListPalResp {

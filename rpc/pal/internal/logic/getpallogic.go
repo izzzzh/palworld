@@ -28,7 +28,7 @@ func NewGetPalLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetPalLogi
 }
 
 func (l *GetPalLogic) GetPal(in *pal.GetPalReq) (*pal.GetPalResp, error) {
-	if in.Id < 0 {
+	if in.Id <= 0 {
 		return nil, errors.New("无效id")
 	}
 	p := dao.Pal
@@ -48,6 +48,14 @@ func (l *GetPalLogic) GetPal(in *pal.GetPalReq) (*pal.GetPalResp, error) {
 		ret.Message = err.Error()
 		return ret, nil
 	}
+
+	skills, err := getPalSkillsByID(l.ctx, in.Id)
+	if err != nil {
+		ret.Code = http.StatusInternalServerError
+		ret.Message = err.Error()
+		return ret, nil
+	}
+
 	ret.Code = http.StatusOK
 	ret.Message = "ok"
 	ret.Data = &pal.Pal{
@@ -61,6 +69,24 @@ func (l *GetPalLogic) GetPal(in *pal.GetPalReq) (*pal.GetPalResp, error) {
 		Defensively:  resp.Defensively,
 		Eat:          resp.Eat,
 		Abilities:    abilities,
+		Description:  resp.Description,
+		Passive:      resp.Passive,
+		PassiveDesc:  resp.PassiveDesc,
+		Skills:       skills,
 	}
 	return ret, nil
+}
+
+func getPalSkillsByID(ctx context.Context, id int64) ([]*pal.Skill, error) {
+	psm := dao.PalSkillMap
+	s := dao.Skill
+	skills := make([]*pal.Skill, 0)
+	err := psm.WithContext(ctx).Select(s.ID, s.Name, s.Ct, s.Description, s.Power, s.AttributeID).
+		LeftJoin(s, psm.SkillID.
+			EqCol(s.ID)).Select().Where(psm.PalID.Eq(id)).Scan(skills)
+	if err != nil {
+		return nil, err
+	}
+
+	return skills, nil
 }

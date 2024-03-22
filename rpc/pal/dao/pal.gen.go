@@ -31,6 +31,7 @@ func newPal(db *gorm.DB, opts ...gen.DOOption) pal {
 	_pal.Number = field.NewString(tableName, "number")
 	_pal.Name = field.NewString(tableName, "name")
 	_pal.EnName = field.NewString(tableName, "en_name")
+	_pal.Description = field.NewString(tableName, "description")
 	_pal.Icon = field.NewString(tableName, "icon")
 	_pal.AttributeIds = field.NewString(tableName, "attribute_ids")
 	_pal.Hp = field.NewInt32(tableName, "hp")
@@ -38,8 +39,8 @@ func newPal(db *gorm.DB, opts ...gen.DOOption) pal {
 	_pal.Defensively = field.NewInt32(tableName, "defensively")
 	_pal.Abilities = field.NewString(tableName, "abilities")
 	_pal.Eat = field.NewInt32(tableName, "eat")
-	_pal.PassiveSkill = field.NewInt32(tableName, "passive_skill")
-	_pal.ActiveSkills = field.NewString(tableName, "active_skills")
+	_pal.Passive = field.NewString(tableName, "passive")
+	_pal.PassiveDesc = field.NewString(tableName, "passive_desc")
 	_pal.Level = field.NewInt32(tableName, "level")
 
 	_pal.fillFieldMap()
@@ -56,6 +57,7 @@ type pal struct {
 	Number       field.String // 编号
 	Name         field.String // 名字
 	EnName       field.String // 英文名字
+	Description  field.String // 帕鲁简介
 	Icon         field.String // 头像
 	AttributeIds field.String // 属性id
 	Hp           field.Int32  // 血量
@@ -63,8 +65,8 @@ type pal struct {
 	Defensively  field.Int32  // 防御力
 	Abilities    field.String // 工作能力
 	Eat          field.Int32  // 消耗
-	PassiveSkill field.Int32  // 被动技能
-	ActiveSkills field.String // 主动技能
+	Passive      field.String // 被动技能
+	PassiveDesc  field.String // 被动技能描述
 	Level        field.Int32  // 级别（孵蛋大小）
 
 	fieldMap map[string]field.Expr
@@ -86,6 +88,7 @@ func (p *pal) updateTableName(table string) *pal {
 	p.Number = field.NewString(table, "number")
 	p.Name = field.NewString(table, "name")
 	p.EnName = field.NewString(table, "en_name")
+	p.Description = field.NewString(table, "description")
 	p.Icon = field.NewString(table, "icon")
 	p.AttributeIds = field.NewString(table, "attribute_ids")
 	p.Hp = field.NewInt32(table, "hp")
@@ -93,8 +96,8 @@ func (p *pal) updateTableName(table string) *pal {
 	p.Defensively = field.NewInt32(table, "defensively")
 	p.Abilities = field.NewString(table, "abilities")
 	p.Eat = field.NewInt32(table, "eat")
-	p.PassiveSkill = field.NewInt32(table, "passive_skill")
-	p.ActiveSkills = field.NewString(table, "active_skills")
+	p.Passive = field.NewString(table, "passive")
+	p.PassiveDesc = field.NewString(table, "passive_desc")
 	p.Level = field.NewInt32(table, "level")
 
 	p.fillFieldMap()
@@ -112,11 +115,12 @@ func (p *pal) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (p *pal) fillFieldMap() {
-	p.fieldMap = make(map[string]field.Expr, 14)
+	p.fieldMap = make(map[string]field.Expr, 15)
 	p.fieldMap["id"] = p.ID
 	p.fieldMap["number"] = p.Number
 	p.fieldMap["name"] = p.Name
 	p.fieldMap["en_name"] = p.EnName
+	p.fieldMap["description"] = p.Description
 	p.fieldMap["icon"] = p.Icon
 	p.fieldMap["attribute_ids"] = p.AttributeIds
 	p.fieldMap["hp"] = p.Hp
@@ -124,8 +128,8 @@ func (p *pal) fillFieldMap() {
 	p.fieldMap["defensively"] = p.Defensively
 	p.fieldMap["abilities"] = p.Abilities
 	p.fieldMap["eat"] = p.Eat
-	p.fieldMap["passive_skill"] = p.PassiveSkill
-	p.fieldMap["active_skills"] = p.ActiveSkills
+	p.fieldMap["passive"] = p.Passive
+	p.fieldMap["passive_desc"] = p.PassiveDesc
 	p.fieldMap["level"] = p.Level
 }
 
