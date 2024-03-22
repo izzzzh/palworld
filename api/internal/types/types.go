@@ -16,7 +16,7 @@ type Pal struct {
 	Number           string    `json:"number"`
 	Name             string    `json:"name"`
 	Icon             string    `json:"icon"`
-	AttributeIds     []int64   `json:"attribute_ids"`
+	AttributeIds     []int32   `json:"attribute_ids"`
 	HP               int32     `json:"hp"`
 	Energy           int32     `json:"energy"`
 	Defensively      int32     `json:"defensively"`
@@ -43,7 +43,7 @@ type ListPal struct {
 	Number       string  `json:"number"`
 	Name         string  `json:"name"`
 	Icon         string  `json:"icon"`
-	AttributeIds []int64 `json:"attribute_ids"`
+	AttributeIds []int32 `json:"attribute_ids"`
 }
 
 type ListPalResp struct {
@@ -62,7 +62,7 @@ type Skill struct {
 	Desc        string `json:"desc"`
 	CT          int32  `json:"ct"`
 	Power       int32  `json:"power"`
-	AttributeID int64  `json:"attribute_id"`
+	AttributeID int32  `json:"attribute_id"`
 }
 
 type ListSkillReq struct {

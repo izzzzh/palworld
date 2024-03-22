@@ -19,5 +19,5 @@ type Skill {
     Desc string `json:"desc"`
     CT int32 `json:"ct"`
     Power int32 `json:"power"`
-    AttributeID int64 `json:"attribute_id"`
+    AttributeID int32 `json:"attribute_id"`
 }

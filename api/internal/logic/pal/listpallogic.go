@@ -47,11 +47,6 @@ func (l *ListPalLogic) ListPal(req *types.ListPalReq) (*types.ListPalResp, error
 			Name:         val.Name,
 			Icon:         val.Icon,
 			AttributeIds: val.AttributeIds,
-			HP:           val.Hp,
-			Energy:       val.Energy,
-			Defensively:  val.Defensively,
-			Abilities:    nil,
-			Eat:          val.Eat,
 		})
 	}
 	ret.Data = pals

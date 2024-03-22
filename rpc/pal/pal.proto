@@ -13,7 +13,7 @@ message ListPal {
   string number = 2;
   string name = 3;
   string icon = 4;
-  repeated int64 attribute_ids = 5;
+  repeated int32 attribute_ids = 5;
 }
 
 message ListPalResp {
@@ -38,7 +38,7 @@ message Skill {
   string description = 3;
   int32 ct = 4;
   int32 power = 5;
-  int64 attribute_id = 6;
+  int32 attribute_id = 6;
 }
 
 message Ability {
@@ -52,7 +52,7 @@ message Pal {
   string number = 2;
   string name = 3;
   string icon = 4;
-  repeated int64 attribute_ids = 5;
+  repeated int32 attribute_ids = 5;
   int32 hp = 6;
   int32 energy = 7;
   int32 defensively = 8;
