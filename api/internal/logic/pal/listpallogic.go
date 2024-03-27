@@ -41,12 +41,21 @@ func (l *ListPalLogic) ListPal(req *types.ListPalReq) (*types.ListPalResp, error
 	ret.Message = "ok"
 	pals := make([]types.ListPal, 0)
 	for _, val := range resp.Data {
+		abilities := make([]types.Ability, 0)
+		for _, ability := range val.Abilities {
+			abilities = append(abilities, types.Ability{
+				Icon:  ability.Icon,
+				Name:  ability.Name,
+				Level: ability.Level,
+			})
+		}
 		pals = append(pals, types.ListPal{
 			ID:           val.Id,
 			Number:       val.Number,
 			Name:         val.Name,
 			Icon:         val.Icon,
 			AttributeIds: val.AttributeIds,
+			Abilities:    abilities,
 		})
 	}
 	ret.Data = pals

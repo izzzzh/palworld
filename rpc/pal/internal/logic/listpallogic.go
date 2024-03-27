@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 	"palworld/rpc/pal/dao"
 	"palworld/rpc/pal/pb/pal"
@@ -40,19 +41,26 @@ func (l *ListPalLogic) ListPal(in *pal.ListPalReq) (*pal.ListPalResp, error) {
 	if err != nil {
 		return nil, err
 	}
-	ret.Code = http.StatusOK
-	ret.Message = "ok"
 	listPals := make([]*pal.ListPal, 0)
 	for _, val := range pals {
 		ParseAttributeIDs(val.AttributeIds)
+		var abilities = make([]*pal.Ability, 0)
+		if err := json.Unmarshal([]byte(val.Abilities), &abilities); err != nil {
+			ret.Code = http.StatusInternalServerError
+			ret.Message = err.Error()
+			return ret, nil
+		}
 		listPals = append(listPals, &pal.ListPal{
 			Id:           val.ID,
 			Number:       val.Number,
 			Name:         val.Name,
 			Icon:         val.Icon,
 			AttributeIds: ParseAttributeIDs(val.AttributeIds),
+			Abilities:    abilities,
 		})
 	}
+	ret.Code = http.StatusOK
+	ret.Message = "ok"
 	ret.Data = listPals
 	return ret, nil
 }

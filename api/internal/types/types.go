@@ -16,6 +16,7 @@ type Pal struct {
 	Number           string    `json:"number"`
 	Name             string    `json:"name"`
 	Icon             string    `json:"icon"`
+	Description      string    `json:"description"`
 	AttributeIds     []int32   `json:"attribute_ids"`
 	HP               int32     `json:"hp"`
 	Energy           int32     `json:"energy"`
@@ -39,11 +40,12 @@ type ListPalReq struct {
 }
 
 type ListPal struct {
-	ID           int64   `json:"id"`
-	Number       string  `json:"number"`
-	Name         string  `json:"name"`
-	Icon         string  `json:"icon"`
-	AttributeIds []int32 `json:"attribute_ids"`
+	ID           int64     `json:"id"`
+	Number       string    `json:"number"`
+	Name         string    `json:"name"`
+	Icon         string    `json:"icon"`
+	AttributeIds []int32   `json:"attribute_ids"`
+	Abilities    []Ability `json:"abilities"`
 }
 
 type ListPalResp struct {

@@ -14,6 +14,7 @@ message ListPal {
   string name = 3;
   string icon = 4;
   repeated int32 attribute_ids = 5;
+  repeated Ability abilities = 6;
 }
 
 message ListPalResp {

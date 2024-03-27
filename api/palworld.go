@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-
 	"palworld/api/internal/config"
 	"palworld/api/internal/handler"
 	"palworld/api/internal/svc"

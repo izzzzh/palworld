@@ -60,6 +60,7 @@ func (l *GetPalLogic) GetPal(req *types.GetPalReq) (*types.GetPalResp, error) {
 		Name:             resp.Data.Name,
 		Number:           resp.Data.Number,
 		Icon:             resp.Data.Icon,
+		Description:      resp.Data.Description,
 		AttributeIds:     resp.Data.AttributeIds,
 		HP:               resp.Data.Hp,
 		Energy:           resp.Data.Energy,

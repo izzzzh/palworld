@@ -103,26 +103,60 @@ func main() {
 }
 
 func updateGoods() {
-	resp, err := http.Get("https://wiki.biligame.com/palworld/%E9%81%93%E5%85%B7%E4%B8%80%E8%A7%88")
+	client := &http.Client{}
+
+	// 设置请求方法和URL
+	req, err := http.NewRequest(http.MethodGet, "https://palworld.caimogu.cc/item?type=0&name=&page=1", nil)
 	if err != nil {
-		fmt.Println(err.Error())
+		panic(err)
 	}
+
+	// 设置自定义头部
+	req.Header.Set("Accept", "application/json, text/javascript, */*; q=0.01")
+	req.Header.Set("Referer", "https://palworld.caimogu.cc/item.html")
+	req.Header.Set("Sec-Fetch-Mode", "cors")
+	req.Header.Set("authority", "palworld.caimogu.cc")
+	req.Header.Set("Sec-Ch-Ua-Platform", "Windows")
+	req.Header.Set("scheme", "https")
+	req.Header.Set("Sec-Ch-Ua", "\"Chromium\";v=\"122\", \"Not(A:Brand\";v=\"24\", \"Google Chrome\";v=\"122\"")
+	req.Header.Set("Cookie", " cmg_data_token=deleted; expires=Tue, 26-Mar-2024 16:15:57 GMT; Max-Age=1440; path=/; domain=caimogu.cc;think_lang=zh-cn; cmg_data_token=deleted; CAIMOGU_DATA=ed52a67c10db1b6433c2f7ea953da08d")
+	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36")
+
+	// 发送请求
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	// 输出响应头部
+	header := resp.Header
+	for name, values := range header {
+		for _, value := range values {
+			fmt.Printf("%s: %s\n", name, value)
+		}
+	}
+	var ret = make([]byte, 100000)
+	fmt.Println(resp.Body.Read(ret))
+	fmt.Println(string(ret))
 
 	dom, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	dom.Find(".smwtype_wpg").Each(func(i int, s *goquery.Selection) {
-		goodsResp, err := http.Get("https://wiki.biligame.com/palworld" + s.Text())
-		if err != nil {
-			fmt.Println(err.Error())
-		}
-		goodsDom, err := goquery.NewDocumentFromReader(goodsResp.Body)
-		if err != nil {
-			fmt.Println(err.Error())
-		}
+	//
+	dom.Find("img").Each(func(i int, s *goquery.Selection) {
 
+		src, exists := s.Attr("src")
+		if exists {
+			fmt.Println(src)
+		}
 	})
+	//dom.Find(".divsort td").Each(func(i int, s *goquery.Selection) {
+	//	if i < 3 {
+	//		fmt.Print(s.Text())
+	//	}
+	//})
 
 }
 
@@ -420,7 +454,7 @@ func downloadImage(imageUrl, localPath string) {
 	defer resp.Body.Close()
 
 	//打开文件流
-	picName := localPath + ".png"
+	picName := localPath
 	f, err := os.Create(picName)
 	if err != nil {
 		fmt.Println("os create err:", err)
