@@ -16,7 +16,7 @@ COPY . .
 RUN go mod tidy
 RUN go mod download
 COPY ./rpc/technology_tree/etc /app/etc
-RUN go build -ldflags="-s -w" -o /app/technologytree ./rpc/technologytree
+RUN go build -ldflags="-s -w" -o /app/technologytree ./rpc/technology_tree
 
 
 FROM scratch
@@ -26,7 +26,7 @@ COPY --from=builder /usr/share/zoneinfo/Asia/Shanghai /usr/share/zoneinfo/Asia/S
 ENV TZ Asia/Shanghai
 
 WORKDIR /app
-COPY --from=builder /app/technologytree /app/skill
+COPY --from=builder /app/technologytree /app/technologytree
 COPY --from=builder /app/etc /app/etc
 
 CMD ["./technologytree", "-f", "etc/technologytree.yaml"]
