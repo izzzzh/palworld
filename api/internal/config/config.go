@@ -7,8 +7,9 @@ import (
 
 type Config struct {
 	rest.RestConf
-	PalRpcConf     zrpc.RpcClientConf
-	GoodsRpcConf   zrpc.RpcClientConf
-	PalMateRpcConf zrpc.RpcClientConf
-	SkillRpcConf   zrpc.RpcClientConf
+	PalRpcConf            zrpc.RpcClientConf
+	GoodsRpcConf          zrpc.RpcClientConf
+	PalMateRpcConf        zrpc.RpcClientConf
+	SkillRpcConf          zrpc.RpcClientConf
+	TechnologyTreeRpcConf zrpc.RpcClientConf
 }

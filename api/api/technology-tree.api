@@ -1,0 +1,30 @@
+syntax = "v1"
+
+type GetTechnologyTreeResp {
+    Base
+    Data []TechnologyTree `json:"data"`
+}
+
+type Technology {
+    Name string `json:"name"`
+    Icon string `json:"icon"`
+    Description string `json:"description"`
+    Cost int `json:"cost"`
+    Ancient bool `json:"ancient"`
+}
+
+type TechnologyTree {
+    Level int32 `json:"level"`
+    Data []Technology `json:"data"`
+}
+
+@server(
+    prefix : /api/v1
+    group: technology_tree
+)
+
+service palworld-api {
+    @doc "科技树"
+    @handler GetTechnologyTreeHandler
+    get /technology-tree returns (GetTechnologyTreeResp)
+}

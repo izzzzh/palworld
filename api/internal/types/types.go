@@ -126,3 +126,21 @@ type ListPalMateResp struct {
 	Base
 	Data []*PalMate `json:"data"`
 }
+
+type GetTechnologyTreeResp struct {
+	Base
+	Data []TechnologyTree `json:"data"`
+}
+
+type Technology struct {
+	Name        string `json:"name"`
+	Icon        string `json:"icon"`
+	Description string `json:"description"`
+	Cost        int    `json:"cost"`
+	Ancient     bool   `json:"ancient"`
+}
+
+type TechnologyTree struct {
+	Level int32        `json:"level"`
+	Data  []Technology `json:"data"`
+}

@@ -1,13 +1,5 @@
 syntax = "v1"
 
-info(
-    title: "type title here"
-    desc: "type desc here"
-    author: "type author here"
-    email: "type email here"
-    version: "type version here"
-)
-
 type ListPalMateReq {
     ParentOne int64 `json:"parent_one,optional" form:"parent_one,optional"`
     ParentTwo int64 `json:"parent_two,optional" form:"parent_two,optional"`

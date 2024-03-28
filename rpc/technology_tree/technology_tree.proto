@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package technology_tree;
+option go_package = "./technology_tree";
+
+message GetTechnologyTreeReq {}
+
+message  GetTechnologyTreeResp {
+  int64 code = 1 ;
+  string message = 2;
+  repeated TechnologyTree data = 3;
+}
+
+message TechnologyTree {
+  int32 level = 1;
+  repeated Technology data = 2;
+}
+
+message Technology {
+  string name = 2;
+  string description = 3;
+  int32 cost = 4;
+  bool ancient = 5;
+  string icon = 6;
+}
+
+service TechnologyTreeServer {
+  rpc GetTechnologyTree(GetTechnologyTreeReq) returns(GetTechnologyTreeResp);
+}
+

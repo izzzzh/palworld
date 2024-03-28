@@ -16,3 +16,13 @@ PalMateRpcConf:
   Endpoints:
     - 127.0.0.1:2002
   NonBlock: true
+
+SkillRpcConf:
+  Endpoints:
+    - 127.0.0.1:2003
+  NonBlock: true
+
+TechnologyTreeRpcConf:
+  Endpoints:
+    - 127.0.0.1:2004
+  NonBlock: true

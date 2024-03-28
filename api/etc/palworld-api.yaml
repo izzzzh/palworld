@@ -21,3 +21,8 @@ SkillRpcConf:
   Endpoints:
     - skill:2003
   NonBlock: true
+
+TechnologyTreeRpcConf:
+  Endpoints:
+    - technologytree:2004
+  NonBlock: true

@@ -8,6 +8,7 @@ import (
 	pal "palworld/api/internal/handler/pal"
 	pal_mate "palworld/api/internal/handler/pal_mate"
 	skill "palworld/api/internal/handler/skill"
+	technology_tree "palworld/api/internal/handler/technology_tree"
 	"palworld/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -58,6 +59,17 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodGet,
 				Path:    "/pal-mate",
 				Handler: pal_mate.ListPalMateHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api/v1"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodGet,
+				Path:    "/technology-tree",
+				Handler: technology_tree.GetTechnologyTreeHandler(serverCtx),
 			},
 		},
 		rest.WithPrefix("/api/v1"),
