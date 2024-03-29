@@ -5,7 +5,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"log"
-	"palworld/rpc/pal_mate/model"
+	"palworld/rpc/technology_tree/model"
 )
 
 var Db *gorm.DB
@@ -30,7 +30,7 @@ func NewDB(dataSource string) (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	db.AutoMigrate(&model.PalMateMap{})
+	db.AutoMigrate(&model.TechnologyTree{})
 	log.Println("数据库连接成功")
 	return db, nil
 }

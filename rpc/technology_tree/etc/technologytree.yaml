@@ -5,4 +5,4 @@ Etcd:
   - etcd:2379
   Key: technologytree.rpc
 
-DataSource: "root:admin@123@tcp(mysql:3306)/palworld?charset=utf8mb4&parseTime=True&loc=Local"
+DataSource: "root:palworld@admin123@tcp(mysql:3306)/palworld?charset=utf8mb4&parseTime=True&loc=Local"
