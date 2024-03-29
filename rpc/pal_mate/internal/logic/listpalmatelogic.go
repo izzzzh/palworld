@@ -34,7 +34,7 @@ func (l *ListPalMateLogic) ListPalMate(in *pal_mate.ListPalMateReq) (*pal_mate.L
 	var pd = p.WithContext(l.ctx)
 	if in.ParentOne > 0 && in.ParentTwo > 0 {
 		pd = pd.Where(pd.Where(p.ParentOne.Eq(int32(in.ParentOne))).Where(p.ParentTwo.Eq(int32(in.ParentTwo))).
-			Or(p.ParentOne.Eq(int32(in.ParentTwo))).Where(p.ParentTwo.Eq(int32(in.ParentTwo))))
+			Or(p.ParentOne.Eq(int32(in.ParentTwo))).Where(p.ParentTwo.Eq(int32(in.ParentOne))))
 	} else if in.ParentOne > 0 {
 		pd = pd.Where(pd.Where(p.ParentOne.Eq(int32(in.ParentOne))).Or(p.ParentTwo.Eq(int32(in.ParentOne))))
 	} else if in.ParentTwo > 0 {
