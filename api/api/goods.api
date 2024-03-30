@@ -3,7 +3,9 @@ import "./base.api"
 
 type ListGoodsreq {
     Name string `json:"name,optional"`
-    Types int `json:"types,optional"`
+    Types string `json:"types,optional"`
+    Page int `json:"page,optional"`
+    PageSize int `json:"page_size,optional"`
 }
 
 type Material {
@@ -20,7 +22,7 @@ type ListGoods {
     Quality int32 `json:"quality"`
     Workload int32 `json:"workload"`
     Materials []Material `json:"materials"`
-    Types int32 `json:"types"`
+    Types string `json:"types"`
 }
 
 type ListGoodsResp {

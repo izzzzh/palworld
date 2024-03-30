@@ -26,7 +26,12 @@ func NewListGoodsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ListGoo
 
 func (l *ListGoodsLogic) ListGoods(req *types.ListGoodsreq) (*types.ListGoodsResp, error) {
 	ret := &types.ListGoodsResp{}
-	in := &goods.ListGoodsReq{}
+	in := &goods.ListGoodsReq{
+		Name:     req.Name,
+		Types:    req.Types,
+		Page:     int32(req.Page),
+		PageSize: int32(req.PageSize),
+	}
 	resp, err := l.svcCtx.GoodsRpc.ListGoods(l.ctx, in)
 	if err != nil {
 		ret.Message = err.Error()

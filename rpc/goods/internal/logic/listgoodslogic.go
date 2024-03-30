@@ -28,7 +28,21 @@ func (l *ListGoodsLogic) ListGoods(in *goods.ListGoodsReq) (*goods.ListGoodsResp
 	ret := &goods.ListGoodsResp{}
 	g := dao.Goods
 	pd := g.WithContext(l.ctx)
-	goodsResp, err := pd.Find()
+	if in.Name != "" {
+		pd = pd.Where(g.Name.Eq(in.Name))
+	}
+	if in.Types != "" {
+		pd = pd.Where(g.Types.Eq(in.Types))
+	}
+	page, pageSize := in.Page, in.PageSize
+	if page <= 0 {
+		page = 1
+	}
+	if pageSize <= 0 {
+		pageSize = 20
+	}
+	offset := (page - 1) * pageSize
+	goodsResp, err := pd.Offset(int(offset)).Limit(int(pageSize)).Find()
 	if err != nil {
 		return nil, err
 	}

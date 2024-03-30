@@ -16,7 +16,7 @@ import (
 )
 
 var (
-	Q    = new(Query)
+	Q     = new(Query)
 	Goods *goods
 )
 
@@ -27,8 +27,8 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
-		db:   db,
-		Goods: newGood(db, opts...),
+		db:    db,
+		Goods: newGoods(db, opts...),
 	}
 }
 
@@ -42,7 +42,7 @@ func (q *Query) Available() bool { return q.db != nil }
 
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
-		db:   db,
+		db:    db,
 		Goods: q.Goods.clone(db),
 	}
 }
@@ -57,13 +57,13 @@ func (q *Query) WriteDB() *Query {
 
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
-		db:   db,
+		db:    db,
 		Goods: q.Goods.replaceDB(db),
 	}
 }
 
 type queryCtx struct {
-	Goods IGoodDo
+	Goods IGoodsDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {

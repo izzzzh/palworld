@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/360EntSecGroup-Skylar/excelize"
-	"github.com/PuerkitoBio/goquery"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"io"
@@ -42,12 +41,12 @@ type Skill struct {
 }
 
 type Goods struct {
-	Id       int    `json:"id"`
-	Name     string `json:"name"`
-	EnName   string `json:"en_name"`
-	Quality  int    `json:"quality"`
-	Workload int    `json:"workload"`
-	Image    string `json:"image"`
+	Id          int    `json:"id"`
+	Name        string `json:"name"`
+	Image       string `json:"image"`
+	Description string `json:"description"`
+	Types       string `json:"types"`
+	Quality     int    `json:"quality"`
 }
 
 type PalMateMap struct {
@@ -98,70 +97,90 @@ type PalSkillMap struct {
 	SkillID int64 `json:"skill_id"`
 }
 
+type TechnologyTree struct {
+	Name  string `json:"name"`
+	Cost  int    `json:"cost"`
+	Level int    `json:"level"`
+	Icon  string `json:"icon"`
+}
+
 func main() {
 	updateGoods()
 }
 
 func updateGoods() {
-	client := &http.Client{}
-
-	// 设置请求方法和URL
-	req, err := http.NewRequest(http.MethodGet, "https://palworld.caimogu.cc/item?type=0&name=&page=1", nil)
-	if err != nil {
-		panic(err)
-	}
-
-	// 设置自定义头部
-	req.Header.Set("Accept", "application/json, text/javascript, */*; q=0.01")
-	req.Header.Set("Referer", "https://palworld.caimogu.cc/item.html")
-	req.Header.Set("Sec-Fetch-Mode", "cors")
-	req.Header.Set("authority", "palworld.caimogu.cc")
-	req.Header.Set("Sec-Ch-Ua-Platform", "Windows")
-	req.Header.Set("scheme", "https")
-	req.Header.Set("Sec-Ch-Ua", "\"Chromium\";v=\"122\", \"Not(A:Brand\";v=\"24\", \"Google Chrome\";v=\"122\"")
-	req.Header.Set("Cookie", " cmg_data_token=deleted; expires=Tue, 26-Mar-2024 16:15:57 GMT; Max-Age=1440; path=/; domain=caimogu.cc;think_lang=zh-cn; cmg_data_token=deleted; CAIMOGU_DATA=ed52a67c10db1b6433c2f7ea953da08d")
-	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36")
-
-	// 发送请求
-	resp, err := client.Do(req)
-	if err != nil {
-		panic(err)
-	}
-	defer resp.Body.Close()
-
-	// 输出响应头部
-	header := resp.Header
-	for name, values := range header {
-		for _, value := range values {
-			fmt.Printf("%s: %s\n", name, value)
-		}
-	}
-	var ret = make([]byte, 100000)
-	fmt.Println(resp.Body.Read(ret))
-	fmt.Println(string(ret))
-
-	dom, err := goquery.NewDocumentFromReader(resp.Body)
-	if err != nil {
-		fmt.Println(err.Error())
-	}
+	//client := &http.Client{}
+	//// 设置请求方法和URL
 	//
-	dom.Find("img").Each(func(i int, s *goquery.Selection) {
-
-		src, exists := s.Attr("src")
-		if exists {
-			fmt.Println(src)
-		}
-	})
+	//req, err := http.NewRequest(http.MethodGet, "https://wiki.biligame.com/palworld/%E9%81%93%E5%85%B7%E4%B8%80%E8%A7%88", nil)
+	//if err != nil {
+	//	panic(err)
+	//}
+	//
+	//// 发送请求
+	//resp, err := client.Do(req)
+	//if err != nil {
+	//	panic(err)
+	//}
+	//defer resp.Body.Close()
+	//
+	//dom, err := goquery.NewDocumentFromReader(resp.Body)
+	//if err != nil {
+	//	fmt.Println(err.Error())
+	//}
+	//dom.Find(".list ").Each(func(i int, s *goquery.Selection) {
+	//	s.Find(".items .item").Each(func(j int, selection *goquery.Selection) {
+	//		style, exists := selection.Attr("style")
+	//		reg := regexp.MustCompile(`\((.*?)\)`)
+	//		if exists {
+	//			matches := reg.FindAllStringSubmatch(style, -1)
+	//			for _, match := range matches {
+	//				if len(match) == 2 {
+	//					url := "https://palworld.gg" + match[1]
+	//					fmt.Println(url)
+	//					downloadImage(url, "."+match[1])
+	//				}
+	//			}
+	//		}
+	//	})
+	//})
+	//var goods []string
+	//var names []string
 	//dom.Find(".divsort td").Each(func(i int, s *goquery.Selection) {
-	//	if i < 3 {
-	//		fmt.Print(s.Text())
+	//	if _, ok := s.Find("img").Attr("src"); ok {
+	//		key, _ := s.Find("img").Attr("alt")
+	//		imageName := strings.Replace(key, " ", "_", -1)
+	//		//downloadImage(url, "./images/goods/"+imageName)
+	//		names = append(names, "/images/goods/"+imageName)
 	//	}
+	//	goods = append(goods, strings.TrimSpace(s.Text()))
 	//})
 
+	dsn := "root:123456@tcp(127.0.0.1:3306)/palworld?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	var ret []Goods
+	db.Table("goods").Find(&ret)
+	for i := range ret {
+		desc := ret[i].Description
+		if strings.Index(desc, "（稀有）") > 0 {
+			ret[i].Quality = 2
+		} else if strings.Index(desc, "（少见）") > 0 {
+			ret[i].Quality = 1
+		} else if strings.Index(desc, "（史诗）") > 0 {
+			ret[i].Quality = 3
+		} else if strings.Index(desc, "（传奇）") > 0 {
+			ret[i].Quality = 4
+		}
+		db.Table("goods").Updates(ret[i])
+	}
 }
 
 func insertPalSkillMap() {
-	dsn := "root:123456@tcp(127.0.0.1:3306)/palworld?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:palworld@admin123@tcp(120.78.196.38:3306)/palworld?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		fmt.Println(err)
@@ -171,43 +190,62 @@ func insertPalSkillMap() {
 	pals := make([]*Pal, 0)
 	db.Table("pal").Find(&pals)
 
-	skills := make([]*Skill, 0)
-	db.Table("skill").Find(&skills)
-
-	skillMap := make(map[string]int64)
-	for _, val := range skills {
-		skillMap[val.Name] = val.ID
-	}
-
 	for i := range pals {
 		pal := pals[i]
-		resp, err := http.Get("https://wiki.biligame.com/palworld/" + pal.Name)
-		if err != nil {
-			fmt.Println(err.Error())
-		}
-
-		dom, err := goquery.NewDocumentFromReader(resp.Body)
-		if err != nil {
-			fmt.Println(err.Error())
-		}
-		regexp.MustCompile(`^\n`)
-		dom.Find(".palworld-textbox").Each(func(i int, s *goquery.Selection) {
-			if i > 1 {
-				t := s.Text()
-				reg := regexp.MustCompile(`\n`)
-				// 替换所有空行为空字符串
-				output := reg.ReplaceAllString(t, " ")
-				strs := strings.Split(output, " ")
-				sName := strs[1][3:]
-				id := skillMap[sName]
-				psm := &PalSkillMap{
-					PalID:   pal.ID,
-					SkillID: id,
-				}
-				db.Table("pal_skill_map").Create(&psm)
-			}
-		})
+		newStr := strings.Replace(pal.Icon, "http://120.78.196.38", "https://ppcat.fun", 1)
+		pal.Icon = newStr
+		fmt.Println(pal.Icon)
+		db.Table("pal").Save(&pal)
 	}
+
+	//goods := make([]*Goods, 0)
+	//db.Table("goods").Find(&pals)
+	//
+	//for i := range goods {
+	//	good := goods[i]
+	//	newStr := strings.Replace(good.Image, "http://120.78.196.38", "https://ppcat.fun", 1)
+	//	good.Image = newStr
+	//	fmt.Println(good.Image)
+	//	db.Table("goods").Save(&good)
+	//}
+
+	//skills := make([]*Skill, 0)
+	//db.Table("skill").Find(&skills)
+	//
+	//skillMap := make(map[string]int64)
+	//for _, val := range skills {
+	//	skillMap[val.Name] = val.ID
+	//}
+	//
+	//for i := range pals {
+	//	pal := pals[i]
+	//	resp, err := http.Get("https://wiki.biligame.com/palworld/" + pal.Name)
+	//	if err != nil {
+	//		fmt.Println(err.Error())
+	//	}
+	//
+	//	dom, err := goquery.NewDocumentFromReader(resp.Body)
+	//	if err != nil {
+	//		fmt.Println(err.Error())
+	//	}
+	//	regexp.MustCompile(`^\n`)
+	//	dom.Find(".palworld-textbox").Each(func(i int, s *goquery.Selection) {
+	//		if i > 1 {
+	//			t := s.Text()
+	//			reg := regexp.MustCompile(`\n`)
+	//			// 替换所有空行为空字符串
+	//			output := reg.ReplaceAllString(t, " ")
+	//			strs := strings.Split(output, " ")
+	//			sName := strs[1][3:]
+	//			id := skillMap[sName]
+	//			psm := &PalSkillMap{
+	//				PalID:   pal.ID,
+	//				SkillID: id,
+	//			}
+	//			db.Table("pal_skill_map").Create(&psm)
+	//		}
+	//	})
+	//}
 }
 
 func updatePal() {

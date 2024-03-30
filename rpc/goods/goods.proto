@@ -4,6 +4,10 @@ package goods;
 option go_package = "./goods";
 
 message ListGoodsReq {
+  string name = 1;
+  string types = 2;
+  int32 page = 3;
+  int32 pageSize = 4;
 }
 
 message Material {
@@ -20,7 +24,7 @@ message Goods {
   int32 quality = 5;
   int32 workload = 6;
   repeated Material materials = 7;
-  int32 types = 8;
+  string types = 8;
 }
 
 message ListGoodsResp {

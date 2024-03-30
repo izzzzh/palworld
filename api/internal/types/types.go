@@ -77,8 +77,10 @@ type ListSkillResp struct {
 }
 
 type ListGoodsreq struct {
-	Name  string `json:"name,optional"`
-	Types int    `json:"types,optional"`
+	Name     string `json:"name,optional"`
+	Types    string `json:"types,optional"`
+	Page     int    `json:"page,optional"`
+	PageSize int    `json:"page_size,optional"`
 }
 
 type Material struct {
@@ -95,7 +97,7 @@ type ListGoods struct {
 	Quality     int32      `json:"quality"`
 	Workload    int32      `json:"workload"`
 	Materials   []Material `json:"materials"`
-	Types       int32      `json:"types"`
+	Types       string     `json:"types"`
 }
 
 type ListGoodsResp struct {
