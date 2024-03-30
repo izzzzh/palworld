@@ -2,10 +2,11 @@ syntax = "v1"
 import "./base.api"
 
 type ListGoodsreq {
-    Name string `json:"name,optional"`
-    Types string `json:"types,optional"`
-    Page int `json:"page,optional"`
-    PageSize int `json:"page_size,optional"`
+    Name string `json:"name,optional" form:"name,optional"`
+    Types string `json:"types,optional" form:"types,optional"`
+    Page int32 `json:"page,optional" form:"page,optional"`
+    PageSize int32 `json:"page_size,optional" form:"page_size,optional"`
+    Quality int32 `json:"quality,optional" form:"quality,optional"`
 }
 
 type Material {

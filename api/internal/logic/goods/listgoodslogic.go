@@ -29,8 +29,9 @@ func (l *ListGoodsLogic) ListGoods(req *types.ListGoodsreq) (*types.ListGoodsRes
 	in := &goods.ListGoodsReq{
 		Name:     req.Name,
 		Types:    req.Types,
-		Page:     int32(req.Page),
-		PageSize: int32(req.PageSize),
+		Page:     req.Page,
+		PageSize: req.PageSize,
+		Quality:  req.Quality,
 	}
 	resp, err := l.svcCtx.GoodsRpc.ListGoods(l.ctx, in)
 	if err != nil {

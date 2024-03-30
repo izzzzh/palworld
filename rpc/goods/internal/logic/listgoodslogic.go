@@ -34,6 +34,9 @@ func (l *ListGoodsLogic) ListGoods(in *goods.ListGoodsReq) (*goods.ListGoodsResp
 	if in.Types != "" {
 		pd = pd.Where(g.Types.Eq(in.Types))
 	}
+	if in.Quality != 0 {
+		pd = pd.Where(g.Quality.Eq(in.Quality))
+	}
 	page, pageSize := in.Page, in.PageSize
 	if page <= 0 {
 		page = 1

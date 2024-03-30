@@ -8,6 +8,7 @@ message ListGoodsReq {
   string types = 2;
   int32 page = 3;
   int32 pageSize = 4;
+  int32 quality = 5;
 }
 
 message Material {
