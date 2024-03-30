@@ -25,6 +25,7 @@ func main() {
 	g.ApplyBasic(
 		// 从当前数据库中生成所有表的结构
 		g.GenerateModel("goods"),
+		g.GenerateModel("goods_material"),
 	)
 
 	// 生成代码

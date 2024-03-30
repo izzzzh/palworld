@@ -31,6 +31,7 @@ func NewDB(dataSource string) (*gorm.DB, error) {
 		return nil, err
 	}
 	db.AutoMigrate(&model.Goods{})
+	db.AutoMigrate(&model.GoodsMaterial{})
 	log.Println("数据库连接成功")
 	return db, nil
 }

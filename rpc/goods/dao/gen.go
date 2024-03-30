@@ -16,34 +16,39 @@ import (
 )
 
 var (
-	Q     = new(Query)
-	Goods *goods
+	Q             = new(Query)
+	Goods         *goods
+	GoodsMaterial *goodsMaterial
 )
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
 	Goods = &Q.Goods
+	GoodsMaterial = &Q.GoodsMaterial
 }
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
-		db:    db,
-		Goods: newGoods(db, opts...),
+		db:            db,
+		Goods:         newGoods(db, opts...),
+		GoodsMaterial: newGoodsMaterial(db, opts...),
 	}
 }
 
 type Query struct {
 	db *gorm.DB
 
-	Goods goods
+	Goods         goods
+	GoodsMaterial goodsMaterial
 }
 
 func (q *Query) Available() bool { return q.db != nil }
 
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
-		db:    db,
-		Goods: q.Goods.clone(db),
+		db:            db,
+		Goods:         q.Goods.clone(db),
+		GoodsMaterial: q.GoodsMaterial.clone(db),
 	}
 }
 
@@ -57,18 +62,21 @@ func (q *Query) WriteDB() *Query {
 
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
-		db:    db,
-		Goods: q.Goods.replaceDB(db),
+		db:            db,
+		Goods:         q.Goods.replaceDB(db),
+		GoodsMaterial: q.GoodsMaterial.replaceDB(db),
 	}
 }
 
 type queryCtx struct {
-	Goods IGoodsDo
+	Goods         IGoodsDo
+	GoodsMaterial IGoodsMaterialDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
-		Goods: q.Goods.WithContext(ctx),
+		Goods:         q.Goods.WithContext(ctx),
+		GoodsMaterial: q.GoodsMaterial.WithContext(ctx),
 	}
 }
 

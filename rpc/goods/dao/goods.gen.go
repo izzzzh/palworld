@@ -31,7 +31,6 @@ func newGoods(db *gorm.DB, opts ...gen.DOOption) goods {
 	_goods.Name = field.NewString(tableName, "name")
 	_goods.Description = field.NewString(tableName, "description")
 	_goods.Image = field.NewString(tableName, "image")
-	_goods.Materials = field.NewString(tableName, "materials")
 	_goods.Quality = field.NewInt32(tableName, "quality")
 	_goods.Workload = field.NewInt32(tableName, "workload")
 	_goods.Types = field.NewString(tableName, "types")
@@ -50,7 +49,6 @@ type goods struct {
 	Name        field.String // 名称
 	Description field.String // 描述
 	Image       field.String // 图片
-	Materials   field.String // 制造材料
 	Quality     field.Int32  // 品质
 	Workload    field.Int32  // 工作量
 	Types       field.String // 类型
@@ -74,7 +72,6 @@ func (g *goods) updateTableName(table string) *goods {
 	g.Name = field.NewString(table, "name")
 	g.Description = field.NewString(table, "description")
 	g.Image = field.NewString(table, "image")
-	g.Materials = field.NewString(table, "materials")
 	g.Quality = field.NewInt32(table, "quality")
 	g.Workload = field.NewInt32(table, "workload")
 	g.Types = field.NewString(table, "types")
@@ -94,12 +91,11 @@ func (g *goods) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (g *goods) fillFieldMap() {
-	g.fieldMap = make(map[string]field.Expr, 8)
+	g.fieldMap = make(map[string]field.Expr, 7)
 	g.fieldMap["id"] = g.ID
 	g.fieldMap["name"] = g.Name
 	g.fieldMap["description"] = g.Description
 	g.fieldMap["image"] = g.Image
-	g.fieldMap["materials"] = g.Materials
 	g.fieldMap["quality"] = g.Quality
 	g.fieldMap["workload"] = g.Workload
 	g.fieldMap["types"] = g.Types

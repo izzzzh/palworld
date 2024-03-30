@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/360EntSecGroup-Skylar/excelize"
+	"github.com/PuerkitoBio/goquery"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"io"
@@ -104,6 +105,12 @@ type TechnologyTree struct {
 	Icon  string `json:"icon"`
 }
 
+type GoodsMaterial struct {
+	GoodsID    int64 `json:"goods_id"`
+	MaterialID int64 `json:"material_id"`
+	Count      int   `json:"count"`
+}
+
 func main() {
 	updateGoods()
 }
@@ -162,21 +169,71 @@ func updateGoods() {
 		fmt.Println(err)
 		return
 	}
-	var ret []Goods
-	db.Table("goods").Find(&ret)
-	for i := range ret {
-		desc := ret[i].Description
-		if strings.Index(desc, "（稀有）") > 0 {
-			ret[i].Quality = 2
-		} else if strings.Index(desc, "（少见）") > 0 {
-			ret[i].Quality = 1
-		} else if strings.Index(desc, "（史诗）") > 0 {
-			ret[i].Quality = 3
-		} else if strings.Index(desc, "（传奇）") > 0 {
-			ret[i].Quality = 4
-		}
-		db.Table("goods").Updates(ret[i])
+	var ret []string
+	white := map[string]struct{}{}
+	white["棉花糖"] = struct{}{}
+	var goods []Goods
+	mapGoods := make(map[string]int)
+	db.Table("goods").Select("id,name").Where("quality = 0").Find(&goods)
+	for _, val := range goods {
+		mapGoods[val.Name] = val.Id
 	}
+
+	db.Table("goods").Group("name").Select("name").Find(&ret)
+	for i := range ret {
+		if _, ok := white[ret[i]]; ok {
+			continue
+		}
+		url := "https://wiki.biligame.com/palworld/" + ret[i]
+		materials := getGoodsMaterial(ret[i], url)
+
+		if len(materials) > 0 {
+			m := make(map[int]int)
+			for _, val := range materials {
+				arr := strings.Split(val, "x")
+				v, _ := strconv.Atoi(arr[1])
+				m[mapGoods[arr[0]]] = v
+
+				gm := &GoodsMaterial{
+					GoodsID:    int64(mapGoods[ret[i]]),
+					MaterialID: int64(mapGoods[arr[0]]),
+					Count:      v,
+				}
+				fmt.Println(gm)
+				db.Table("goods_material").Create(&gm)
+			}
+		}
+	}
+}
+
+func getGoodsMaterial(name, url string) []string {
+	var str []string
+	resp, err := http.Get(url)
+	if err != nil {
+		fmt.Println(err)
+		return str
+	}
+	dom, err := goquery.NewDocumentFromReader(resp.Body)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	if dom.Find(".palworld-textbox").Length() > 1 {
+		//fmt.Println(name)
+		dom.Find(".palworld-textbox").Last().Each(func(i int, selection *goquery.Selection) {
+
+			selection.Find("div").Each(func(j int, s *goquery.Selection) {
+				k := strings.TrimSpace(s.Text())
+				k = strings.Replace(k, "\n", "", -1)
+				k = strings.Replace(k, " ", "", -1)
+				k = strings.TrimSpace(k)
+				if k != "" {
+					str = append(str, k)
+				}
+			})
+
+		})
+	}
+	return str
 }
 
 func insertPalSkillMap() {

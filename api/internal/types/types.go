@@ -87,7 +87,8 @@ type ListGoodsreq struct {
 type Material struct {
 	ID    int64  `json:"id"`
 	Name  string `json:"name"`
-	Count int    `json:"count"`
+	Count int32  `json:"count"`
+	Image string `json:"image"`
 }
 
 type ListGoods struct {

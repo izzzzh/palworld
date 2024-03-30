@@ -2,12 +2,11 @@ package logic
 
 import (
 	"context"
+	"github.com/zeromicro/go-zero/core/logx"
 	"net/http"
 	"palworld/rpc/goods/dao"
 	"palworld/rpc/goods/internal/svc"
 	"palworld/rpc/goods/pb/goods"
-
-	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type ListGoodsLogic struct {
@@ -29,7 +28,7 @@ func (l *ListGoodsLogic) ListGoods(in *goods.ListGoodsReq) (*goods.ListGoodsResp
 	g := dao.Goods
 	pd := g.WithContext(l.ctx)
 	if in.Name != "" {
-		pd = pd.Where(g.Name.Eq(in.Name))
+		pd = pd.Where(g.Name.Like("%" + in.Name + "%"))
 	}
 	if in.Types != "" {
 		pd = pd.Where(g.Types.Eq(in.Types))
@@ -49,10 +48,12 @@ func (l *ListGoodsLogic) ListGoods(in *goods.ListGoodsReq) (*goods.ListGoodsResp
 	if err != nil {
 		return nil, err
 	}
-	ret.Code = http.StatusOK
-	ret.Message = "ok"
 	listGoods := make([]*goods.Goods, 0)
 	for _, val := range goodsResp {
+		materials, err := getMaterials(l.ctx, val.ID)
+		if err != nil {
+			return nil, err
+		}
 		listGoods = append(listGoods, &goods.Goods{
 			Id:          val.ID,
 			Name:        val.Name,
@@ -61,8 +62,23 @@ func (l *ListGoodsLogic) ListGoods(in *goods.ListGoodsReq) (*goods.ListGoodsResp
 			Workload:    val.Workload,
 			Quality:     val.Quality,
 			Types:       val.Types,
+			Materials:   materials,
 		})
 	}
+	ret.Code = http.StatusOK
+	ret.Message = "ok"
 	ret.Data = listGoods
+	return ret, nil
+}
+
+func getMaterials(ctx context.Context, goodsID int64) ([]*goods.Material, error) {
+	g := dao.Goods
+	gm := dao.GoodsMaterial
+	var ret []*goods.Material
+	err := gm.WithContext(ctx).Select(g.ID, g.Name, g.Image, gm.Cnt.As("count")).
+		Where(gm.GoodsID.Eq(goodsID)).LeftJoin(g, gm.MaterialID.EqCol(g.ID)).Scan(&ret)
+	if err != nil {
+		return nil, err
+	}
 	return ret, nil
 }

@@ -43,6 +43,15 @@ func (l *ListGoodsLogic) ListGoods(req *types.ListGoodsreq) (*types.ListGoodsRes
 	ret.Message = "ok"
 	goodsResult := make([]types.ListGoods, 0)
 	for _, val := range resp.Data {
+		materials := make([]types.Material, 0)
+		for _, material := range val.Materials {
+			materials = append(materials, types.Material{
+				ID:    material.Id,
+				Name:  material.Name,
+				Image: material.Image,
+				Count: material.Count,
+			})
+		}
 		goodsResult = append(goodsResult, types.ListGoods{
 			ID:          val.Id,
 			Name:        val.Name,
@@ -51,6 +60,7 @@ func (l *ListGoodsLogic) ListGoods(req *types.ListGoodsreq) (*types.ListGoodsRes
 			Workload:    val.Workload,
 			Quality:     val.Quality,
 			Types:       val.Types,
+			Materials:   materials,
 		})
 	}
 	ret.Data = goodsResult
