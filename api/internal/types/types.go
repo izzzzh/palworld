@@ -148,3 +148,14 @@ type TechnologyTree struct {
 	Level int32        `json:"level"`
 	Data  []Technology `json:"data"`
 }
+
+type Container struct {
+	ID    string `json:"id"`
+	Name  string `json:"name"`
+	Image string `json:"image"`
+}
+
+type ListContainerResp struct {
+	Base
+	Data []Container `json:"data"`
+}

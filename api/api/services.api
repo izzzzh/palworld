@@ -1,0 +1,22 @@
+syntax = "v1"
+
+type Container {
+    ID string `json:"id"`
+    Name string `json:"name"`
+    Image string `json:"image"`
+}
+
+type ListContainerResp {
+    Base
+    Data []Container `json:"data"`
+}
+
+@server(
+    prefix : /api/v1
+    group: container_services
+)
+
+service palworld-api {
+    @handler ListContainerHandler
+    get /containers returns (ListContainerResp)
+}
