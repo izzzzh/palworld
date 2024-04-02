@@ -4,6 +4,10 @@ type Container {
     ID string `json:"id"`
     Name string `json:"name"`
     Image string `json:"image"`
+    Created int64 `json:"created"`
+    State string `json:"state"`
+    Status string `json:"status"`
+    Health string `json:"health,omitempty"`
 }
 
 type ListContainerResp {
@@ -11,12 +15,25 @@ type ListContainerResp {
     Data []Container `json:"data"`
 }
 
+type ContainerLogReq {
+    ID string `json:"id" form:"id"`
+}
+
+type Event {
+    Message string `json:"message"`
+}
+
 @server(
     prefix : /api/v1
     group: container_services
+    timeout: 0
 )
 
 service palworld-api {
     @handler ListContainerHandler
     get /containers returns (ListContainerResp)
+
+
+    @handler ContainerLogHandler
+    get /containers/logs (ContainerLogReq)
 }

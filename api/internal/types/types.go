@@ -150,12 +150,24 @@ type TechnologyTree struct {
 }
 
 type Container struct {
-	ID    string `json:"id"`
-	Name  string `json:"name"`
-	Image string `json:"image"`
+	ID      string `json:"id"`
+	Name    string `json:"name"`
+	Image   string `json:"image"`
+	Created int64  `json:"created"`
+	State   string `json:"state"`
+	Status  string `json:"status"`
+	Health  string `json:"health,omitempty"`
 }
 
 type ListContainerResp struct {
 	Base
 	Data []Container `json:"data"`
+}
+
+type ContainerLogReq struct {
+	ID string `json:"id" form:"id"`
+}
+
+type Event struct {
+	Message string `json:"message"`
 }

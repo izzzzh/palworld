@@ -6,6 +6,7 @@ import (
 	"palworld/api/internal/config"
 	"palworld/api/internal/handler"
 	"palworld/api/internal/svc"
+	"palworld/thrid/docker"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
@@ -18,6 +19,7 @@ func main() {
 
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
+	docker.InitClient()
 
 	server := rest.MustNewServer(c.RestConf, rest.WithCors())
 	defer server.Stop()

@@ -2,12 +2,12 @@ package container_services
 
 import (
 	"context"
+	"github.com/zeromicro/go-zero/core/logx"
 	"net/http"
 	"palworld/api/internal/svc"
 	"palworld/api/internal/types"
 	"palworld/thrid/docker"
-
-	"github.com/zeromicro/go-zero/core/logx"
+	"strings"
 )
 
 type ListContainerLogic struct {
@@ -25,22 +25,29 @@ func NewListContainerLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Lis
 }
 
 func (l *ListContainerLogic) ListContainer() (*types.ListContainerResp, error) {
-	var ret *types.ListContainerResp
 
-	cli, err := docker.NewClient()
+	var ret = &types.ListContainerResp{}
+
+	cli := docker.ClientPool
+
 	listCon, err := cli.ListContainers()
 	if err != nil {
-		ret.Code = http.StatusInternalServerError
-		ret.Message = err.Error()
-		return ret, nil
+		panic(err)
 	}
 
 	containers := make([]types.Container, 0)
 	for _, val := range listCon {
+		if strings.HasPrefix(val.Image, "sha256") {
+			continue
+		}
 		containers = append(containers, types.Container{
-			ID:    val.ID,
-			Name:  val.Names[0],
-			Image: val.Image,
+			ID:      val.ID,
+			Name:    val.Name,
+			Image:   val.Image,
+			State:   val.State,
+			Status:  val.Status,
+			Created: val.Created,
+			Health:  val.Health,
 		})
 	}
 

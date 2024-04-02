@@ -83,6 +83,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/containers",
 				Handler: container_services.ListContainerHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/containers/logs",
+				Handler: container_services.ContainerLogHandler(serverCtx),
+			},
 		},
 		rest.WithPrefix("/api/v1"),
 	)

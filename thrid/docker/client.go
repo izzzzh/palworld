@@ -2,12 +2,12 @@ package docker
 
 import (
 	"context"
-	"io"
-	"time"
-
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/events"
 	"github.com/docker/docker/client"
+	"io"
+	"regexp"
+	"strings"
 )
 
 type dockerProxy interface {
@@ -26,13 +26,12 @@ type dockerClient struct {
 type Client interface {
 	ListContainers() ([]Container, error)
 	ContainerLogs(context.Context, string, string) (io.ReadCloser, error)
-	ContainerLogsBetweenDates(context.Context, string, time.Time, time.Time) (io.ReadCloser, error)
 	ContainerStats(context.Context, string, chan<- ContainerStat) error
 	Ping(context.Context) (types.Ping, error)
 }
 
 func NewClient() (Client, error) {
-	cli, err := client.NewClientWithOpts(client.FromEnv)
+	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
 		return nil, err
 	}
@@ -51,28 +50,34 @@ func (d dockerClient) ListContainers() ([]Container, error) {
 
 	for _, val := range containers {
 		ret = append(ret, Container{
-			ID:      val.ID,
+			ID:      val.ID[:12],
+			Names:   val.Names,
+			Name:    strings.TrimPrefix(val.Names[0], "/"),
 			Image:   val.Image,
+			ImageID: val.ImageID,
 			Command: val.Command,
 			Created: val.Created,
 			State:   val.State,
 			Status:  val.Status,
-			Names:   val.Names,
+			Health:  findBetweenParentheses(val.Status),
 		})
 	}
 	return ret, nil
 }
 
 func (d dockerClient) ContainerLogs(ctx context.Context, containerID string, tail string) (io.ReadCloser, error) {
-	return d.client.ContainerLogs(ctx, containerID, types.ContainerLogsOptions{
+	options := types.ContainerLogsOptions{
 		ShowStdout: true,
 		ShowStderr: true,
-		Tail:       tail,
-	})
-}
-
-func (d dockerClient) ContainerLogsBetweenDates(ctx context.Context, containerID string, from time.Time, to time.Time) (io.ReadCloser, error) {
-	return nil, nil
+		Follow:     true,
+		Tail:       "300",
+		Timestamps: true,
+	}
+	reader, err := d.client.ContainerLogs(ctx, containerID, options)
+	if err != nil {
+		return nil, err
+	}
+	return reader, nil
 }
 
 func (d dockerClient) ContainerStats(ctx context.Context, containerID string, ch chan<- ContainerStat) error {
@@ -80,4 +85,13 @@ func (d dockerClient) ContainerStats(ctx context.Context, containerID string, ch
 }
 func (d dockerClient) Ping(ctx context.Context) (types.Ping, error) {
 	return types.Ping{}, nil
+}
+
+var PARENTHESIS_RE = regexp.MustCompile(`\(([a-zA-Z]+)\)`)
+
+func findBetweenParentheses(s string) string {
+	if results := PARENTHESIS_RE.FindStringSubmatch(s); results != nil {
+		return results[1]
+	}
+	return ""
 }
