@@ -26,3 +26,6 @@ TechnologyTreeRpcConf:
   Endpoints:
     - technologytree:2004
   NonBlock: true
+
+
+Timeout: 0

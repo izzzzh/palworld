@@ -165,7 +165,7 @@ type ListContainerResp struct {
 }
 
 type ContainerLogReq struct {
-	ID string `json:"id" form:"id"`
+	ID string `json:"id,optional" form:"id,optional"`
 }
 
 type Event struct {

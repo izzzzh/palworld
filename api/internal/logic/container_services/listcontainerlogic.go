@@ -7,7 +7,6 @@ import (
 	"palworld/api/internal/svc"
 	"palworld/api/internal/types"
 	"palworld/thrid/docker"
-	"strings"
 )
 
 type ListContainerLogic struct {
@@ -25,21 +24,20 @@ func NewListContainerLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Lis
 }
 
 func (l *ListContainerLogic) ListContainer() (*types.ListContainerResp, error) {
-
 	var ret = &types.ListContainerResp{}
 
 	cli := docker.ClientPool
 
 	listCon, err := cli.ListContainers()
 	if err != nil {
-		panic(err)
+		return ret, err
 	}
 
 	containers := make([]types.Container, 0)
 	for _, val := range listCon {
-		if strings.HasPrefix(val.Image, "sha256") {
-			continue
-		}
+		//if strings.HasPrefix(val.Image, "sha256") {
+		//	continue
+		//}
 		containers = append(containers, types.Container{
 			ID:      val.ID,
 			Name:    val.Name,

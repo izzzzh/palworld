@@ -16,7 +16,7 @@ type ListContainerResp {
 }
 
 type ContainerLogReq {
-    ID string `json:"id" form:"id"`
+    ID string `json:"id,optional" form:"id,optional"`
 }
 
 type Event {
@@ -26,7 +26,6 @@ type Event {
 @server(
     prefix : /api/v1
     group: container_services
-    timeout: 0
 )
 
 service palworld-api {
