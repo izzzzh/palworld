@@ -44,5 +44,8 @@ func (l *GetUserListLogic) GetUserList(req *types.UserListReq) (*types.UserListR
 		})
 	}
 
+	ret.List = userList
+	ret.Total = int64(len(userList))
+
 	return ret, nil
 }

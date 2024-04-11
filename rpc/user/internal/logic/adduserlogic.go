@@ -28,7 +28,7 @@ func NewAddUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddUserLo
 }
 
 var (
-	DefaultAvatar = "http://120.78.196.38/palworld/images/pals/SheepBall.png"
+	DefaultAvatar = "https://ppcat.fun/palworld/images/pals/SheepBall.png"
 )
 
 func (l *AddUserLogic) AddUser(in *user.AddUserReq) (*user.AddUserResp, error) {

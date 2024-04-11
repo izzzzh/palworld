@@ -48,5 +48,5 @@ func (l *UserListLogic) UserList(in *user.UserListReq) (*user.UserListResp, erro
 	}
 	ret.Data = data
 
-	return &user.UserListResp{}, nil
+	return ret, nil
 }
