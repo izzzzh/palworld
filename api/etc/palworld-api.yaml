@@ -27,5 +27,13 @@ TechnologyTreeRpcConf:
     - technologytree:2004
   NonBlock: true
 
+UserRpcConf:
+  Endpoints:
+    - user:2005
+  NonBlock: true
 
 Timeout: 0
+
+Auth:
+  AccessSecret: ae0536f9-6450-4606-8e13-5a19ed505da0
+  AccessExpire: 31536000

@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package user;
+option go_package = "./user";
+
+message LoginReq {
+  string username = 1;
+  string password = 2;
+}
+
+message Token {
+  string access_token = 1;
+  int64 access_expire = 2;
+  int64 refresh_after = 3;
+}
+
+message LoginResp {
+  int64 code = 1;
+  string message = 2;
+  Token Data = 3;
+}
+
+message UserListReq {}
+
+message User {
+  int64 id = 1;
+  string username = 2;
+  string avatar = 3;
+  string role = 4;
+  string created_at = 5;
+}
+
+message UserListResp {
+  int64 code = 1;
+  string message = 2;
+  repeated User data = 3;
+}
+
+message AddUserReq {
+  string username = 1;
+  string password = 2;
+  int32 role = 3;
+}
+
+message AddUserResp {
+  int64 code = 1;
+  string message = 2;
+  int64 id = 3;
+}
+
+message RegisterUserReq {
+  string username = 1;
+  string password = 2;
+  string confirm_password = 3;
+  string captcha = 4;
+  string captcha_id = 5;
+}
+
+message RegisterUserResp {
+  int64 code = 1;
+  string message = 2;
+}
+
+message GetCaptchaReq {}
+
+message GetCaptchaResp {
+  int64 code = 1;
+  string message = 2;
+  string captcha_id = 3;
+  string captcha_base64 = 4;
+}
+
+message GetUserInfoReq {
+  int64 id = 1;
+}
+
+message GetUserInfoResp {
+  int64 code = 1;
+  string message = 2;
+  User data = 3;
+}
+
+service UserServer {
+  rpc Login(LoginReq) returns(LoginResp);
+  rpc UserList(UserListReq) returns(UserListResp);
+  rpc AddUser(AddUserReq) returns(AddUserResp);
+  rpc GetCaptcha(GetCaptchaReq) returns(GetCaptchaResp);
+  rpc RegisterUser(RegisterUserReq) returns(RegisterUserResp);
+  rpc GetUserInfo (GetUserInfoReq) returns (GetUserInfoResp);
+}

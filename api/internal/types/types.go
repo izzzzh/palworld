@@ -28,11 +28,6 @@ type Pal struct {
 	ActiveSkills     []Skill   `json:"active_skills"`
 }
 
-type GetPalResp struct {
-	Base
-	Data Pal `json:"data"`
-}
-
 type ListPalReq struct {
 	Name        string `json:"name,optional"`
 	AttributeId int64  `json:"attribute_id,optional"`
@@ -48,9 +43,49 @@ type ListPal struct {
 	Abilities    []Ability `json:"abilities"`
 }
 
-type ListPalResp struct {
-	Base
-	Data []ListPal `json:"data"`
+type CreatePalReq struct {
+	Number       string    `json:"number"`
+	Name         string    `json:"name"`
+	Icon         string    `json:"icon"`
+	Description  string    `json:"description"`
+	AttributeIds []int32   `json:"attribute_ids"`
+	HP           int32     `json:"hp"`
+	Energy       int32     `json:"energy"`
+	Defensively  int32     `json:"defensively"`
+	Abilities    []Ability `json:"abilities"`
+	Eat          int32     `json:"eat"`
+	PassiveSkill string    `json:"passive_skill"`
+}
+
+type DeletePalReq struct {
+	ID int64 `path:"id"`
+}
+
+type UpdatePalReq struct {
+	ID           int64     `path:"id"`
+	Number       string    `json:"number"`
+	Name         string    `json:"name"`
+	Icon         string    `json:"icon"`
+	Description  string    `json:"description"`
+	AttributeIds []int32   `json:"attribute_ids"`
+	HP           int32     `json:"hp"`
+	Energy       int32     `json:"energy"`
+	Defensively  int32     `json:"defensively"`
+	Abilities    []Ability `json:"abilities"`
+	Eat          int32     `json:"eat"`
+	PassiveSkill string    `json:"passive_skill"`
+}
+
+type CreatePalResp struct {
+	ID int64 `json:"id"`
+}
+
+type UpdatePalResp struct {
+	ID int64 `json:"id"`
+}
+
+type DeletePalResp struct {
+	ID int64 `json:"id"`
 }
 
 type Base struct {
@@ -100,11 +135,6 @@ type ListGoods struct {
 	Workload    int32      `json:"workload"`
 	Materials   []Material `json:"materials"`
 	Types       string     `json:"types"`
-}
-
-type ListGoodsResp struct {
-	Base
-	Data []ListGoods `json:"data"`
 }
 
 type ListPalMateReq struct {
@@ -170,4 +200,79 @@ type ContainerLogReq struct {
 
 type Event struct {
 	Message string `json:"message"`
+}
+
+type Captcha struct {
+	CaptchaId     string `json:"captcha_id"`
+	CaptchaBase64 string `json:"captcha_base64"`
+}
+
+type LoginReq struct {
+	Username string `form:"username"`
+	Password string `form:"password"`
+}
+
+type Token struct {
+	AccessToken  string `json:"access_token"`
+	AccessExpire int64  `json:"access_expire"`
+	RefreshAfter int64  `json:"refresh_after"`
+}
+
+type RegisterReq struct {
+	Username        string `form:"username"`
+	Password        string `form:"password"`
+	ConfirmPassword string `form:"confirm_password"`
+	CaptchaId       string `form:"captcha_id"`
+	CaptchaCode     string `form:"captcha_code"`
+}
+
+type GetUserReq struct {
+	Id int64 `path:"id"`
+}
+
+type UserInfo struct {
+	Id        int64  `json:"id"`
+	Username  string `json:"username"`
+	Avatar    string `json:"avatar"`
+	Role      string `json:"role"`
+	CreatedAt string `json:"created_at"`
+}
+
+type UserListReq struct {
+	Page     int64 `form:"page"`
+	PageSize int64 `form:"page_size"`
+}
+
+type UserListResp struct {
+	List  []*UserInfo `json:"list"`
+	Total int64       `json:"total"`
+}
+
+type UpdateUserReq struct {
+	Id       int64  `path:"id"`
+	Username string `form:"username"`
+	Avatar   string `form:"avatar"`
+}
+
+type UpdateUserResp struct {
+	Id int64 `json:"id"`
+}
+
+type DeleteUserReq struct {
+	Id int64 `form:"id"`
+}
+
+type DeleteUserResp struct {
+	Id int64 `path:"id"`
+}
+
+type AddUserReq struct {
+	Username string `form:"username"`
+	Password string `form:"password"`
+	Avatar   string `form:"avatar"`
+	Role     int    `form:"role"`
+}
+
+type AddUserResp struct {
+	Id int64 `json:"id"`
 }

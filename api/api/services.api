@@ -26,12 +26,12 @@ type Event {
 @server(
     prefix : /api/v1
     group: container_services
+    jwt: Auth
 )
 
 service palworld-api {
     @handler ListContainerHandler
     get /containers returns (ListContainerResp)
-
 
     @handler ContainerLogHandler
     get /containers/logs (ContainerLogReq)

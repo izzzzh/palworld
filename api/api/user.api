@@ -1,0 +1,123 @@
+syntax = "v1"
+
+type Captcha {
+    CaptchaId string `json:"captcha_id"`
+    CaptchaBase64 string `json:"captcha_base64"`
+}
+
+type LoginReq {
+    Username string `form:"username"`
+    Password string `form:"password"`
+}
+
+type Token {
+    AccessToken string `json:"access_token"`
+    AccessExpire int64 `json:"access_expire"`
+    RefreshAfter int64 `json:"refresh_after"`
+}
+
+type RegisterReq {
+    Username string `form:"username"`
+    Password string `form:"password"`
+    ConfirmPassword string `form:"confirm_password"`
+    CaptchaId string `form:"captcha_id"`
+    CaptchaCode string `form:"captcha_code"`
+}
+
+type GetUserReq {
+    Id int64 `path:"id"`
+}
+
+type UserInfo {
+    Id int64 `json:"id"`
+    Username string `json:"username"`
+    Avatar string `json:"avatar"`
+    Role string `json:"role"`
+    CreatedAt string `json:"created_at"`
+}
+
+type UserListReq {
+    Page int64 `form:"page"`
+    PageSize int64 `form:"page_size"`
+}
+
+type UserListResp {
+    List []*UserInfo `json:"list"`
+    Total int64 `json:"total"`
+}
+
+type UpdateUserReq {
+    Id int64 `path:"id"`
+    Username string `form:"username"`
+    Avatar string `form:"avatar"`
+}
+
+type UpdateUserResp {
+    Id int64 `json:"id"`
+}
+
+type DeleteUserReq {
+    Id int64 `form:"id"`
+}
+
+type DeleteUserResp {
+    Id int64 `path:"id"`
+}
+
+type AddUserReq {
+    Username string `form:"username"`
+    Password string `form:"password"`
+    Avatar string `form:"avatar"`
+    Role int `form:"role"`
+}
+
+type AddUserResp {
+    Id int64 `json:"id"`
+}
+
+@server(
+    prefix : /api/v1
+    group: user
+)
+
+service palworld-api {
+    @doc "获取验证码"
+    @handler GetCaptchaHandler
+    get /user/captcha returns (Captcha)
+
+    @doc "用户登录"
+    @handler LoginHandler
+    post /user/login (LoginReq) returns (Token)
+
+    @doc "用户注册"
+    @handler RegisterHandler
+    post /user/register (RegisterReq)
+}
+
+@server(
+    prefix : /api/v1
+    group: user
+    jwt: Auth
+)
+
+service palworld-api {
+    @doc "获取用户信息"
+    @handler GetUserInfoHandler
+    get /user/info/:id (GetUserReq) returns (UserInfo)
+
+    @doc "获取用户列表"
+    @handler GetUserListHandler
+    get /user (UserListReq) returns (UserListResp)
+
+    @doc "更新用户信息"
+    @handler UpdateUserHandler
+    put /user/:id (UpdateUserReq) returns (UpdateUserResp)
+
+    @doc "删除用户"
+    @handler DeleteUserHandler
+    delete /user/:id (DeleteUserReq) returns (DeleteUserResp)
+
+    @doc "添加用户"
+    @handler AddUserHandler
+    post /user (AddUserReq) returns (AddUserResp)
+}

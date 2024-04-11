@@ -28,11 +28,6 @@ type Pal {
     ActiveSkills []Skill `json:"active_skills"`
 }
 
-type GetPalResp {
-    Base
-    Data Pal `json:"data"`
-}
-
 type ListPalReq {
     Name string `json:"name,optional"`
     AttributeId int64 `json:"attribute_id,optional"`
@@ -48,9 +43,49 @@ type ListPal {
     Abilities []Ability `json:"abilities"`
 }
 
-type ListPalResp {
-    Base
-    Data []ListPal `json:"data"`
+type CreatePalReq {
+    Number string `json:"number"`
+    Name string `json:"name"`
+    Icon string `json:"icon"`
+    Description string `json:"description"`
+    AttributeIds []int32 `json:"attribute_ids"`
+    HP int32 `json:"hp"`
+    Energy int32 `json:"energy"`
+    Defensively int32 `json:"defensively"`
+    Abilities []Ability `json:"abilities"`
+    Eat int32 `json:"eat"`
+    PassiveSkill string `json:"passive_skill"`
+}
+
+type DeletePalReq {
+    ID int64 `path:"id"`
+}
+
+type UpdatePalReq {
+    ID int64 `path:"id"`
+    Number string `json:"number"`
+    Name string `json:"name"`
+    Icon string `json:"icon"`
+    Description string `json:"description"`
+    AttributeIds []int32 `json:"attribute_ids"`
+    HP int32 `json:"hp"`
+    Energy int32 `json:"energy"`
+    Defensively int32 `json:"defensively"`
+    Abilities []Ability `json:"abilities"`
+    Eat int32 `json:"eat"`
+    PassiveSkill string `json:"passive_skill"`
+}
+
+type CreatePalResp {
+    ID int64 `json:"id"`
+}
+
+type UpdatePalResp {
+    ID int64 `json:"id"`
+}
+
+type DeletePalResp {
+    ID int64 `json:"id"`
 }
 
 @server(
@@ -61,9 +96,29 @@ type ListPalResp {
 service palworld-api {
     @doc "帕鲁详情"
     @handler GetPalHandler
-    get /pal/:id (GetPalReq) returns (GetPalResp)
+    get /pal/:id (GetPalReq) returns (Pal)
 
     @doc "帕鲁列表"
     @handler ListPalHandler
-    get /pal (ListPalReq) returns (ListPalResp)
+    get /pal (ListPalReq) returns ([]*ListPal)
+}
+
+@server (
+    prefix : /api/v1
+    group: pal
+    jwt: Auth
+)
+
+service palworld-api {
+    @doc "创建帕鲁"
+    @handler CreatePalHandler
+    post /pal (CreatePalReq) returns (CreatePalResp)
+
+    @doc "更新帕鲁"
+    @handler UpdatePalHandler
+    put /pal/:id (UpdatePalReq) returns (UpdatePalResp)
+
+    @doc "删除帕鲁"
+    @handler DeletePalHandler
+    delete /pal/:id (DeletePalReq) returns (UpdatePalResp)
 }

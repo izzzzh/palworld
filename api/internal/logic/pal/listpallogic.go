@@ -2,7 +2,6 @@ package pal
 
 import (
 	"context"
-	"net/http"
 	"palworld/rpc/pal/pb/pal"
 
 	"palworld/api/internal/svc"
@@ -25,21 +24,16 @@ func NewListPalLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ListPalLo
 	}
 }
 
-func (l *ListPalLogic) ListPal(req *types.ListPalReq) (*types.ListPalResp, error) {
-	ret := &types.ListPalResp{}
+func (l *ListPalLogic) ListPal(req *types.ListPalReq) ([]*types.ListPal, error) {
 	in := &pal.ListPalReq{
 		Name:        req.Name,
 		AttributeId: req.AttributeId,
 	}
 	resp, err := l.svcCtx.PalRpc.ListPal(l.ctx, in)
 	if err != nil {
-		ret.Message = err.Error()
-		ret.Code = http.StatusInternalServerError
-		return ret, nil
+		return nil, err
 	}
-	ret.Code = http.StatusOK
-	ret.Message = "ok"
-	pals := make([]types.ListPal, 0)
+	pals := make([]*types.ListPal, 0)
 	for _, val := range resp.Data {
 		abilities := make([]types.Ability, 0)
 		for _, ability := range val.Abilities {
@@ -49,7 +43,7 @@ func (l *ListPalLogic) ListPal(req *types.ListPalReq) (*types.ListPalResp, error
 				Level: ability.Level,
 			})
 		}
-		pals = append(pals, types.ListPal{
+		pals = append(pals, &types.ListPal{
 			ID:           val.Id,
 			Number:       val.Number,
 			Name:         val.Name,
@@ -58,6 +52,5 @@ func (l *ListPalLogic) ListPal(req *types.ListPalReq) (*types.ListPalResp, error
 			Abilities:    abilities,
 		})
 	}
-	ret.Data = pals
-	return ret, nil
+	return pals, nil
 }

@@ -5,7 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"io"
-	"palworld/thrid/docker"
+	"palworld/common/docker"
 	"strings"
 	"time"
 

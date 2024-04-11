@@ -3,7 +3,6 @@ package pal
 import (
 	"context"
 	"github.com/zeromicro/go-zero/core/logx"
-	"net/http"
 	"palworld/api/internal/svc"
 	"palworld/api/internal/types"
 	"palworld/rpc/pal/pb/pal"
@@ -23,19 +22,14 @@ func NewGetPalLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetPalLogi
 	}
 }
 
-func (l *GetPalLogic) GetPal(req *types.GetPalReq) (*types.GetPalResp, error) {
-	ret := &types.GetPalResp{}
+func (l *GetPalLogic) GetPal(req *types.GetPalReq) (*types.Pal, error) {
 	in := &pal.GetPalReq{
 		Id: req.ID,
 	}
 	resp, err := l.svcCtx.PalRpc.GetPal(l.ctx, in)
 	if err != nil {
-		ret.Message = err.Error()
-		ret.Code = http.StatusInternalServerError
-		return ret, nil
+		return nil, err
 	}
-	ret.Code = http.StatusOK
-	ret.Message = "ok"
 	abilities := make([]types.Ability, 0)
 	for _, val := range resp.Data.Abilities {
 		abilities = append(abilities, types.Ability{
@@ -55,7 +49,7 @@ func (l *GetPalLogic) GetPal(req *types.GetPalReq) (*types.GetPalResp, error) {
 			AttributeID: val.AttributeId,
 		})
 	}
-	ret.Data = types.Pal{
+	ret := &types.Pal{
 		ID:               resp.Data.Id,
 		Name:             resp.Data.Name,
 		Number:           resp.Data.Number,

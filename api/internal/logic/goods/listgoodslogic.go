@@ -2,7 +2,6 @@ package goods
 
 import (
 	"context"
-	"net/http"
 	"palworld/api/internal/svc"
 	"palworld/api/internal/types"
 	"palworld/rpc/goods/pb/goods"
@@ -24,8 +23,8 @@ func NewListGoodsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ListGoo
 	}
 }
 
-func (l *ListGoodsLogic) ListGoods(req *types.ListGoodsreq) (*types.ListGoodsResp, error) {
-	ret := &types.ListGoodsResp{}
+func (l *ListGoodsLogic) ListGoods(req *types.ListGoodsreq) ([]*types.ListGoods, error) {
+	ret := make([]*types.ListGoods, 0)
 	in := &goods.ListGoodsReq{
 		Name:     req.Name,
 		Types:    req.Types,
@@ -35,12 +34,8 @@ func (l *ListGoodsLogic) ListGoods(req *types.ListGoodsreq) (*types.ListGoodsRes
 	}
 	resp, err := l.svcCtx.GoodsRpc.ListGoods(l.ctx, in)
 	if err != nil {
-		ret.Message = err.Error()
-		ret.Code = http.StatusInternalServerError
-		return nil, nil
+		return nil, err
 	}
-	ret.Code = http.StatusOK
-	ret.Message = "ok"
 	goodsResult := make([]types.ListGoods, 0)
 	for _, val := range resp.Data {
 		materials := make([]types.Material, 0)
@@ -63,6 +58,5 @@ func (l *ListGoodsLogic) ListGoods(req *types.ListGoodsreq) (*types.ListGoodsRes
 			Materials:   materials,
 		})
 	}
-	ret.Data = goodsResult
 	return ret, nil
 }

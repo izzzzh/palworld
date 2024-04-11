@@ -27,11 +27,6 @@ type ListGoods {
     Types string `json:"types"`
 }
 
-type ListGoodsResp {
-    Base
-    Data []ListGoods `json:"data"`
-}
-
 @server(
     prefix : /api/v1
     group: goods
@@ -40,5 +35,5 @@ type ListGoodsResp {
 service palworld-api {
     @doc "物品列表"
     @handler ListGoodsHandler
-    get /goods (ListGoodsreq) returns (ListGoodsResp)
+    get /goods (ListGoodsreq) returns ([]*ListGoods)
 }

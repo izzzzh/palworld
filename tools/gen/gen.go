@@ -10,7 +10,7 @@ import (
 func main() {
 
 	g := gen.NewGenerator(gen.Config{
-		OutPath: "./rpc/goods/dao",
+		OutPath: "./rpc/user/dao",
 		Mode:    gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface, // 生成模式,
 	})
 
@@ -24,8 +24,7 @@ func main() {
 
 	g.ApplyBasic(
 		// 从当前数据库中生成所有表的结构
-		g.GenerateModel("goods"),
-		g.GenerateModel("goods_material"),
+		g.GenerateModel("user"),
 	)
 
 	// 生成代码

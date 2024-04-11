@@ -10,6 +10,7 @@ import (
 	pal_mate "palworld/api/internal/handler/pal_mate"
 	skill "palworld/api/internal/handler/skill"
 	technology_tree "palworld/api/internal/handler/technology_tree"
+	user "palworld/api/internal/handler/user"
 	"palworld/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -29,6 +30,28 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: pal.ListPalHandler(serverCtx),
 			},
 		},
+		rest.WithPrefix("/api/v1"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/pal",
+				Handler: pal.CreatePalHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPut,
+				Path:    "/pal/:id",
+				Handler: pal.UpdatePalHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodDelete,
+				Path:    "/pal/:id",
+				Handler: pal.DeletePalHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/api/v1"),
 	)
 
@@ -89,6 +112,60 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: container_services.ContainerLogHandler(serverCtx),
 			},
 		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithPrefix("/api/v1"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodGet,
+				Path:    "/user/captcha",
+				Handler: user.GetCaptchaHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/user/login",
+				Handler: user.LoginHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/user/register",
+				Handler: user.RegisterHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api/v1"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodGet,
+				Path:    "/user/info/:id",
+				Handler: user.GetUserInfoHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/user",
+				Handler: user.GetUserListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPut,
+				Path:    "/user/:id",
+				Handler: user.UpdateUserHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodDelete,
+				Path:    "/user/:id",
+				Handler: user.DeleteUserHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/user",
+				Handler: user.AddUserHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/api/v1"),
 	)
 }

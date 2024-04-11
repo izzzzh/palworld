@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"palworld/api/internal/svc"
 	"palworld/api/internal/types"
-	"palworld/thrid/docker"
+	"palworld/common/docker"
 )
 
 type ListContainerLogic struct {

@@ -6,7 +6,7 @@ import (
 	"palworld/api/internal/config"
 	"palworld/api/internal/handler"
 	"palworld/api/internal/svc"
-	"palworld/thrid/docker"
+	"palworld/common/docker"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
