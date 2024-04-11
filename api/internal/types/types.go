@@ -212,6 +212,11 @@ type LoginReq struct {
 	Password string `form:"password"`
 }
 
+type LoginResp struct {
+	UserInfo *UserInfo `json:"user_info"`
+	Token    *Token    `json:"token"`
+}
+
 type Token struct {
 	AccessToken  string `json:"access_token"`
 	AccessExpire int64  `json:"access_expire"`
@@ -224,6 +229,11 @@ type RegisterReq struct {
 	ConfirmPassword string `form:"confirm_password"`
 	CaptchaId       string `form:"captcha_id"`
 	CaptchaCode     string `form:"captcha_code"`
+}
+
+type RegisterResp struct {
+	UserInfo *UserInfo `json:"user_info"`
+	Token    *Token    `json:"token"`
 }
 
 type GetUserReq struct {

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net/http"
 	"palworld/rpc/user/model"
+	"time"
 
 	"palworld/rpc/user/internal/svc"
 	"palworld/rpc/user/pb/user"
@@ -46,13 +47,39 @@ func (l *RegisterUserLogic) RegisterUser(in *user.RegisterUserReq) (*user.Regist
 		Name:     in.Username,
 		Password: enPassword,
 		Role:     int32(DefaultUserRole),
+		Avatar:   DefaultAvatar,
 	}
-	if err := AddUser(l.ctx, u); err != nil {
+	if err = AddUser(l.ctx, u); err != nil {
 		return nil, err
 	}
 	var ret = &user.RegisterUserResp{}
 	ret.Code = http.StatusOK
 	ret.Message = "注册成功"
+
+	secret := l.svcCtx.Config.JwtAuth.AccessSecret
+	expire := l.svcCtx.Config.JwtAuth.AccessExpire
+	now := time.Now().Unix()
+
+	token, err := GetJwtToken(secret, now, expire, u.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	loginInfo := &user.LoginInfo{}
+	loginInfo.Token = &user.Token{
+		AccessToken:  token,
+		AccessExpire: now + expire,
+		RefreshAfter: now + expire/2,
+	}
+	loginInfo.User = &user.User{
+		Id:        u.ID,
+		Username:  u.Name,
+		Role:      mapRole[int(u.Role)],
+		Avatar:    u.Avatar,
+		CreatedAt: u.CreatedAt.Format("2006-02-01 15:04:05"),
+	}
+
+	ret.Data = loginInfo
 
 	return ret, nil
 }

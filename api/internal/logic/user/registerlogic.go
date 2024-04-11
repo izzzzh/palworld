@@ -25,9 +25,9 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 	}
 }
 
-func (l *RegisterLogic) Register(req *types.RegisterReq) error {
+func (l *RegisterLogic) Register(req *types.RegisterReq) (*types.RegisterResp, error) {
 	if req.Password != req.ConfirmPassword {
-		return errors.New("两次密码不匹配")
+		return nil, errors.New("两次密码不匹配")
 	}
 
 	in := &user.RegisterUserReq{
@@ -37,10 +37,24 @@ func (l *RegisterLogic) Register(req *types.RegisterReq) error {
 		CaptchaId:       req.CaptchaId,
 		Captcha:         req.CaptchaCode,
 	}
-	_, err := l.svcCtx.UserRpc.RegisterUser(l.ctx, in)
+	resp, err := l.svcCtx.UserRpc.RegisterUser(l.ctx, in)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	var ret = &types.RegisterResp{}
+	ret.Token = &types.Token{
+		AccessToken:  resp.Data.Token.AccessToken,
+		AccessExpire: resp.Data.Token.AccessExpire,
+		RefreshAfter: resp.Data.Token.RefreshAfter,
+	}
+	ret.UserInfo = &types.UserInfo{
+		Id:        resp.Data.User.Id,
+		Avatar:    resp.Data.User.Avatar,
+		Role:      resp.Data.User.Role,
+		CreatedAt: resp.Data.User.CreatedAt,
+		Username:  resp.Data.User.Username,
+	}
+
+	return ret, nil
 }

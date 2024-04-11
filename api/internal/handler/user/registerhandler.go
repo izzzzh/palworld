@@ -19,7 +19,7 @@ func RegisterHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		}
 
 		l := user.NewRegisterLogic(r.Context(), svcCtx)
-		err := l.Register(&req)
-		result.HttpResult(r, w, struct{}{}, err)
+		resp, err := l.Register(&req)
+		result.HttpResult(r, w, resp, err)
 	}
 }

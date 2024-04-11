@@ -19,6 +19,7 @@ type (
 	GetCaptchaResp   = user.GetCaptchaResp
 	GetUserInfoReq   = user.GetUserInfoReq
 	GetUserInfoResp  = user.GetUserInfoResp
+	LoginInfo        = user.LoginInfo
 	LoginReq         = user.LoginReq
 	LoginResp        = user.LoginResp
 	RegisterUserReq  = user.RegisterUserReq

@@ -14,10 +14,15 @@ message Token {
   int64 refresh_after = 3;
 }
 
+message LoginInfo {
+  Token token = 1;
+  User user = 2;
+}
+
 message LoginResp {
   int64 code = 1;
   string message = 2;
-  Token Data = 3;
+  LoginInfo data = 3;
 }
 
 message UserListReq {}
@@ -59,6 +64,7 @@ message RegisterUserReq {
 message RegisterUserResp {
   int64 code = 1;
   string message = 2;
+  LoginInfo data = 3;
 }
 
 message GetCaptchaReq {}

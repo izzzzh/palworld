@@ -10,6 +10,11 @@ type LoginReq {
     Password string `form:"password"`
 }
 
+type LoginResp {
+    UserInfo *UserInfo `json:"user_info"`
+    Token *Token `json:"token"`
+}
+
 type Token {
     AccessToken string `json:"access_token"`
     AccessExpire int64 `json:"access_expire"`
@@ -22,6 +27,11 @@ type RegisterReq {
     ConfirmPassword string `form:"confirm_password"`
     CaptchaId string `form:"captcha_id"`
     CaptchaCode string `form:"captcha_code"`
+}
+
+type RegisterResp {
+    UserInfo *UserInfo `json:"user_info"`
+    Token *Token `json:"token"`
 }
 
 type GetUserReq {
@@ -87,11 +97,11 @@ service palworld-api {
 
     @doc "用户登录"
     @handler LoginHandler
-    post /user/login (LoginReq) returns (Token)
+    post /user/login (LoginReq) returns (LoginResp)
 
     @doc "用户注册"
     @handler RegisterHandler
-    post /user/register (RegisterReq)
+    post /user/register (RegisterReq) returns (RegisterResp)
 }
 
 @server(

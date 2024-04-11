@@ -24,7 +24,7 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 	}
 }
 
-func (l *LoginLogic) Login(req *types.LoginReq) (*types.Token, error) {
+func (l *LoginLogic) Login(req *types.LoginReq) (*types.LoginResp, error) {
 	in := &user.LoginReq{
 		Username: req.Username,
 		Password: req.Password,
@@ -33,10 +33,20 @@ func (l *LoginLogic) Login(req *types.LoginReq) (*types.Token, error) {
 	if err != nil {
 		return nil, err
 	}
-	ret := &types.Token{
-		AccessToken:  resp.Data.AccessToken,
-		AccessExpire: resp.Data.AccessExpire,
-		RefreshAfter: resp.Data.RefreshAfter,
+	var ret = &types.LoginResp{}
+
+	ret.Token = &types.Token{
+		AccessToken:  resp.Data.Token.AccessToken,
+		AccessExpire: resp.Data.Token.AccessExpire,
+		RefreshAfter: resp.Data.Token.RefreshAfter,
+	}
+
+	ret.UserInfo = &types.UserInfo{
+		Id:        resp.Data.User.Id,
+		Username:  resp.Data.User.Username,
+		Role:      resp.Data.User.Role,
+		Avatar:    resp.Data.User.Avatar,
+		CreatedAt: resp.Data.User.CreatedAt,
 	}
 
 	return ret, nil

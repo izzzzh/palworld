@@ -53,11 +53,22 @@ func (l *LoginLogic) Login(in *user.LoginReq) (*user.LoginResp, error) {
 	ret.Code = http.StatusOK
 	ret.Message = "ok"
 
-	ret.Data = &user.Token{
+	data := &user.LoginInfo{}
+	data.Token = &user.Token{
 		AccessToken:  token,
 		AccessExpire: now + expire,
 		RefreshAfter: now + (expire / 2),
 	}
+
+	data.User = &user.User{
+		Id:        loginUser.ID,
+		Username:  loginUser.Name,
+		Role:      mapRole[int(loginUser.Role)],
+		Avatar:    loginUser.Avatar,
+		CreatedAt: loginUser.CreatedAt.Format("2006-02-01 15:04:05"),
+	}
+
+	ret.Data = data
 	return ret, nil
 }
 
