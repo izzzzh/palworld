@@ -53,6 +53,7 @@ func (l *GetTechnologyTreeLogic) GetTechnologyTree() ([]*types.TechnologyTree, e
 				Icon:        technology.Icon,
 				Ancient:     technology.Ancient,
 				Material:    materials,
+				Level:       technology.Level,
 			})
 		}
 		retData = append(retData, &types.TechnologyTree{

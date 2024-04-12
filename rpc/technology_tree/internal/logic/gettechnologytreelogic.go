@@ -83,6 +83,7 @@ func (l *GetTechnologyTreeLogic) GetTechnologyTree(in *technology_tree.GetTechno
 			}
 
 			listTechnology = append(listTechnology, &technology_tree.Technology{
+				Id:          v.ID,
 				Name:        v.Name,
 				Description: v.Description,
 				Icon:        v.Icon,

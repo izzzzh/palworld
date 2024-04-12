@@ -32,13 +32,28 @@ func (l *GetTechnologyLogic) GetTechnology(in *technology_tree.GetTechnologyReq)
 		return nil, errors.New("invalid id")
 	}
 	p := dao.TechnologyTree
+	pm := dao.TechnologyMaterial
 	tech, err := p.WithContext(l.ctx).Where(p.ID.Eq(in.Id)).First()
 	if err != nil {
 		return nil, err
 	}
-	materials, err := l.GetTechMaterial(tech.ID)
+
+	tms, err := pm.WithContext(l.ctx).Where(pm.TechnologyID.Eq(tech.ID)).Select(pm.MaterialID).Find()
 	if err != nil {
 		return nil, err
+	}
+	var ids []int64
+	mapMaterial := make(map[int64]int32)
+	for _, val := range tms {
+		ids = append(ids, val.MaterialID)
+		mapMaterial[val.MaterialID] = val.Cnt
+	}
+	materials, err := l.GetTechMaterial(ids)
+	if err != nil {
+		return nil, err
+	}
+	for i := range materials {
+		materials[i].Count = mapMaterial[materials[i].Id]
 	}
 	var ret = &technology_tree.GetTechnologyResp{}
 	ret.Code = http.StatusOK
@@ -57,26 +72,22 @@ func (l *GetTechnologyLogic) GetTechnology(in *technology_tree.GetTechnologyReq)
 	return ret, nil
 }
 
-func (l *GetTechnologyLogic) GetTechMaterial(id int64) ([]*technology_tree.Material, error) {
-	p := dao.TechnologyMaterial
-	techMap, err := p.WithContext(l.ctx).Where(p.TechnologyID.Eq(id)).Select(p.MaterialID).Find()
+func (l *GetTechnologyLogic) GetTechMaterial(ids []int64) ([]*technology_tree.Material, error) {
+
+	var ret []*technology_tree.Material
+
+	goodsResp, err := l.svcCtx.GoodsRpc.GetGoodsByIds(l.ctx, &goods.GetGoodsByIdsReq{
+		Ids: ids,
+	})
 	if err != nil {
 		return nil, err
 	}
-
-	var ret []*technology_tree.Material
-	for _, val := range techMap {
-		goodsResp, err := l.svcCtx.GoodsRpc.GetGoods(l.ctx, &goods.GetGoodsReq{Id: val.MaterialID})
-		if err != nil {
-			return nil, err
-		}
+	for _, val := range goodsResp.Data {
 		ret = append(ret, &technology_tree.Material{
-			Id:    goodsResp.Data.Id,
-			Name:  goodsResp.Data.Name,
-			Count: val.Cnt,
-			Image: goodsResp.Data.Image,
+			Id:    val.Id,
+			Name:  val.Name,
+			Image: val.Image,
 		})
-
 	}
 
 	return ret, nil

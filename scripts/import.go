@@ -167,12 +167,13 @@ func updateTech() {
 						MaterialID:   int64(g.Id),
 						Count:        count,
 					})
-					db.Table("technology_material").Create(&materials)
 				}
 			})
 		})
 		tech.Description = desc
-		db.Table("technology_tree").Updates(&tech)
+		fmt.Println(materials)
+		db.Table("technology_material").Create(&materials)
+		//db.Table("technology_tree").Updates(&tech)
 	}
 }
 
