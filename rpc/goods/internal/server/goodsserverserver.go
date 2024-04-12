@@ -31,3 +31,8 @@ func (s *GoodsServerServer) GetGoods(ctx context.Context, in *goods.GetGoodsReq)
 	l := logic.NewGetGoodsLogic(ctx, s.svcCtx)
 	return l.GetGoods(in)
 }
+
+func (s *GoodsServerServer) GetGoodsByIds(ctx context.Context, in *goods.GetGoodsByIdsReq) (*goods.GetGoodsByIdsResp, error) {
+	l := logic.NewGetGoodsByIdsLogic(ctx, s.svcCtx)
+	return l.GetGoodsByIds(in)
+}

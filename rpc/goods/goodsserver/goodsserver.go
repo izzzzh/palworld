@@ -13,16 +13,19 @@ import (
 )
 
 type (
-	GetGoodsReq   = goods.GetGoodsReq
-	GetGoodsResp  = goods.GetGoodsResp
-	Goods         = goods.Goods
-	ListGoodsReq  = goods.ListGoodsReq
-	ListGoodsResp = goods.ListGoodsResp
-	Material      = goods.Material
+	GetGoodsByIdsReq  = goods.GetGoodsByIdsReq
+	GetGoodsByIdsResp = goods.GetGoodsByIdsResp
+	GetGoodsReq       = goods.GetGoodsReq
+	GetGoodsResp      = goods.GetGoodsResp
+	Goods             = goods.Goods
+	ListGoodsReq      = goods.ListGoodsReq
+	ListGoodsResp     = goods.ListGoodsResp
+	Material          = goods.Material
 
 	GoodsServer interface {
 		ListGoods(ctx context.Context, in *ListGoodsReq, opts ...grpc.CallOption) (*ListGoodsResp, error)
 		GetGoods(ctx context.Context, in *GetGoodsReq, opts ...grpc.CallOption) (*GetGoodsResp, error)
+		GetGoodsByIds(ctx context.Context, in *GetGoodsByIdsReq, opts ...grpc.CallOption) (*GetGoodsByIdsResp, error)
 	}
 
 	defaultGoodsServer struct {
@@ -44,4 +47,9 @@ func (m *defaultGoodsServer) ListGoods(ctx context.Context, in *ListGoodsReq, op
 func (m *defaultGoodsServer) GetGoods(ctx context.Context, in *GetGoodsReq, opts ...grpc.CallOption) (*GetGoodsResp, error) {
 	client := goods.NewGoodsServerClient(m.cli.Conn())
 	return client.GetGoods(ctx, in, opts...)
+}
+
+func (m *defaultGoodsServer) GetGoodsByIds(ctx context.Context, in *GetGoodsByIdsReq, opts ...grpc.CallOption) (*GetGoodsByIdsResp, error) {
+	client := goods.NewGoodsServerClient(m.cli.Conn())
+	return client.GetGoodsByIds(ctx, in, opts...)
 }

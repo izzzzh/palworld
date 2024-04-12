@@ -39,6 +39,16 @@ message GetGoodsReq {
   int64 id = 1;
 }
 
+message GetGoodsByIdsReq {
+  repeated int64 ids = 1;
+}
+
+message GetGoodsByIdsResp {
+  int64 code = 1 ;
+  string message = 2;
+  repeated Goods data = 3;
+}
+
 message GetGoodsResp {
   int64 code = 1 ;
   string message = 2;
@@ -48,4 +58,5 @@ message GetGoodsResp {
 service GoodsServer {
   rpc ListGoods(ListGoodsReq) returns(ListGoodsResp);
   rpc GetGoods(GetGoodsReq) returns(GetGoodsResp);
+  rpc GetGoodsByIds(GetGoodsByIdsReq) returns(GetGoodsByIdsResp);
 }
