@@ -16,34 +16,39 @@ import (
 )
 
 var (
-	Q              = new(Query)
-	TechnologyTree *technologyTree
+	Q                  = new(Query)
+	TechnologyMaterial *technologyMaterial
+	TechnologyTree     *technologyTree
 )
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
+	TechnologyMaterial = &Q.TechnologyMaterial
 	TechnologyTree = &Q.TechnologyTree
 }
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
-		db:             db,
-		TechnologyTree: newTechnologyTree(db, opts...),
+		db:                 db,
+		TechnologyMaterial: newTechnologyMaterial(db, opts...),
+		TechnologyTree:     newTechnologyTree(db, opts...),
 	}
 }
 
 type Query struct {
 	db *gorm.DB
 
-	TechnologyTree technologyTree
+	TechnologyMaterial technologyMaterial
+	TechnologyTree     technologyTree
 }
 
 func (q *Query) Available() bool { return q.db != nil }
 
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
-		db:             db,
-		TechnologyTree: q.TechnologyTree.clone(db),
+		db:                 db,
+		TechnologyMaterial: q.TechnologyMaterial.clone(db),
+		TechnologyTree:     q.TechnologyTree.clone(db),
 	}
 }
 
@@ -57,18 +62,21 @@ func (q *Query) WriteDB() *Query {
 
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
-		db:             db,
-		TechnologyTree: q.TechnologyTree.replaceDB(db),
+		db:                 db,
+		TechnologyMaterial: q.TechnologyMaterial.replaceDB(db),
+		TechnologyTree:     q.TechnologyTree.replaceDB(db),
 	}
 }
 
 type queryCtx struct {
-	TechnologyTree ITechnologyTreeDo
+	TechnologyMaterial ITechnologyMaterialDo
+	TechnologyTree     ITechnologyTreeDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
-		TechnologyTree: q.TechnologyTree.WithContext(ctx),
+		TechnologyMaterial: q.TechnologyMaterial.WithContext(ctx),
+		TechnologyTree:     q.TechnologyTree.WithContext(ctx),
 	}
 }
 

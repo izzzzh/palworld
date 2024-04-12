@@ -102,6 +102,23 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		[]rest.Route{
 			{
+				Method:  http.MethodPost,
+				Path:    "/technology-tree",
+				Handler: technology_tree.AddTechnologyHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/technology-tree/:id",
+				Handler: technology_tree.GetTechnologyHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithPrefix("/api/v1"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
 				Method:  http.MethodGet,
 				Path:    "/containers",
 				Handler: container_services.ListContainerHandler(serverCtx),

@@ -50,7 +50,7 @@ func (l *ListGoodsLogic) ListGoods(in *goods.ListGoodsReq) (*goods.ListGoodsResp
 	}
 	listGoods := make([]*goods.Goods, 0)
 	for _, val := range goodsResp {
-		materials, err := getMaterials(l.ctx, val.ID)
+		materials, err := GetMaterials(l.ctx, val.ID)
 		if err != nil {
 			return nil, err
 		}
@@ -71,7 +71,7 @@ func (l *ListGoodsLogic) ListGoods(in *goods.ListGoodsReq) (*goods.ListGoodsResp
 	return ret, nil
 }
 
-func getMaterials(ctx context.Context, goodsID int64) ([]*goods.Material, error) {
+func GetMaterials(ctx context.Context, goodsID int64) ([]*goods.Material, error) {
 	g := dao.Goods
 	gm := dao.GoodsMaterial
 	var ret []*goods.Material

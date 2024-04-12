@@ -5,4 +5,9 @@ Etcd:
   - 127.0.0.1:2379
   Key: technologytree.rpc
 
+GoodsRpcConf:
+  Endpoints:
+    - 127.0.0.1:2001
+  NonBlock: true
+
 DataSource: "root:123456@tcp(127.0.0.1:3306)/palworld?charset=utf8mb4&parseTime=True&loc=Local"

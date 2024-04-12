@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 
 const (
 	GoodsServer_ListGoods_FullMethodName = "/goods.GoodsServer/ListGoods"
+	GoodsServer_GetGoods_FullMethodName  = "/goods.GoodsServer/GetGoods"
 )
 
 // GoodsServerClient is the client API for GoodsServer service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type GoodsServerClient interface {
 	ListGoods(ctx context.Context, in *ListGoodsReq, opts ...grpc.CallOption) (*ListGoodsResp, error)
+	GetGoods(ctx context.Context, in *GetGoodsReq, opts ...grpc.CallOption) (*GetGoodsResp, error)
 }
 
 type goodsServerClient struct {
@@ -46,11 +48,21 @@ func (c *goodsServerClient) ListGoods(ctx context.Context, in *ListGoodsReq, opt
 	return out, nil
 }
 
+func (c *goodsServerClient) GetGoods(ctx context.Context, in *GetGoodsReq, opts ...grpc.CallOption) (*GetGoodsResp, error) {
+	out := new(GetGoodsResp)
+	err := c.cc.Invoke(ctx, GoodsServer_GetGoods_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // GoodsServerServer is the server API for GoodsServer service.
 // All implementations must embed UnimplementedGoodsServerServer
 // for forward compatibility
 type GoodsServerServer interface {
 	ListGoods(context.Context, *ListGoodsReq) (*ListGoodsResp, error)
+	GetGoods(context.Context, *GetGoodsReq) (*GetGoodsResp, error)
 	mustEmbedUnimplementedGoodsServerServer()
 }
 
@@ -60,6 +72,9 @@ type UnimplementedGoodsServerServer struct {
 
 func (UnimplementedGoodsServerServer) ListGoods(context.Context, *ListGoodsReq) (*ListGoodsResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListGoods not implemented")
+}
+func (UnimplementedGoodsServerServer) GetGoods(context.Context, *GetGoodsReq) (*GetGoodsResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGoods not implemented")
 }
 func (UnimplementedGoodsServerServer) mustEmbedUnimplementedGoodsServerServer() {}
 
@@ -92,6 +107,24 @@ func _GoodsServer_ListGoods_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _GoodsServer_GetGoods_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetGoodsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GoodsServerServer).GetGoods(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GoodsServer_GetGoods_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GoodsServerServer).GetGoods(ctx, req.(*GetGoodsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // GoodsServer_ServiceDesc is the grpc.ServiceDesc for GoodsServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -102,6 +135,10 @@ var GoodsServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListGoods",
 			Handler:    _GoodsServer_ListGoods_Handler,
+		},
+		{
+			MethodName: "GetGoods",
+			Handler:    _GoodsServer_GetGoods_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

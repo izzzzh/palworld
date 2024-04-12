@@ -13,6 +13,8 @@ import (
 )
 
 type (
+	GetGoodsReq   = goods.GetGoodsReq
+	GetGoodsResp  = goods.GetGoodsResp
 	Goods         = goods.Goods
 	ListGoodsReq  = goods.ListGoodsReq
 	ListGoodsResp = goods.ListGoodsResp
@@ -20,6 +22,7 @@ type (
 
 	GoodsServer interface {
 		ListGoods(ctx context.Context, in *ListGoodsReq, opts ...grpc.CallOption) (*ListGoodsResp, error)
+		GetGoods(ctx context.Context, in *GetGoodsReq, opts ...grpc.CallOption) (*GetGoodsResp, error)
 	}
 
 	defaultGoodsServer struct {
@@ -36,4 +39,9 @@ func NewGoodsServer(cli zrpc.Client) GoodsServer {
 func (m *defaultGoodsServer) ListGoods(ctx context.Context, in *ListGoodsReq, opts ...grpc.CallOption) (*ListGoodsResp, error) {
 	client := goods.NewGoodsServerClient(m.cli.Conn())
 	return client.ListGoods(ctx, in, opts...)
+}
+
+func (m *defaultGoodsServer) GetGoods(ctx context.Context, in *GetGoodsReq, opts ...grpc.CallOption) (*GetGoodsResp, error) {
+	client := goods.NewGoodsServerClient(m.cli.Conn())
+	return client.GetGoods(ctx, in, opts...)
 }

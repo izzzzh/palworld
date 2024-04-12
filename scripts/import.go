@@ -99,10 +99,18 @@ type PalSkillMap struct {
 }
 
 type TechnologyTree struct {
-	Name  string `json:"name"`
-	Cost  int    `json:"cost"`
-	Level int    `json:"level"`
-	Icon  string `json:"icon"`
+	ID          int64  `json:"id"`
+	Name        string `json:"name"`
+	Cost        int    `json:"cost"`
+	Level       int    `json:"level"`
+	Icon        string `json:"icon"`
+	Description string `json:"description"`
+}
+
+type TechMaterial struct {
+	TechnologyID int64 `json:"technology_id"`
+	MaterialID   int64 `json:"material_id"`
+	Count        int   `json:"count"`
 }
 
 type GoodsMaterial struct {
@@ -112,7 +120,60 @@ type GoodsMaterial struct {
 }
 
 func main() {
-	updateGoods()
+	updateTech()
+}
+
+func updateTech() {
+	dsn := "root:palworld@admin123@tcp(120.78.196.38:3306)/palworld?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	var techs []TechnologyTree
+	db.Table("technology_tree").Find(&techs)
+	for i := range techs {
+		tech := techs[i]
+		resp, err := http.Get("https://wiki.biligame.com/palworld/" + tech.Name)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		dom, err := goquery.NewDocumentFromReader(resp.Body)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		var desc string
+		dom.Find(".palworld-textbox").First().Each(func(i int, selection *goquery.Selection) {
+			desc = selection.Text()
+			desc = strings.TrimSpace(desc)
+			desc = strings.Replace(desc, "\n", "", -1)
+			desc = strings.Replace(desc, " ", "", -1)
+		})
+		var materials []TechMaterial
+		dom.Find(".palworld-textbox").Last().Each(func(i int, selection *goquery.Selection) {
+			selection.Find("div").Each(func(j int, s *goquery.Selection) {
+				k := strings.TrimSpace(s.Text())
+				k = strings.Replace(k, "\n", "", -1)
+				k = strings.Replace(k, " ", "", -1)
+				k = strings.TrimSpace(k)
+				if k != "" {
+					t := strings.Split(k, "x")
+					count, _ := strconv.Atoi(t[1])
+					var g Goods
+					db.Table("goods").Where("name = ?", t[0]).First(&g)
+					materials = append(materials, TechMaterial{
+						TechnologyID: tech.ID,
+						MaterialID:   int64(g.Id),
+						Count:        count,
+					})
+					db.Table("technology_material").Create(&materials)
+				}
+			})
+		})
+		tech.Description = desc
+		db.Table("technology_tree").Updates(&tech)
+	}
 }
 
 func updateGoods() {

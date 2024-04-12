@@ -13,13 +13,24 @@ import (
 )
 
 type (
-	GetTechnologyTreeReq  = technology_tree.GetTechnologyTreeReq
-	GetTechnologyTreeResp = technology_tree.GetTechnologyTreeResp
-	Technology            = technology_tree.Technology
-	TechnologyTree        = technology_tree.TechnologyTree
+	AddTechnologyTreeReq     = technology_tree.AddTechnologyTreeReq
+	AddTechnologyTreeResp    = technology_tree.AddTechnologyTreeResp
+	GetTechnologyReq         = technology_tree.GetTechnologyReq
+	GetTechnologyResp        = technology_tree.GetTechnologyResp
+	GetTechnologyTreeReq     = technology_tree.GetTechnologyTreeReq
+	GetTechnologyTreeResp    = technology_tree.GetTechnologyTreeResp
+	Material                 = technology_tree.Material
+	Technology               = technology_tree.Technology
+	TechnologyMaterial       = technology_tree.TechnologyMaterial
+	TechnologyTree           = technology_tree.TechnologyTree
+	UpdateTechnologyTreeReq  = technology_tree.UpdateTechnologyTreeReq
+	UpdateTechnologyTreeResp = technology_tree.UpdateTechnologyTreeResp
 
 	TechnologyTreeServer interface {
 		GetTechnologyTree(ctx context.Context, in *GetTechnologyTreeReq, opts ...grpc.CallOption) (*GetTechnologyTreeResp, error)
+		AddTechnologyTree(ctx context.Context, in *AddTechnologyTreeReq, opts ...grpc.CallOption) (*AddTechnologyTreeResp, error)
+		UpdateTechnologyTree(ctx context.Context, in *UpdateTechnologyTreeReq, opts ...grpc.CallOption) (*UpdateTechnologyTreeResp, error)
+		GetTechnology(ctx context.Context, in *GetTechnologyReq, opts ...grpc.CallOption) (*GetTechnologyResp, error)
 	}
 
 	defaultTechnologyTreeServer struct {
@@ -36,4 +47,19 @@ func NewTechnologyTreeServer(cli zrpc.Client) TechnologyTreeServer {
 func (m *defaultTechnologyTreeServer) GetTechnologyTree(ctx context.Context, in *GetTechnologyTreeReq, opts ...grpc.CallOption) (*GetTechnologyTreeResp, error) {
 	client := technology_tree.NewTechnologyTreeServerClient(m.cli.Conn())
 	return client.GetTechnologyTree(ctx, in, opts...)
+}
+
+func (m *defaultTechnologyTreeServer) AddTechnologyTree(ctx context.Context, in *AddTechnologyTreeReq, opts ...grpc.CallOption) (*AddTechnologyTreeResp, error) {
+	client := technology_tree.NewTechnologyTreeServerClient(m.cli.Conn())
+	return client.AddTechnologyTree(ctx, in, opts...)
+}
+
+func (m *defaultTechnologyTreeServer) UpdateTechnologyTree(ctx context.Context, in *UpdateTechnologyTreeReq, opts ...grpc.CallOption) (*UpdateTechnologyTreeResp, error) {
+	client := technology_tree.NewTechnologyTreeServerClient(m.cli.Conn())
+	return client.UpdateTechnologyTree(ctx, in, opts...)
+}
+
+func (m *defaultTechnologyTreeServer) GetTechnology(ctx context.Context, in *GetTechnologyReq, opts ...grpc.CallOption) (*GetTechnologyResp, error) {
+	client := technology_tree.NewTechnologyTreeServerClient(m.cli.Conn())
+	return client.GetTechnology(ctx, in, opts...)
 }

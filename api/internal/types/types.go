@@ -161,22 +161,50 @@ type ListPalMateResp struct {
 	Data []*PalMate `json:"data"`
 }
 
-type GetTechnologyTreeResp struct {
-	Base
-	Data []TechnologyTree `json:"data"`
+type Technology struct {
+	ID          int64                `json:"id"`
+	Name        string               `json:"name"`
+	Icon        string               `json:"icon"`
+	Description string               `json:"description"`
+	Level       int32                `json:"level"`
+	Cost        int32                `json:"cost"`
+	Ancient     bool                 `json:"ancient"`
+	Material    []TechnologyMaterial `json:"material"`
 }
 
-type Technology struct {
-	Name        string `json:"name"`
-	Icon        string `json:"icon"`
-	Description string `json:"description"`
-	Cost        int    `json:"cost"`
-	Ancient     bool   `json:"ancient"`
+type TechnologyMaterial struct {
+	ID    int64  `json:"id"`
+	Name  string `json:"name"`
+	Image string `json:"image"`
+	Count int32  `json:"count"`
+}
+
+type AddTechnologyMaterial struct {
+	ID    int64 `json:"id"`
+	Count int32 `json:"count"`
 }
 
 type TechnologyTree struct {
 	Level int32        `json:"level"`
 	Data  []Technology `json:"data"`
+}
+
+type AddTechnologyReq struct {
+	Name        string                  `form:"name"`
+	Icon        string                  `form:"icon"`
+	Level       int32                   `form:"level"`
+	Description string                  `form:"description"`
+	Cost        int32                   `form:"cost"`
+	Ancient     bool                    `form:"ancient"`
+	Material    []AddTechnologyMaterial `form:"material"`
+}
+
+type GetTechnologyReq struct {
+	ID int64 `path:"id"`
+}
+
+type GetTechnologyResp struct {
+	Technology Technology `json:"technology"`
 }
 
 type Container struct {

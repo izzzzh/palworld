@@ -1,21 +1,49 @@
 syntax = "v1"
 
-type GetTechnologyTreeResp {
-    Base
-    Data []TechnologyTree `json:"data"`
-}
-
 type Technology {
+    ID int64 `json:"id"`
     Name string `json:"name"`
     Icon string `json:"icon"`
     Description string `json:"description"`
-    Cost int `json:"cost"`
+    Level int32 `json:"level"`
+    Cost int32 `json:"cost"`
     Ancient bool `json:"ancient"`
+    Material []TechnologyMaterial `json:"material"`
+}
+
+type TechnologyMaterial {
+    ID int64 `json:"id"`
+    Name string `json:"name"`
+    Image string `json:"image"`
+    Count int32 `json:"count"`
+}
+
+type AddTechnologyMaterial {
+    ID int64 `json:"id"`
+    Count int32 `json:"count"`
 }
 
 type TechnologyTree {
     Level int32 `json:"level"`
     Data []Technology `json:"data"`
+}
+
+type AddTechnologyReq {
+    Name string `form:"name"`
+    Icon string `form:"icon"`
+    Level int32 `form:"level"`
+    Description string `form:"description"`
+    Cost int32 `form:"cost"`
+    Ancient bool `form:"ancient"`
+    Material []AddTechnologyMaterial `form:"material"`
+}
+
+type GetTechnologyReq {
+    ID int64 `path:"id"`
+}
+
+type GetTechnologyResp {
+    Technology Technology `json:"technology"`
 }
 
 @server(
@@ -26,5 +54,21 @@ type TechnologyTree {
 service palworld-api {
     @doc "科技树"
     @handler GetTechnologyTreeHandler
-    get /technology-tree returns (GetTechnologyTreeResp)
+    get /technology-tree returns ([]TechnologyTree)
+}
+
+@server(
+    prefix : /api/v1
+    group: technology_tree
+    jwt: Auth
+)
+
+service palworld-api {
+    @doc "添加科技"
+    @handler AddTechnologyHandler
+    post /technology-tree (AddTechnologyReq)
+
+    @doc "获取科技"
+    @handler GetTechnologyHandler
+    get /technology-tree/:id (GetTechnologyReq) returns (Technology)
 }

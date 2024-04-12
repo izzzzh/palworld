@@ -26,3 +26,8 @@ func (s *GoodsServerServer) ListGoods(ctx context.Context, in *goods.ListGoodsRe
 	l := logic.NewListGoodsLogic(ctx, s.svcCtx)
 	return l.ListGoods(in)
 }
+
+func (s *GoodsServerServer) GetGoods(ctx context.Context, in *goods.GetGoodsReq) (*goods.GetGoodsResp, error) {
+	l := logic.NewGetGoodsLogic(ctx, s.svcCtx)
+	return l.GetGoods(in)
+}

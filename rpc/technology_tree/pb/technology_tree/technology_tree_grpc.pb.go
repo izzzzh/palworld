@@ -19,7 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	TechnologyTreeServer_GetTechnologyTree_FullMethodName = "/technology_tree.TechnologyTreeServer/GetTechnologyTree"
+	TechnologyTreeServer_GetTechnologyTree_FullMethodName    = "/technology_tree.TechnologyTreeServer/GetTechnologyTree"
+	TechnologyTreeServer_AddTechnologyTree_FullMethodName    = "/technology_tree.TechnologyTreeServer/AddTechnologyTree"
+	TechnologyTreeServer_UpdateTechnologyTree_FullMethodName = "/technology_tree.TechnologyTreeServer/UpdateTechnologyTree"
+	TechnologyTreeServer_GetTechnology_FullMethodName        = "/technology_tree.TechnologyTreeServer/GetTechnology"
 )
 
 // TechnologyTreeServerClient is the client API for TechnologyTreeServer service.
@@ -27,6 +30,9 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TechnologyTreeServerClient interface {
 	GetTechnologyTree(ctx context.Context, in *GetTechnologyTreeReq, opts ...grpc.CallOption) (*GetTechnologyTreeResp, error)
+	AddTechnologyTree(ctx context.Context, in *AddTechnologyTreeReq, opts ...grpc.CallOption) (*AddTechnologyTreeResp, error)
+	UpdateTechnologyTree(ctx context.Context, in *UpdateTechnologyTreeReq, opts ...grpc.CallOption) (*UpdateTechnologyTreeResp, error)
+	GetTechnology(ctx context.Context, in *GetTechnologyReq, opts ...grpc.CallOption) (*GetTechnologyResp, error)
 }
 
 type technologyTreeServerClient struct {
@@ -46,11 +52,41 @@ func (c *technologyTreeServerClient) GetTechnologyTree(ctx context.Context, in *
 	return out, nil
 }
 
+func (c *technologyTreeServerClient) AddTechnologyTree(ctx context.Context, in *AddTechnologyTreeReq, opts ...grpc.CallOption) (*AddTechnologyTreeResp, error) {
+	out := new(AddTechnologyTreeResp)
+	err := c.cc.Invoke(ctx, TechnologyTreeServer_AddTechnologyTree_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *technologyTreeServerClient) UpdateTechnologyTree(ctx context.Context, in *UpdateTechnologyTreeReq, opts ...grpc.CallOption) (*UpdateTechnologyTreeResp, error) {
+	out := new(UpdateTechnologyTreeResp)
+	err := c.cc.Invoke(ctx, TechnologyTreeServer_UpdateTechnologyTree_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *technologyTreeServerClient) GetTechnology(ctx context.Context, in *GetTechnologyReq, opts ...grpc.CallOption) (*GetTechnologyResp, error) {
+	out := new(GetTechnologyResp)
+	err := c.cc.Invoke(ctx, TechnologyTreeServer_GetTechnology_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TechnologyTreeServerServer is the server API for TechnologyTreeServer service.
 // All implementations must embed UnimplementedTechnologyTreeServerServer
 // for forward compatibility
 type TechnologyTreeServerServer interface {
 	GetTechnologyTree(context.Context, *GetTechnologyTreeReq) (*GetTechnologyTreeResp, error)
+	AddTechnologyTree(context.Context, *AddTechnologyTreeReq) (*AddTechnologyTreeResp, error)
+	UpdateTechnologyTree(context.Context, *UpdateTechnologyTreeReq) (*UpdateTechnologyTreeResp, error)
+	GetTechnology(context.Context, *GetTechnologyReq) (*GetTechnologyResp, error)
 	mustEmbedUnimplementedTechnologyTreeServerServer()
 }
 
@@ -60,6 +96,15 @@ type UnimplementedTechnologyTreeServerServer struct {
 
 func (UnimplementedTechnologyTreeServerServer) GetTechnologyTree(context.Context, *GetTechnologyTreeReq) (*GetTechnologyTreeResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetTechnologyTree not implemented")
+}
+func (UnimplementedTechnologyTreeServerServer) AddTechnologyTree(context.Context, *AddTechnologyTreeReq) (*AddTechnologyTreeResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddTechnologyTree not implemented")
+}
+func (UnimplementedTechnologyTreeServerServer) UpdateTechnologyTree(context.Context, *UpdateTechnologyTreeReq) (*UpdateTechnologyTreeResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateTechnologyTree not implemented")
+}
+func (UnimplementedTechnologyTreeServerServer) GetTechnology(context.Context, *GetTechnologyReq) (*GetTechnologyResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTechnology not implemented")
 }
 func (UnimplementedTechnologyTreeServerServer) mustEmbedUnimplementedTechnologyTreeServerServer() {}
 
@@ -92,6 +137,60 @@ func _TechnologyTreeServer_GetTechnologyTree_Handler(srv interface{}, ctx contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TechnologyTreeServer_AddTechnologyTree_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddTechnologyTreeReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TechnologyTreeServerServer).AddTechnologyTree(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TechnologyTreeServer_AddTechnologyTree_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TechnologyTreeServerServer).AddTechnologyTree(ctx, req.(*AddTechnologyTreeReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TechnologyTreeServer_UpdateTechnologyTree_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateTechnologyTreeReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TechnologyTreeServerServer).UpdateTechnologyTree(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TechnologyTreeServer_UpdateTechnologyTree_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TechnologyTreeServerServer).UpdateTechnologyTree(ctx, req.(*UpdateTechnologyTreeReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TechnologyTreeServer_GetTechnology_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTechnologyReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TechnologyTreeServerServer).GetTechnology(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TechnologyTreeServer_GetTechnology_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TechnologyTreeServerServer).GetTechnology(ctx, req.(*GetTechnologyReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TechnologyTreeServer_ServiceDesc is the grpc.ServiceDesc for TechnologyTreeServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -102,6 +201,18 @@ var TechnologyTreeServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetTechnologyTree",
 			Handler:    _TechnologyTreeServer_GetTechnologyTree_Handler,
+		},
+		{
+			MethodName: "AddTechnologyTree",
+			Handler:    _TechnologyTreeServer_AddTechnologyTree_Handler,
+		},
+		{
+			MethodName: "UpdateTechnologyTree",
+			Handler:    _TechnologyTreeServer_UpdateTechnologyTree_Handler,
+		},
+		{
+			MethodName: "GetTechnology",
+			Handler:    _TechnologyTreeServer_GetTechnology_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

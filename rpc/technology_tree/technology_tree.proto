@@ -5,7 +5,7 @@ option go_package = "./technology_tree";
 
 message GetTechnologyTreeReq {}
 
-message  GetTechnologyTreeResp {
+message GetTechnologyTreeResp {
   int64 code = 1 ;
   string message = 2;
   repeated TechnologyTree data = 3;
@@ -16,15 +16,74 @@ message TechnologyTree {
   repeated Technology data = 2;
 }
 
+message Material {
+  int64 id = 1;
+  string name = 2;
+  string image = 3;
+  int32 count = 4;
+}
+
 message Technology {
+  int64 id = 1;
   string name = 2;
   string description = 3;
   int32 cost = 4;
   bool ancient = 5;
   string icon = 6;
+  int32 level = 7;
+  repeated Material materials = 8;
+}
+
+message TechnologyMaterial {
+  int64 id = 1;
+  int32 count = 2;
+}
+
+message AddTechnologyTreeReq {
+  int32 level = 1;
+  string name = 2;
+  string description = 3;
+  int32 cost = 4;
+  bool ancient = 5;
+  string icon = 6;
+  repeated TechnologyMaterial materials = 7;
+}
+
+message AddTechnologyTreeResp {
+  int64 code = 1 ;
+  string message = 2;
+}
+
+message UpdateTechnologyTreeReq {
+  int64 id = 1;
+  int32 level = 2;
+  string name = 3;
+  string description = 4;
+  int32 cost = 5;
+  bool ancient = 6;
+  string icon = 7;
+  repeated TechnologyMaterial materials = 8;
+}
+
+message UpdateTechnologyTreeResp {
+  int64 code = 1 ;
+  string message = 2;
+}
+
+message GetTechnologyReq {
+  int64 id = 1;
+}
+
+message GetTechnologyResp {
+  int64 code = 1 ;
+  string message = 2;
+  Technology data = 3;
 }
 
 service TechnologyTreeServer {
   rpc GetTechnologyTree(GetTechnologyTreeReq) returns(GetTechnologyTreeResp);
+  rpc AddTechnologyTree(AddTechnologyTreeReq) returns(AddTechnologyTreeResp);
+  rpc UpdateTechnologyTree(UpdateTechnologyTreeReq) returns(UpdateTechnologyTreeResp);
+  rpc GetTechnology(GetTechnologyReq) returns(GetTechnologyResp);
 }
 

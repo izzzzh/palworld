@@ -2,7 +2,6 @@ package technology_tree
 
 import (
 	"context"
-	"net/http"
 	"palworld/rpc/technology_tree/pb/technology_tree"
 
 	"palworld/api/internal/svc"
@@ -25,35 +24,42 @@ func NewGetTechnologyTreeLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 	}
 }
 
-func (l *GetTechnologyTreeLogic) GetTechnologyTree() (*types.GetTechnologyTreeResp, error) {
-	ret := &types.GetTechnologyTreeResp{}
+func (l *GetTechnologyTreeLogic) GetTechnologyTree() ([]*types.TechnologyTree, error) {
+
 	in := &technology_tree.GetTechnologyTreeReq{}
 	resp, err := l.svcCtx.TechnologyTreeRpc.GetTechnologyTree(l.ctx, in)
 	if err != nil {
-		ret.Message = err.Error()
-		ret.Code = http.StatusInternalServerError
-		return ret, nil
+		return nil, err
 	}
-	ret.Code = http.StatusOK
-	ret.Message = "ok"
-	retData := make([]types.TechnologyTree, 0)
+	retData := make([]*types.TechnologyTree, 0)
 	for _, val := range resp.Data {
 		technologyList := make([]types.Technology, 0)
 		for _, technology := range val.Data {
+			materials := make([]types.TechnologyMaterial, 0)
+			for _, material := range technology.Materials {
+				materials = append(materials, types.TechnologyMaterial{
+					ID:    material.Id,
+					Name:  material.Name,
+					Image: material.Image,
+					Count: material.Count,
+				})
+			}
+
 			technologyList = append(technologyList, types.Technology{
+				ID:          technology.Id,
 				Name:        technology.Name,
 				Description: technology.Description,
-				Cost:        int(technology.Cost),
+				Cost:        technology.Cost,
 				Icon:        technology.Icon,
 				Ancient:     technology.Ancient,
+				Material:    materials,
 			})
 		}
-		retData = append(retData, types.TechnologyTree{
+		retData = append(retData, &types.TechnologyTree{
 			Level: val.Level,
 			Data:  technologyList,
 		})
 	}
 
-	ret.Data = retData
-	return ret, nil
+	return retData, nil
 }

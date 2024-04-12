@@ -24,7 +24,6 @@ func NewListGoodsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ListGoo
 }
 
 func (l *ListGoodsLogic) ListGoods(req *types.ListGoodsreq) ([]*types.ListGoods, error) {
-	ret := make([]*types.ListGoods, 0)
 	in := &goods.ListGoodsReq{
 		Name:     req.Name,
 		Types:    req.Types,
@@ -36,7 +35,7 @@ func (l *ListGoodsLogic) ListGoods(req *types.ListGoodsreq) ([]*types.ListGoods,
 	if err != nil {
 		return nil, err
 	}
-	goodsResult := make([]types.ListGoods, 0)
+	goodsResult := make([]*types.ListGoods, 0)
 	for _, val := range resp.Data {
 		materials := make([]types.Material, 0)
 		for _, material := range val.Materials {
@@ -47,7 +46,7 @@ func (l *ListGoodsLogic) ListGoods(req *types.ListGoodsreq) ([]*types.ListGoods,
 				Count: material.Count,
 			})
 		}
-		goodsResult = append(goodsResult, types.ListGoods{
+		goodsResult = append(goodsResult, &types.ListGoods{
 			ID:          val.Id,
 			Name:        val.Name,
 			Image:       val.Image,
@@ -58,5 +57,5 @@ func (l *ListGoodsLogic) ListGoods(req *types.ListGoodsreq) ([]*types.ListGoods,
 			Materials:   materials,
 		})
 	}
-	return ret, nil
+	return goodsResult, nil
 }

@@ -35,6 +35,17 @@ message ListGoodsResp {
   repeated Goods data = 3;
 }
 
+message GetGoodsReq {
+  int64 id = 1;
+}
+
+message GetGoodsResp {
+  int64 code = 1 ;
+  string message = 2;
+  Goods data = 3;
+}
+
 service GoodsServer {
   rpc ListGoods(ListGoodsReq) returns(ListGoodsResp);
+  rpc GetGoods(GetGoodsReq) returns(GetGoodsResp);
 }
