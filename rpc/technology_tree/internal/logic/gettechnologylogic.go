@@ -58,19 +58,25 @@ func (l *GetTechnologyLogic) GetTechnology(in *technology_tree.GetTechnologyReq)
 }
 
 func (l *GetTechnologyLogic) GetTechMaterial(id int64) ([]*technology_tree.Material, error) {
-	goodsResp, err := l.svcCtx.GoodsRpc.GetGoods(l.ctx, &goods.GetGoodsReq{Id: id})
+	p := dao.TechnologyMaterial
+	techMap, err := p.WithContext(l.ctx).Where(p.TechnologyID.Eq(id)).Select(p.MaterialID).Find()
 	if err != nil {
 		return nil, err
 	}
-	var ret = make([]*technology_tree.Material, 0)
 
-	for _, val := range goodsResp.Data.Materials {
+	var ret []*technology_tree.Material
+	for _, val := range techMap {
+		goodsResp, err := l.svcCtx.GoodsRpc.GetGoods(l.ctx, &goods.GetGoodsReq{Id: val.MaterialID})
+		if err != nil {
+			return nil, err
+		}
 		ret = append(ret, &technology_tree.Material{
-			Id:    val.Id,
-			Name:  val.Name,
-			Count: val.Count,
-			Image: val.Image,
+			Id:    goodsResp.Data.Id,
+			Name:  goodsResp.Data.Name,
+			Count: val.Cnt,
+			Image: goodsResp.Data.Image,
 		})
+
 	}
 
 	return ret, nil
