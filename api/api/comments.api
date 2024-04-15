@@ -1,0 +1,50 @@
+syntax = "v1"
+
+type Comment {
+    ID int64 `json:"id"`
+    UserID int64 `json:"user_id"`
+    Username string `json:"username"`
+    Avatar string `json:"avatar"`
+    Content string `json:"content"`
+    CreateTime string `json:"create_time"`
+    ParentID int64 `json:"parent_id"`
+    RootID int64 `json:"root_id"`
+    Children []Comment `json:"children"`
+}
+
+type AddCommentReq {
+    UserID int64 `form:"user_id"`
+    Content string `form:"content"`
+    Category string `form:"category"`
+    ObjectID int64 `form:"object_id"`
+    RootID int64 `form:"root_id"`
+    ParentID int64 `form:"parent_id"`
+}
+
+type ListCommentReq {
+    Category string `form:"category"`
+    ObjectID int64 `form:"object_id"`
+    Page int32 `form:"page"`
+    PageSize int32 `form:"page_size"`
+}
+
+type ListCommentResp {
+    List []Comment `json:"list"`
+    Total int64 `json:"total"`
+}
+
+@server(
+    prefix : /api/v1
+    group: comments
+    jwt: Auth
+)
+
+service palworld-api {
+    @doc "添加评论"
+    @handler AddCommentHandler
+    post /comments (AddCommentReq)
+
+    @doc "获取评论"
+    @handler ListCommentHandler
+    get /comments (ListCommentReq) returns (ListCommentResp)
+}

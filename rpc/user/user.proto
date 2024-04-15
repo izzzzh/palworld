@@ -86,6 +86,16 @@ message GetUserInfoResp {
   User data = 3;
 }
 
+message GetUsersByIdsReq {
+  repeated int64 ids = 1;
+}
+
+message GetUsersByIdsResp {
+  int64 code = 1;
+  string message = 2;
+  repeated User data = 3;
+}
+
 service UserServer {
   rpc Login(LoginReq) returns(LoginResp);
   rpc UserList(UserListReq) returns(UserListResp);
@@ -93,4 +103,5 @@ service UserServer {
   rpc GetCaptcha(GetCaptchaReq) returns(GetCaptchaResp);
   rpc RegisterUser(RegisterUserReq) returns(RegisterUserResp);
   rpc GetUserInfo (GetUserInfoReq) returns (GetUserInfoResp);
+  rpc GetUsersByIds (GetUsersByIdsReq) returns (GetUsersByIdsResp);
 }

@@ -32,6 +32,11 @@ UserRpcConf:
     - user:2005
   NonBlock: true
 
+CommentsRpcConf:
+  Endpoints:
+    - comments:2006
+  NonBlock: true
+
 Timeout: 0
 
 Auth:

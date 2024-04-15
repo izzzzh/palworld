@@ -13,21 +13,23 @@ import (
 )
 
 type (
-	AddUserReq       = user.AddUserReq
-	AddUserResp      = user.AddUserResp
-	GetCaptchaReq    = user.GetCaptchaReq
-	GetCaptchaResp   = user.GetCaptchaResp
-	GetUserInfoReq   = user.GetUserInfoReq
-	GetUserInfoResp  = user.GetUserInfoResp
-	LoginInfo        = user.LoginInfo
-	LoginReq         = user.LoginReq
-	LoginResp        = user.LoginResp
-	RegisterUserReq  = user.RegisterUserReq
-	RegisterUserResp = user.RegisterUserResp
-	Token            = user.Token
-	User             = user.User
-	UserListReq      = user.UserListReq
-	UserListResp     = user.UserListResp
+	AddUserReq        = user.AddUserReq
+	AddUserResp       = user.AddUserResp
+	GetCaptchaReq     = user.GetCaptchaReq
+	GetCaptchaResp    = user.GetCaptchaResp
+	GetUserInfoReq    = user.GetUserInfoReq
+	GetUserInfoResp   = user.GetUserInfoResp
+	GetUsersByIdsReq  = user.GetUsersByIdsReq
+	GetUsersByIdsResp = user.GetUsersByIdsResp
+	LoginInfo         = user.LoginInfo
+	LoginReq          = user.LoginReq
+	LoginResp         = user.LoginResp
+	RegisterUserReq   = user.RegisterUserReq
+	RegisterUserResp  = user.RegisterUserResp
+	Token             = user.Token
+	User              = user.User
+	UserListReq       = user.UserListReq
+	UserListResp      = user.UserListResp
 
 	UserServer interface {
 		Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginResp, error)
@@ -36,6 +38,7 @@ type (
 		GetCaptcha(ctx context.Context, in *GetCaptchaReq, opts ...grpc.CallOption) (*GetCaptchaResp, error)
 		RegisterUser(ctx context.Context, in *RegisterUserReq, opts ...grpc.CallOption) (*RegisterUserResp, error)
 		GetUserInfo(ctx context.Context, in *GetUserInfoReq, opts ...grpc.CallOption) (*GetUserInfoResp, error)
+		GetUsersByIds(ctx context.Context, in *GetUsersByIdsReq, opts ...grpc.CallOption) (*GetUsersByIdsResp, error)
 	}
 
 	defaultUserServer struct {
@@ -77,4 +80,9 @@ func (m *defaultUserServer) RegisterUser(ctx context.Context, in *RegisterUserRe
 func (m *defaultUserServer) GetUserInfo(ctx context.Context, in *GetUserInfoReq, opts ...grpc.CallOption) (*GetUserInfoResp, error) {
 	client := user.NewUserServerClient(m.cli.Conn())
 	return client.GetUserInfo(ctx, in, opts...)
+}
+
+func (m *defaultUserServer) GetUsersByIds(ctx context.Context, in *GetUsersByIdsReq, opts ...grpc.CallOption) (*GetUsersByIdsResp, error) {
+	client := user.NewUserServerClient(m.cli.Conn())
+	return client.GetUsersByIds(ctx, in, opts...)
 }

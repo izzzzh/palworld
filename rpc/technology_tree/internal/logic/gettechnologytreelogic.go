@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	"sort"
+	"sync"
 
 	"palworld/rpc/goods/pb/goods"
 	"palworld/rpc/technology_tree/dao"
@@ -43,20 +44,42 @@ func (l *GetTechnologyTreeLogic) GetTechnologyTree(in *technology_tree.GetTechno
 	techMaterials := make(map[int64][]*model.TechnologyMaterial)
 	mapIds := make(map[int64]bool)
 
+	errChan := make(chan error, len(technology))
+	wg := sync.WaitGroup{}
+	mu := sync.Mutex{}
+
 	var materialIds []int64
 	for _, val := range technology {
-		tms, err := pm.WithContext(l.ctx).Where(pm.TechnologyID.Eq(val.ID)).Find()
-		if err != nil {
-			return nil, err
-		}
-		techMaterials[val.ID] = tms
-		for _, tm := range tms {
-			if !mapIds[tm.MaterialID] {
-				mapIds[tm.MaterialID] = true
-				materialIds = append(materialIds, tm.MaterialID)
+		wg.Add(1)
+		tech := val
+		go func(tech *model.TechnologyTree, ids []int64) {
+			defer wg.Done()
+
+			mu.Lock()
+			defer mu.Unlock()
+
+			tms, err := pm.WithContext(l.ctx).Where(pm.TechnologyID.Eq(tech.ID)).Find()
+			if err != nil {
+				errChan <- err
 			}
-		}
-		mapsTechnology[val.Level] = append(mapsTechnology[val.Level], val)
+			techMaterials[tech.ID] = tms
+			for _, tm := range tms {
+				if !mapIds[tm.MaterialID] {
+					mapIds[tm.MaterialID] = true
+					ids = append(ids, tm.MaterialID)
+				}
+			}
+			mapsTechnology[tech.Level] = append(mapsTechnology[tech.Level], tech)
+		}(tech, materialIds)
+	}
+
+	wg.Wait()
+
+	select {
+	case err := <-errChan:
+		return nil, err
+	default:
+
 	}
 
 	goodsRet, err := l.GetTechMaterial(materialIds)

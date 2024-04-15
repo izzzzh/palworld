@@ -10,7 +10,7 @@ import (
 func main() {
 
 	g := gen.NewGenerator(gen.Config{
-		OutPath: "./rpc/technology_tree/dao",
+		OutPath: "./rpc/comments/dao",
 		Mode:    gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface, // 生成模式,
 	})
 
@@ -24,8 +24,7 @@ func main() {
 
 	g.ApplyBasic(
 		// 从当前数据库中生成所有表的结构
-		g.GenerateModel("technology_tree"),
-		g.GenerateModel("technology_material"),
+		g.GenerateModel("comments"),
 	)
 
 	// 生成代码

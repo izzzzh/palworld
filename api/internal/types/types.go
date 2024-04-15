@@ -314,3 +314,36 @@ type AddUserReq struct {
 type AddUserResp struct {
 	Id int64 `json:"id"`
 }
+
+type Comment struct {
+	ID         int64     `json:"id"`
+	UserID     int64     `json:"user_id"`
+	Username   string    `json:"username"`
+	Avatar     string    `json:"avatar"`
+	Content    string    `json:"content"`
+	CreateTime string    `json:"create_time"`
+	ParentID   int64     `json:"parent_id"`
+	RootID     int64     `json:"root_id"`
+	Children   []Comment `json:"children"`
+}
+
+type AddCommentReq struct {
+	UserID   int64  `form:"user_id"`
+	Content  string `form:"content"`
+	Category string `form:"category"`
+	ObjectID int64  `form:"object_id"`
+	RootID   int64  `form:"root_id"`
+	ParentID int64  `form:"parent_id"`
+}
+
+type ListCommentReq struct {
+	Category string `form:"category"`
+	ObjectID int64  `form:"object_id"`
+	Page     int32  `form:"page"`
+	PageSize int32  `form:"page_size"`
+}
+
+type ListCommentResp struct {
+	List  []Comment `json:"list"`
+	Total int64     `json:"total"`
+}

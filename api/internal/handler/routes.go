@@ -4,6 +4,7 @@ package handler
 import (
 	"net/http"
 
+	comments "palworld/api/internal/handler/comments"
 	container_services "palworld/api/internal/handler/container_services"
 	goods "palworld/api/internal/handler/goods"
 	pal "palworld/api/internal/handler/pal"
@@ -180,6 +181,23 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPost,
 				Path:    "/user",
 				Handler: user.AddUserHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithPrefix("/api/v1"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/comments",
+				Handler: comments.AddCommentHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/comments",
+				Handler: comments.ListCommentHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),

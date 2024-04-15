@@ -1,0 +1,13 @@
+Name: comments.rpc
+ListenOn: 0.0.0.0:2006
+Etcd:
+  Hosts:
+  - etcd:2379
+  Key: comments.rpc
+
+UserRpcConf:
+  Endpoints:
+    - user:2005
+  NonBlock: true
+
+DataSource: "root:palworld@admin123@tcp(mysql:3306)/palworld?charset=utf8mb4&parseTime=True&loc=Local"

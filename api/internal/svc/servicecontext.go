@@ -3,6 +3,7 @@ package svc
 import (
 	"github.com/zeromicro/go-zero/zrpc"
 	"palworld/api/internal/config"
+	"palworld/rpc/comments/commentsserver"
 	"palworld/rpc/goods/goodsserver"
 	"palworld/rpc/pal/palserver"
 	"palworld/rpc/pal_mate/palmateserver"
@@ -19,6 +20,7 @@ type ServiceContext struct {
 	SkillRpc          skillserver.SkillServer
 	TechnologyTreeRpc technologytreeserver.TechnologyTreeServer
 	UserRpc           userserver.UserServer
+	CommentsRpc       commentsserver.CommentsServer
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -30,5 +32,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		SkillRpc:          skillserver.NewSkillServer(zrpc.MustNewClient(c.SkillRpcConf)),
 		TechnologyTreeRpc: technologytreeserver.NewTechnologyTreeServer(zrpc.MustNewClient(c.TechnologyTreeRpcConf)),
 		UserRpc:           userserver.NewUserServer(zrpc.MustNewClient(c.UserRpcConf)),
+		CommentsRpc:       commentsserver.NewCommentsServer(zrpc.MustNewClient(c.CommentsRpcConf)),
 	}
 }

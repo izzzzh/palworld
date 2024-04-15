@@ -17,4 +17,5 @@ type Config struct {
 	SkillRpcConf          zrpc.RpcClientConf
 	TechnologyTreeRpcConf zrpc.RpcClientConf
 	UserRpcConf           zrpc.RpcClientConf
+	CommentsRpcConf       zrpc.RpcClientConf
 }

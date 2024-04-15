@@ -19,12 +19,13 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	UserServer_Login_FullMethodName        = "/user.UserServer/Login"
-	UserServer_UserList_FullMethodName     = "/user.UserServer/UserList"
-	UserServer_AddUser_FullMethodName      = "/user.UserServer/AddUser"
-	UserServer_GetCaptcha_FullMethodName   = "/user.UserServer/GetCaptcha"
-	UserServer_RegisterUser_FullMethodName = "/user.UserServer/RegisterUser"
-	UserServer_GetUserInfo_FullMethodName  = "/user.UserServer/GetUserInfo"
+	UserServer_Login_FullMethodName         = "/user.UserServer/Login"
+	UserServer_UserList_FullMethodName      = "/user.UserServer/UserList"
+	UserServer_AddUser_FullMethodName       = "/user.UserServer/AddUser"
+	UserServer_GetCaptcha_FullMethodName    = "/user.UserServer/GetCaptcha"
+	UserServer_RegisterUser_FullMethodName  = "/user.UserServer/RegisterUser"
+	UserServer_GetUserInfo_FullMethodName   = "/user.UserServer/GetUserInfo"
+	UserServer_GetUsersByIds_FullMethodName = "/user.UserServer/GetUsersByIds"
 )
 
 // UserServerClient is the client API for UserServer service.
@@ -37,6 +38,7 @@ type UserServerClient interface {
 	GetCaptcha(ctx context.Context, in *GetCaptchaReq, opts ...grpc.CallOption) (*GetCaptchaResp, error)
 	RegisterUser(ctx context.Context, in *RegisterUserReq, opts ...grpc.CallOption) (*RegisterUserResp, error)
 	GetUserInfo(ctx context.Context, in *GetUserInfoReq, opts ...grpc.CallOption) (*GetUserInfoResp, error)
+	GetUsersByIds(ctx context.Context, in *GetUsersByIdsReq, opts ...grpc.CallOption) (*GetUsersByIdsResp, error)
 }
 
 type userServerClient struct {
@@ -101,6 +103,15 @@ func (c *userServerClient) GetUserInfo(ctx context.Context, in *GetUserInfoReq, 
 	return out, nil
 }
 
+func (c *userServerClient) GetUsersByIds(ctx context.Context, in *GetUsersByIdsReq, opts ...grpc.CallOption) (*GetUsersByIdsResp, error) {
+	out := new(GetUsersByIdsResp)
+	err := c.cc.Invoke(ctx, UserServer_GetUsersByIds_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServerServer is the server API for UserServer service.
 // All implementations must embed UnimplementedUserServerServer
 // for forward compatibility
@@ -111,6 +122,7 @@ type UserServerServer interface {
 	GetCaptcha(context.Context, *GetCaptchaReq) (*GetCaptchaResp, error)
 	RegisterUser(context.Context, *RegisterUserReq) (*RegisterUserResp, error)
 	GetUserInfo(context.Context, *GetUserInfoReq) (*GetUserInfoResp, error)
+	GetUsersByIds(context.Context, *GetUsersByIdsReq) (*GetUsersByIdsResp, error)
 	mustEmbedUnimplementedUserServerServer()
 }
 
@@ -135,6 +147,9 @@ func (UnimplementedUserServerServer) RegisterUser(context.Context, *RegisterUser
 }
 func (UnimplementedUserServerServer) GetUserInfo(context.Context, *GetUserInfoReq) (*GetUserInfoResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserInfo not implemented")
+}
+func (UnimplementedUserServerServer) GetUsersByIds(context.Context, *GetUsersByIdsReq) (*GetUsersByIdsResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUsersByIds not implemented")
 }
 func (UnimplementedUserServerServer) mustEmbedUnimplementedUserServerServer() {}
 
@@ -257,6 +272,24 @@ func _UserServer_GetUserInfo_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserServer_GetUsersByIds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUsersByIdsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).GetUsersByIds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_GetUsersByIds_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).GetUsersByIds(ctx, req.(*GetUsersByIdsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserServer_ServiceDesc is the grpc.ServiceDesc for UserServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -287,6 +320,10 @@ var UserServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUserInfo",
 			Handler:    _UserServer_GetUserInfo_Handler,
+		},
+		{
+			MethodName: "GetUsersByIds",
+			Handler:    _UserServer_GetUsersByIds_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -51,3 +51,8 @@ func (s *UserServerServer) GetUserInfo(ctx context.Context, in *user.GetUserInfo
 	l := logic.NewGetUserInfoLogic(ctx, s.svcCtx)
 	return l.GetUserInfo(in)
 }
+
+func (s *UserServerServer) GetUsersByIds(ctx context.Context, in *user.GetUsersByIdsReq) (*user.GetUsersByIdsResp, error) {
+	l := logic.NewGetUsersByIdsLogic(ctx, s.svcCtx)
+	return l.GetUsersByIds(in)
+}
