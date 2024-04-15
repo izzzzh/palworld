@@ -6,6 +6,7 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
+	"palworld/common"
 	"palworld/rpc/user/dao"
 	"time"
 
@@ -60,12 +61,17 @@ func (l *LoginLogic) Login(in *user.LoginReq) (*user.LoginResp, error) {
 		RefreshAfter: now + (expire / 2),
 	}
 
+	location, err := time.LoadLocation("Asia/Shanghai")
+	if err != nil {
+		return nil, err
+	}
+
 	data.User = &user.User{
 		Id:        loginUser.ID,
 		Username:  loginUser.Name,
 		Role:      mapRole[int(loginUser.Role)],
 		Avatar:    loginUser.Avatar,
-		CreatedAt: loginUser.CreatedAt.Format("2006-02-01 15:04:05"),
+		CreatedAt: loginUser.CreatedAt.In(location).Format(common.TimeLayout),
 	}
 
 	ret.Data = data

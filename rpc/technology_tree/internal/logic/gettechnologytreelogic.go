@@ -48,11 +48,10 @@ func (l *GetTechnologyTreeLogic) GetTechnologyTree(in *technology_tree.GetTechno
 	wg := sync.WaitGroup{}
 	mu := sync.Mutex{}
 
-	var materialIds []int64
 	for _, val := range technology {
 		wg.Add(1)
 		tech := val
-		go func(tech *model.TechnologyTree, ids []int64) {
+		go func(tech *model.TechnologyTree) {
 			defer wg.Done()
 
 			mu.Lock()
@@ -63,14 +62,8 @@ func (l *GetTechnologyTreeLogic) GetTechnologyTree(in *technology_tree.GetTechno
 				errChan <- err
 			}
 			techMaterials[tech.ID] = tms
-			for _, tm := range tms {
-				if !mapIds[tm.MaterialID] {
-					mapIds[tm.MaterialID] = true
-					ids = append(ids, tm.MaterialID)
-				}
-			}
 			mapsTechnology[tech.Level] = append(mapsTechnology[tech.Level], tech)
-		}(tech, materialIds)
+		}(tech)
 	}
 
 	wg.Wait()
@@ -79,7 +72,16 @@ func (l *GetTechnologyTreeLogic) GetTechnologyTree(in *technology_tree.GetTechno
 	case err := <-errChan:
 		return nil, err
 	default:
+	}
 
+	var materialIds []int64
+	for _, tms := range techMaterials {
+		for _, tm := range tms {
+			if !mapIds[tm.MaterialID] {
+				mapIds[tm.MaterialID] = true
+				materialIds = append(materialIds, tm.MaterialID)
+			}
+		}
 	}
 
 	goodsRet, err := l.GetTechMaterial(materialIds)

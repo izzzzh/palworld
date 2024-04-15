@@ -4,7 +4,9 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"palworld/common"
 	"palworld/rpc/user/dao"
+	"time"
 
 	"palworld/rpc/user/internal/svc"
 	"palworld/rpc/user/pb/user"
@@ -35,6 +37,11 @@ func (l *GetUserInfoLogic) GetUserInfo(in *user.GetUserInfoReq) (*user.GetUserIn
 	if err != nil {
 		return nil, err
 	}
+	location, err := time.LoadLocation("Asia/Shanghai")
+	if err != nil {
+		return nil, err
+	}
+
 	var ret = &user.GetUserInfoResp{}
 	ret.Code = http.StatusOK
 	ret.Message = "ok"
@@ -43,7 +50,7 @@ func (l *GetUserInfoLogic) GetUserInfo(in *user.GetUserInfoReq) (*user.GetUserIn
 		Username:  userRet.Name,
 		Role:      mapRole[int(userRet.Role)],
 		Avatar:    userRet.Avatar,
-		CreatedAt: userRet.CreatedAt.Format("2006-02-01 15:04:05"),
+		CreatedAt: userRet.CreatedAt.In(location).Format(common.TimeLayout),
 	}
 
 	return ret, nil

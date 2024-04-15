@@ -57,16 +57,6 @@ func (l *AddUserLogic) AddUser(in *user.AddUserReq) (*user.AddUserResp, error) {
 	return ret, nil
 }
 
-func VerifyUserExist(ctx context.Context, username string) (bool, error) {
-	p := dao.User
-	loginUser, err := p.WithContext(ctx).Where(p.Name.Eq(username)).First()
-	if err != nil {
-		return false, err
-	}
-
-	return loginUser.ID > 0, nil
-}
-
 func AddUser(ctx context.Context, u *model.User) error {
 	p := dao.User
 	err := p.WithContext(ctx).Create(u)

@@ -4,11 +4,12 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"palworld/common"
 	"palworld/rpc/comments/dao"
-	"palworld/rpc/user/pb/user"
-
 	"palworld/rpc/comments/internal/svc"
 	"palworld/rpc/comments/pb/comments"
+	"palworld/rpc/user/pb/user"
+	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -66,6 +67,11 @@ func (l *ListCommentLogic) ListComment(in *comments.ListCommentReq) (*comments.C
 		userMap[val.Id] = val
 	}
 
+	location, err := time.LoadLocation("Asia/Shanghai")
+	if err != nil {
+		return nil, err
+	}
+
 	data := make([]*comments.Comment, 0)
 	for _, comment := range commentsResp {
 		children, err := p.Where(p.RootCommentID.Eq(comment.ID)).Find()
@@ -80,7 +86,7 @@ func (l *ListCommentLogic) ListComment(in *comments.ListCommentReq) (*comments.C
 				Username:  userMap[child.UserID].Username,
 				Avatar:    userMap[child.UserID].Avatar,
 				Content:   child.Content,
-				CreatedAt: child.CreatedAt.String(),
+				CreatedAt: comment.CreatedAt.In(location).Format(common.TimeLayout),
 				RootId:    child.RootCommentID,
 				ParentId:  child.ParentCommentID,
 			})
@@ -91,7 +97,7 @@ func (l *ListCommentLogic) ListComment(in *comments.ListCommentReq) (*comments.C
 			Username:  userMap[comment.UserID].Username,
 			Avatar:    userMap[comment.UserID].Avatar,
 			Content:   comment.Content,
-			CreatedAt: comment.CreatedAt.String(),
+			CreatedAt: comment.CreatedAt.In(location).Format(common.TimeLayout),
 			Children:  childComments,
 		})
 	}

@@ -2,7 +2,9 @@ package logic
 
 import (
 	"context"
+	"palworld/common"
 	"palworld/rpc/user/dao"
+	"time"
 
 	"palworld/rpc/user/internal/svc"
 	"palworld/rpc/user/pb/user"
@@ -35,6 +37,11 @@ func (l *UserListLogic) UserList(in *user.UserListReq) (*user.UserListResp, erro
 	if err != nil {
 		return nil, err
 	}
+	location, err := time.LoadLocation("Asia/Shanghai")
+	if err != nil {
+		return nil, err
+	}
+
 	var ret = &user.UserListResp{}
 	data := make([]*user.User, 0)
 	for _, u := range users {
@@ -43,7 +50,7 @@ func (l *UserListLogic) UserList(in *user.UserListReq) (*user.UserListResp, erro
 			Username:  u.Name,
 			Role:      mapRole[int(u.Role)],
 			Avatar:    u.Avatar,
-			CreatedAt: u.CreatedAt.Format("2006-02-01 15:04:05"),
+			CreatedAt: u.CreatedAt.In(location).Format(common.TimeLayout),
 		})
 	}
 	ret.Data = data
