@@ -36,6 +36,17 @@ type ListCommentResp {
 @server(
     prefix : /api/v1
     group: comments
+)
+
+service palworld-api {
+    @doc "获取评论"
+    @handler ListCommentHandler
+    get /comments (ListCommentReq) returns (ListCommentResp)
+}
+
+@server(
+    prefix : /api/v1
+    group: comments
     jwt: Auth
 )
 
@@ -43,8 +54,4 @@ service palworld-api {
     @doc "添加评论"
     @handler AddCommentHandler
     post /comments (AddCommentReq)
-
-    @doc "获取评论"
-    @handler ListCommentHandler
-    get /comments (ListCommentReq) returns (ListCommentResp)
 }

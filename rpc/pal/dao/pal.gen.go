@@ -41,7 +41,9 @@ func newPal(db *gorm.DB, opts ...gen.DOOption) pal {
 	_pal.Eat = field.NewInt32(tableName, "eat")
 	_pal.Passive = field.NewString(tableName, "passive")
 	_pal.PassiveDesc = field.NewString(tableName, "passive_desc")
-	_pal.Level = field.NewInt32(tableName, "level")
+	_pal.CreatedAt = field.NewTime(tableName, "created_at")
+	_pal.UpdatedAt = field.NewTime(tableName, "updated_at")
+	_pal.DeletedAt = field.NewField(tableName, "deleted_at")
 
 	_pal.fillFieldMap()
 
@@ -67,7 +69,9 @@ type pal struct {
 	Eat          field.Int32  // 消耗
 	Passive      field.String // 被动技能
 	PassiveDesc  field.String // 被动技能描述
-	Level        field.Int32  // 级别（孵蛋大小）
+	CreatedAt    field.Time   // 创建时间
+	UpdatedAt    field.Time   // 更新时间
+	DeletedAt    field.Field  // 删除时间
 
 	fieldMap map[string]field.Expr
 }
@@ -98,7 +102,9 @@ func (p *pal) updateTableName(table string) *pal {
 	p.Eat = field.NewInt32(table, "eat")
 	p.Passive = field.NewString(table, "passive")
 	p.PassiveDesc = field.NewString(table, "passive_desc")
-	p.Level = field.NewInt32(table, "level")
+	p.CreatedAt = field.NewTime(table, "created_at")
+	p.UpdatedAt = field.NewTime(table, "updated_at")
+	p.DeletedAt = field.NewField(table, "deleted_at")
 
 	p.fillFieldMap()
 
@@ -115,7 +121,7 @@ func (p *pal) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (p *pal) fillFieldMap() {
-	p.fieldMap = make(map[string]field.Expr, 15)
+	p.fieldMap = make(map[string]field.Expr, 17)
 	p.fieldMap["id"] = p.ID
 	p.fieldMap["number"] = p.Number
 	p.fieldMap["name"] = p.Name
@@ -130,7 +136,9 @@ func (p *pal) fillFieldMap() {
 	p.fieldMap["eat"] = p.Eat
 	p.fieldMap["passive"] = p.Passive
 	p.fieldMap["passive_desc"] = p.PassiveDesc
-	p.fieldMap["level"] = p.Level
+	p.fieldMap["created_at"] = p.CreatedAt
+	p.fieldMap["updated_at"] = p.UpdatedAt
+	p.fieldMap["deleted_at"] = p.DeletedAt
 }
 
 func (p pal) clone(db *gorm.DB) pal {

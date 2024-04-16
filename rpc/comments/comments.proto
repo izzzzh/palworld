@@ -26,7 +26,7 @@ message CommentListResp {
   int32 code = 1;
   string message = 2;
   repeated Comment data = 3;
-  int32 total = 4;
+  int64 total = 4;
 }
 
 message AddCommentReq {

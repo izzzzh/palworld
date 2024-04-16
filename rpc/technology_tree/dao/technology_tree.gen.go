@@ -34,6 +34,9 @@ func newTechnologyTree(db *gorm.DB, opts ...gen.DOOption) technologyTree {
 	_technologyTree.Icon = field.NewString(tableName, "icon")
 	_technologyTree.Ancient = field.NewBool(tableName, "ancient")
 	_technologyTree.Level = field.NewInt32(tableName, "level")
+	_technologyTree.CreatedAt = field.NewTime(tableName, "created_at")
+	_technologyTree.UpdatedAt = field.NewTime(tableName, "updated_at")
+	_technologyTree.DeletedAt = field.NewField(tableName, "deleted_at")
 
 	_technologyTree.fillFieldMap()
 
@@ -52,6 +55,9 @@ type technologyTree struct {
 	Icon        field.String // 图标
 	Ancient     field.Bool   // 是否古代科技
 	Level       field.Int32  // 解锁等级
+	CreatedAt   field.Time   // 创建时间
+	UpdatedAt   field.Time   // 更新时间
+	DeletedAt   field.Field  // 删除时间
 
 	fieldMap map[string]field.Expr
 }
@@ -75,6 +81,9 @@ func (t *technologyTree) updateTableName(table string) *technologyTree {
 	t.Icon = field.NewString(table, "icon")
 	t.Ancient = field.NewBool(table, "ancient")
 	t.Level = field.NewInt32(table, "level")
+	t.CreatedAt = field.NewTime(table, "created_at")
+	t.UpdatedAt = field.NewTime(table, "updated_at")
+	t.DeletedAt = field.NewField(table, "deleted_at")
 
 	t.fillFieldMap()
 
@@ -91,7 +100,7 @@ func (t *technologyTree) GetFieldByName(fieldName string) (field.OrderExpr, bool
 }
 
 func (t *technologyTree) fillFieldMap() {
-	t.fieldMap = make(map[string]field.Expr, 7)
+	t.fieldMap = make(map[string]field.Expr, 10)
 	t.fieldMap["id"] = t.ID
 	t.fieldMap["name"] = t.Name
 	t.fieldMap["description"] = t.Description
@@ -99,6 +108,9 @@ func (t *technologyTree) fillFieldMap() {
 	t.fieldMap["icon"] = t.Icon
 	t.fieldMap["ancient"] = t.Ancient
 	t.fieldMap["level"] = t.Level
+	t.fieldMap["created_at"] = t.CreatedAt
+	t.fieldMap["updated_at"] = t.UpdatedAt
+	t.fieldMap["deleted_at"] = t.DeletedAt
 }
 
 func (t technologyTree) clone(db *gorm.DB) technologyTree {

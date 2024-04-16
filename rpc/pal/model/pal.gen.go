@@ -4,25 +4,33 @@
 
 package model
 
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
+
 const TableNamePal = "pal"
 
 // Pal 帕鲁
 type Pal struct {
-	ID           int64  `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
-	Number       string `gorm:"column:number;not null;comment:编号" json:"number"`                 // 编号
-	Name         string `gorm:"column:name;not null;comment:名字" json:"name"`                     // 名字
-	EnName       string `gorm:"column:en_name;not null;comment:英文名字" json:"en_name"`             // 英文名字
-	Description  string `gorm:"column:description;comment:帕鲁简介" json:"description"`              // 帕鲁简介
-	Icon         string `gorm:"column:icon;not null;comment:头像" json:"icon"`                     // 头像
-	AttributeIds string `gorm:"column:attribute_ids;not null;comment:属性id" json:"attribute_ids"` // 属性id
-	Hp           int32  `gorm:"column:hp;not null;comment:血量" json:"hp"`                         // 血量
-	Energy       int32  `gorm:"column:energy;not null;comment:攻击力" json:"energy"`                // 攻击力
-	Defensively  int32  `gorm:"column:defensively;not null;comment:防御力" json:"defensively"`      // 防御力
-	Abilities    string `gorm:"column:abilities;comment:工作能力" json:"abilities"`                  // 工作能力
-	Eat          int32  `gorm:"column:eat;comment:消耗" json:"eat"`                                // 消耗
-	Passive      string `gorm:"column:passive;comment:被动技能" json:"passive"`                      // 被动技能
-	PassiveDesc  string `gorm:"column:passive_desc;comment:被动技能描述" json:"passive_desc"`          // 被动技能描述
-	Level        int32  `gorm:"column:level;comment:级别（孵蛋大小）" json:"level"`                      // 级别（孵蛋大小）
+	ID           int64          `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
+	Number       string         `gorm:"column:number;not null;comment:编号" json:"number"`                                     // 编号
+	Name         string         `gorm:"column:name;not null;comment:名字" json:"name"`                                         // 名字
+	EnName       string         `gorm:"column:en_name;not null;comment:英文名字" json:"en_name"`                                 // 英文名字
+	Description  string         `gorm:"column:description;comment:帕鲁简介" json:"description"`                                  // 帕鲁简介
+	Icon         string         `gorm:"column:icon;not null;comment:头像" json:"icon"`                                         // 头像
+	AttributeIds string         `gorm:"column:attribute_ids;not null;comment:属性id" json:"attribute_ids"`                     // 属性id
+	Hp           int32          `gorm:"column:hp;not null;comment:血量" json:"hp"`                                             // 血量
+	Energy       int32          `gorm:"column:energy;not null;comment:攻击力" json:"energy"`                                    // 攻击力
+	Defensively  int32          `gorm:"column:defensively;not null;comment:防御力" json:"defensively"`                          // 防御力
+	Abilities    string         `gorm:"column:abilities;comment:工作能力" json:"abilities"`                                      // 工作能力
+	Eat          int32          `gorm:"column:eat;comment:消耗" json:"eat"`                                                    // 消耗
+	Passive      string         `gorm:"column:passive;comment:被动技能" json:"passive"`                                          // 被动技能
+	PassiveDesc  string         `gorm:"column:passive_desc;comment:被动技能描述" json:"passive_desc"`                              // 被动技能描述
+	CreatedAt    time.Time      `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP;comment:创建时间" json:"created_at"` // 创建时间
+	UpdatedAt    time.Time      `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP;comment:更新时间" json:"updated_at"` // 更新时间
+	DeletedAt    gorm.DeletedAt `gorm:"column:deleted_at;comment:删除时间" json:"deleted_at"`                                    // 删除时间
 }
 
 // TableName Pal's table name

@@ -34,6 +34,9 @@ func newGoods(db *gorm.DB, opts ...gen.DOOption) goods {
 	_goods.Quality = field.NewInt32(tableName, "quality")
 	_goods.Workload = field.NewInt32(tableName, "workload")
 	_goods.Types = field.NewString(tableName, "types")
+	_goods.CreatedAt = field.NewTime(tableName, "created_at")
+	_goods.UpdatedAt = field.NewTime(tableName, "updated_at")
+	_goods.DeletedAt = field.NewField(tableName, "deleted_at")
 
 	_goods.fillFieldMap()
 
@@ -52,6 +55,9 @@ type goods struct {
 	Quality     field.Int32  // 品质
 	Workload    field.Int32  // 工作量
 	Types       field.String // 类型
+	CreatedAt   field.Time   // 创建时间
+	UpdatedAt   field.Time   // 更新时间
+	DeletedAt   field.Field  // 删除时间
 
 	fieldMap map[string]field.Expr
 }
@@ -75,6 +81,9 @@ func (g *goods) updateTableName(table string) *goods {
 	g.Quality = field.NewInt32(table, "quality")
 	g.Workload = field.NewInt32(table, "workload")
 	g.Types = field.NewString(table, "types")
+	g.CreatedAt = field.NewTime(table, "created_at")
+	g.UpdatedAt = field.NewTime(table, "updated_at")
+	g.DeletedAt = field.NewField(table, "deleted_at")
 
 	g.fillFieldMap()
 
@@ -91,7 +100,7 @@ func (g *goods) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (g *goods) fillFieldMap() {
-	g.fieldMap = make(map[string]field.Expr, 7)
+	g.fieldMap = make(map[string]field.Expr, 10)
 	g.fieldMap["id"] = g.ID
 	g.fieldMap["name"] = g.Name
 	g.fieldMap["description"] = g.Description
@@ -99,6 +108,9 @@ func (g *goods) fillFieldMap() {
 	g.fieldMap["quality"] = g.Quality
 	g.fieldMap["workload"] = g.Workload
 	g.fieldMap["types"] = g.Types
+	g.fieldMap["created_at"] = g.CreatedAt
+	g.fieldMap["updated_at"] = g.UpdatedAt
+	g.fieldMap["deleted_at"] = g.DeletedAt
 }
 
 func (g goods) clone(db *gorm.DB) goods {

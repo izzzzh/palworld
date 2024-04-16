@@ -46,6 +46,13 @@ func (l *ListCommentLogic) ListComment(in *comments.ListCommentReq) (*comments.C
 	if err != nil {
 		return nil, err
 	}
+	count, err := p.Where(p.Category.Eq(in.Category)).
+		Where(p.ObjectID.Eq(in.ObjectId)).
+		Where(p.RootCommentID.Eq(0)).Count()
+	if err != nil {
+		return nil, err
+	}
+
 	var commentIds []int64
 	for _, comment := range commentsResp {
 		commentIds = append(commentIds, comment.ID)
@@ -106,6 +113,7 @@ func (l *ListCommentLogic) ListComment(in *comments.ListCommentReq) (*comments.C
 	ret.Code = http.StatusOK
 	ret.Message = "ok"
 	ret.Data = data
+	ret.Total = count
 
 	return ret, nil
 }

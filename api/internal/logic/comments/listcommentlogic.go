@@ -70,7 +70,7 @@ func (l *ListCommentLogic) ListComment(req *types.ListCommentReq) (*types.ListCo
 	}
 
 	ret.List = list
-	ret.Total = int64(resp.Total)
+	ret.Total = resp.Total
 
 	return ret, nil
 }
