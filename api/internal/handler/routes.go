@@ -190,14 +190,20 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		[]rest.Route{
 			{
-				Method:  http.MethodPost,
-				Path:    "/comments",
-				Handler: comments.AddCommentHandler(serverCtx),
-			},
-			{
 				Method:  http.MethodGet,
 				Path:    "/comments",
 				Handler: comments.ListCommentHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api/v1"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/comments",
+				Handler: comments.AddCommentHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
