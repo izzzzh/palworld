@@ -73,7 +73,7 @@ func (l *ListSkillLogic) ListSkill(in *skill.ListSkillReq) (*skill.ListSkillResp
 				skillPals = append(skillPals, &skill.SkillPals{
 					Id:    palInfo.Id,
 					Name:  palInfo.Name,
-					Image: palInfo.Image,
+					Image: palInfo.Icon,
 				})
 			}
 		}

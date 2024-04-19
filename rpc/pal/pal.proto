@@ -78,7 +78,7 @@ message GetPalByIdsResp {
 message PalIdsInfo {
   int64 id = 1;
   string name = 2;
-  string image = 3;
+  string icon = 3;
 }
 
 service PalServer {
