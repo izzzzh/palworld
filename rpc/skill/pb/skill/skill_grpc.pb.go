@@ -19,8 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	SkillServer_GetSkill_FullMethodName  = "/skill.SkillServer/GetSkill"
-	SkillServer_ListSkill_FullMethodName = "/skill.SkillServer/ListSkill"
+	SkillServer_GetSkill_FullMethodName    = "/skill.SkillServer/GetSkill"
+	SkillServer_ListSkill_FullMethodName   = "/skill.SkillServer/ListSkill"
+	SkillServer_AddSkill_FullMethodName    = "/skill.SkillServer/AddSkill"
+	SkillServer_UpdateSkill_FullMethodName = "/skill.SkillServer/UpdateSkill"
+	SkillServer_DeleteSkill_FullMethodName = "/skill.SkillServer/DeleteSkill"
 )
 
 // SkillServerClient is the client API for SkillServer service.
@@ -29,6 +32,9 @@ const (
 type SkillServerClient interface {
 	GetSkill(ctx context.Context, in *GetSkillReq, opts ...grpc.CallOption) (*GetSkillResp, error)
 	ListSkill(ctx context.Context, in *ListSkillReq, opts ...grpc.CallOption) (*ListSkillResp, error)
+	AddSkill(ctx context.Context, in *AddSkillReq, opts ...grpc.CallOption) (*CommonResp, error)
+	UpdateSkill(ctx context.Context, in *UpdateSkillReq, opts ...grpc.CallOption) (*CommonResp, error)
+	DeleteSkill(ctx context.Context, in *DeleteSkillReq, opts ...grpc.CallOption) (*CommonResp, error)
 }
 
 type skillServerClient struct {
@@ -57,12 +63,42 @@ func (c *skillServerClient) ListSkill(ctx context.Context, in *ListSkillReq, opt
 	return out, nil
 }
 
+func (c *skillServerClient) AddSkill(ctx context.Context, in *AddSkillReq, opts ...grpc.CallOption) (*CommonResp, error) {
+	out := new(CommonResp)
+	err := c.cc.Invoke(ctx, SkillServer_AddSkill_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *skillServerClient) UpdateSkill(ctx context.Context, in *UpdateSkillReq, opts ...grpc.CallOption) (*CommonResp, error) {
+	out := new(CommonResp)
+	err := c.cc.Invoke(ctx, SkillServer_UpdateSkill_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *skillServerClient) DeleteSkill(ctx context.Context, in *DeleteSkillReq, opts ...grpc.CallOption) (*CommonResp, error) {
+	out := new(CommonResp)
+	err := c.cc.Invoke(ctx, SkillServer_DeleteSkill_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SkillServerServer is the server API for SkillServer service.
 // All implementations must embed UnimplementedSkillServerServer
 // for forward compatibility
 type SkillServerServer interface {
 	GetSkill(context.Context, *GetSkillReq) (*GetSkillResp, error)
 	ListSkill(context.Context, *ListSkillReq) (*ListSkillResp, error)
+	AddSkill(context.Context, *AddSkillReq) (*CommonResp, error)
+	UpdateSkill(context.Context, *UpdateSkillReq) (*CommonResp, error)
+	DeleteSkill(context.Context, *DeleteSkillReq) (*CommonResp, error)
 	mustEmbedUnimplementedSkillServerServer()
 }
 
@@ -75,6 +111,15 @@ func (UnimplementedSkillServerServer) GetSkill(context.Context, *GetSkillReq) (*
 }
 func (UnimplementedSkillServerServer) ListSkill(context.Context, *ListSkillReq) (*ListSkillResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListSkill not implemented")
+}
+func (UnimplementedSkillServerServer) AddSkill(context.Context, *AddSkillReq) (*CommonResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddSkill not implemented")
+}
+func (UnimplementedSkillServerServer) UpdateSkill(context.Context, *UpdateSkillReq) (*CommonResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateSkill not implemented")
+}
+func (UnimplementedSkillServerServer) DeleteSkill(context.Context, *DeleteSkillReq) (*CommonResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteSkill not implemented")
 }
 func (UnimplementedSkillServerServer) mustEmbedUnimplementedSkillServerServer() {}
 
@@ -125,6 +170,60 @@ func _SkillServer_ListSkill_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SkillServer_AddSkill_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddSkillReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SkillServerServer).AddSkill(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SkillServer_AddSkill_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SkillServerServer).AddSkill(ctx, req.(*AddSkillReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SkillServer_UpdateSkill_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateSkillReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SkillServerServer).UpdateSkill(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SkillServer_UpdateSkill_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SkillServerServer).UpdateSkill(ctx, req.(*UpdateSkillReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SkillServer_DeleteSkill_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteSkillReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SkillServerServer).DeleteSkill(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SkillServer_DeleteSkill_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SkillServerServer).DeleteSkill(ctx, req.(*DeleteSkillReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SkillServer_ServiceDesc is the grpc.ServiceDesc for SkillServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -139,6 +238,18 @@ var SkillServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListSkill",
 			Handler:    _SkillServer_ListSkill_Handler,
+		},
+		{
+			MethodName: "AddSkill",
+			Handler:    _SkillServer_AddSkill_Handler,
+		},
+		{
+			MethodName: "UpdateSkill",
+			Handler:    _SkillServer_UpdateSkill_Handler,
+		},
+		{
+			MethodName: "DeleteSkill",
+			Handler:    _SkillServer_DeleteSkill_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

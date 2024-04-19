@@ -636,6 +636,179 @@ func (x *Pal) GetSkills() []*Skill {
 	return nil
 }
 
+type GetPalByIdsReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Ids []int64 `protobuf:"varint,1,rep,packed,name=ids,proto3" json:"ids,omitempty"`
+}
+
+func (x *GetPalByIdsReq) Reset() {
+	*x = GetPalByIdsReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pal_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetPalByIdsReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPalByIdsReq) ProtoMessage() {}
+
+func (x *GetPalByIdsReq) ProtoReflect() protoreflect.Message {
+	mi := &file_pal_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPalByIdsReq.ProtoReflect.Descriptor instead.
+func (*GetPalByIdsReq) Descriptor() ([]byte, []int) {
+	return file_pal_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *GetPalByIdsReq) GetIds() []int64 {
+	if x != nil {
+		return x.Ids
+	}
+	return nil
+}
+
+type GetPalByIdsResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Code    int64         `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Message string        `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	Data    []*PalIdsInfo `protobuf:"bytes,3,rep,name=data,proto3" json:"data,omitempty"`
+}
+
+func (x *GetPalByIdsResp) Reset() {
+	*x = GetPalByIdsResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pal_proto_msgTypes[9]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetPalByIdsResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPalByIdsResp) ProtoMessage() {}
+
+func (x *GetPalByIdsResp) ProtoReflect() protoreflect.Message {
+	mi := &file_pal_proto_msgTypes[9]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPalByIdsResp.ProtoReflect.Descriptor instead.
+func (*GetPalByIdsResp) Descriptor() ([]byte, []int) {
+	return file_pal_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *GetPalByIdsResp) GetCode() int64 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *GetPalByIdsResp) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *GetPalByIdsResp) GetData() []*PalIdsInfo {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+type PalIdsInfo struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id    int64  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name  string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Image string `protobuf:"bytes,3,opt,name=image,proto3" json:"image,omitempty"`
+}
+
+func (x *PalIdsInfo) Reset() {
+	*x = PalIdsInfo{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pal_proto_msgTypes[10]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *PalIdsInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PalIdsInfo) ProtoMessage() {}
+
+func (x *PalIdsInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_pal_proto_msgTypes[10]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PalIdsInfo.ProtoReflect.Descriptor instead.
+func (*PalIdsInfo) Descriptor() ([]byte, []int) {
+	return file_pal_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *PalIdsInfo) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *PalIdsInfo) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *PalIdsInfo) GetImage() string {
+	if x != nil {
+		return x.Image
+	}
+	return ""
+}
+
 var File_pal_proto protoreflect.FileDescriptor
 
 var file_pal_proto_rawDesc = []byte{
@@ -707,14 +880,31 @@ var file_pal_proto_rawDesc = []byte{
 	0x09, 0x52, 0x0b, 0x70, 0x61, 0x73, 0x73, 0x69, 0x76, 0x65, 0x44, 0x65, 0x73, 0x63, 0x12, 0x22,
 	0x0a, 0x06, 0x73, 0x6b, 0x69, 0x6c, 0x6c, 0x73, 0x18, 0x0f, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x0a,
 	0x2e, 0x70, 0x61, 0x6c, 0x2e, 0x53, 0x6b, 0x69, 0x6c, 0x6c, 0x52, 0x06, 0x73, 0x6b, 0x69, 0x6c,
-	0x6c, 0x73, 0x32, 0x64, 0x0a, 0x09, 0x50, 0x61, 0x6c, 0x53, 0x65, 0x72, 0x76, 0x65, 0x72, 0x12,
-	0x29, 0x0a, 0x06, 0x47, 0x65, 0x74, 0x50, 0x61, 0x6c, 0x12, 0x0e, 0x2e, 0x70, 0x61, 0x6c, 0x2e,
-	0x47, 0x65, 0x74, 0x50, 0x61, 0x6c, 0x52, 0x65, 0x71, 0x1a, 0x0f, 0x2e, 0x70, 0x61, 0x6c, 0x2e,
-	0x47, 0x65, 0x74, 0x50, 0x61, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x12, 0x2c, 0x0a, 0x07, 0x4c, 0x69,
-	0x73, 0x74, 0x50, 0x61, 0x6c, 0x12, 0x0f, 0x2e, 0x70, 0x61, 0x6c, 0x2e, 0x4c, 0x69, 0x73, 0x74,
-	0x50, 0x61, 0x6c, 0x52, 0x65, 0x71, 0x1a, 0x10, 0x2e, 0x70, 0x61, 0x6c, 0x2e, 0x4c, 0x69, 0x73,
-	0x74, 0x50, 0x61, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x42, 0x07, 0x5a, 0x05, 0x2e, 0x2f, 0x70, 0x61,
-	0x6c, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6c, 0x73, 0x22, 0x22, 0x0a, 0x0e, 0x47, 0x65, 0x74, 0x50, 0x61, 0x6c, 0x42, 0x79, 0x49, 0x64,
+	0x73, 0x52, 0x65, 0x71, 0x12, 0x10, 0x0a, 0x03, 0x69, 0x64, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28,
+	0x03, 0x52, 0x03, 0x69, 0x64, 0x73, 0x22, 0x64, 0x0a, 0x0f, 0x47, 0x65, 0x74, 0x50, 0x61, 0x6c,
+	0x42, 0x79, 0x49, 0x64, 0x73, 0x52, 0x65, 0x73, 0x70, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64,
+	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x12, 0x18, 0x0a,
+	0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07,
+	0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x23, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x61, 0x18,
+	0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x0f, 0x2e, 0x70, 0x61, 0x6c, 0x2e, 0x50, 0x61, 0x6c, 0x49,
+	0x64, 0x73, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x04, 0x64, 0x61, 0x74, 0x61, 0x22, 0x46, 0x0a, 0x0a,
+	0x50, 0x61, 0x6c, 0x49, 0x64, 0x73, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02, 0x69, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61,
+	0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x14,
+	0x0a, 0x05, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x69,
+	0x6d, 0x61, 0x67, 0x65, 0x32, 0x9e, 0x01, 0x0a, 0x09, 0x50, 0x61, 0x6c, 0x53, 0x65, 0x72, 0x76,
+	0x65, 0x72, 0x12, 0x29, 0x0a, 0x06, 0x47, 0x65, 0x74, 0x50, 0x61, 0x6c, 0x12, 0x0e, 0x2e, 0x70,
+	0x61, 0x6c, 0x2e, 0x47, 0x65, 0x74, 0x50, 0x61, 0x6c, 0x52, 0x65, 0x71, 0x1a, 0x0f, 0x2e, 0x70,
+	0x61, 0x6c, 0x2e, 0x47, 0x65, 0x74, 0x50, 0x61, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x12, 0x2c, 0x0a,
+	0x07, 0x4c, 0x69, 0x73, 0x74, 0x50, 0x61, 0x6c, 0x12, 0x0f, 0x2e, 0x70, 0x61, 0x6c, 0x2e, 0x4c,
+	0x69, 0x73, 0x74, 0x50, 0x61, 0x6c, 0x52, 0x65, 0x71, 0x1a, 0x10, 0x2e, 0x70, 0x61, 0x6c, 0x2e,
+	0x4c, 0x69, 0x73, 0x74, 0x50, 0x61, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x12, 0x38, 0x0a, 0x0b, 0x47,
+	0x65, 0x74, 0x50, 0x61, 0x6c, 0x42, 0x79, 0x49, 0x64, 0x73, 0x12, 0x13, 0x2e, 0x70, 0x61, 0x6c,
+	0x2e, 0x47, 0x65, 0x74, 0x50, 0x61, 0x6c, 0x42, 0x79, 0x49, 0x64, 0x73, 0x52, 0x65, 0x71, 0x1a,
+	0x14, 0x2e, 0x70, 0x61, 0x6c, 0x2e, 0x47, 0x65, 0x74, 0x50, 0x61, 0x6c, 0x42, 0x79, 0x49, 0x64,
+	0x73, 0x52, 0x65, 0x73, 0x70, 0x42, 0x07, 0x5a, 0x05, 0x2e, 0x2f, 0x70, 0x61, 0x6c, 0x62, 0x06,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -729,32 +919,38 @@ func file_pal_proto_rawDescGZIP() []byte {
 	return file_pal_proto_rawDescData
 }
 
-var file_pal_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_pal_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_pal_proto_goTypes = []interface{}{
-	(*ListPalReq)(nil),  // 0: pal.ListPalReq
-	(*ListPal)(nil),     // 1: pal.ListPal
-	(*ListPalResp)(nil), // 2: pal.ListPalResp
-	(*GetPalReq)(nil),   // 3: pal.GetPalReq
-	(*GetPalResp)(nil),  // 4: pal.GetPalResp
-	(*Skill)(nil),       // 5: pal.Skill
-	(*Ability)(nil),     // 6: pal.Ability
-	(*Pal)(nil),         // 7: pal.Pal
+	(*ListPalReq)(nil),      // 0: pal.ListPalReq
+	(*ListPal)(nil),         // 1: pal.ListPal
+	(*ListPalResp)(nil),     // 2: pal.ListPalResp
+	(*GetPalReq)(nil),       // 3: pal.GetPalReq
+	(*GetPalResp)(nil),      // 4: pal.GetPalResp
+	(*Skill)(nil),           // 5: pal.Skill
+	(*Ability)(nil),         // 6: pal.Ability
+	(*Pal)(nil),             // 7: pal.Pal
+	(*GetPalByIdsReq)(nil),  // 8: pal.GetPalByIdsReq
+	(*GetPalByIdsResp)(nil), // 9: pal.GetPalByIdsResp
+	(*PalIdsInfo)(nil),      // 10: pal.PalIdsInfo
 }
 var file_pal_proto_depIdxs = []int32{
-	6, // 0: pal.ListPal.abilities:type_name -> pal.Ability
-	1, // 1: pal.ListPalResp.data:type_name -> pal.ListPal
-	7, // 2: pal.GetPalResp.data:type_name -> pal.Pal
-	6, // 3: pal.Pal.abilities:type_name -> pal.Ability
-	5, // 4: pal.Pal.skills:type_name -> pal.Skill
-	3, // 5: pal.PalServer.GetPal:input_type -> pal.GetPalReq
-	0, // 6: pal.PalServer.ListPal:input_type -> pal.ListPalReq
-	4, // 7: pal.PalServer.GetPal:output_type -> pal.GetPalResp
-	2, // 8: pal.PalServer.ListPal:output_type -> pal.ListPalResp
-	7, // [7:9] is the sub-list for method output_type
-	5, // [5:7] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	6,  // 0: pal.ListPal.abilities:type_name -> pal.Ability
+	1,  // 1: pal.ListPalResp.data:type_name -> pal.ListPal
+	7,  // 2: pal.GetPalResp.data:type_name -> pal.Pal
+	6,  // 3: pal.Pal.abilities:type_name -> pal.Ability
+	5,  // 4: pal.Pal.skills:type_name -> pal.Skill
+	10, // 5: pal.GetPalByIdsResp.data:type_name -> pal.PalIdsInfo
+	3,  // 6: pal.PalServer.GetPal:input_type -> pal.GetPalReq
+	0,  // 7: pal.PalServer.ListPal:input_type -> pal.ListPalReq
+	8,  // 8: pal.PalServer.GetPalByIds:input_type -> pal.GetPalByIdsReq
+	4,  // 9: pal.PalServer.GetPal:output_type -> pal.GetPalResp
+	2,  // 10: pal.PalServer.ListPal:output_type -> pal.ListPalResp
+	9,  // 11: pal.PalServer.GetPalByIds:output_type -> pal.GetPalByIdsResp
+	9,  // [9:12] is the sub-list for method output_type
+	6,  // [6:9] is the sub-list for method input_type
+	6,  // [6:6] is the sub-list for extension type_name
+	6,  // [6:6] is the sub-list for extension extendee
+	0,  // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_pal_proto_init() }
@@ -859,6 +1055,42 @@ func file_pal_proto_init() {
 				return nil
 			}
 		}
+		file_pal_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetPalByIdsReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pal_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetPalByIdsResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pal_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*PalIdsInfo); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -866,7 +1098,7 @@ func file_pal_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_pal_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

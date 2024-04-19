@@ -31,3 +31,18 @@ func (s *SkillServerServer) ListSkill(ctx context.Context, in *skill.ListSkillRe
 	l := logic.NewListSkillLogic(ctx, s.svcCtx)
 	return l.ListSkill(in)
 }
+
+func (s *SkillServerServer) AddSkill(ctx context.Context, in *skill.AddSkillReq) (*skill.CommonResp, error) {
+	l := logic.NewAddSkillLogic(ctx, s.svcCtx)
+	return l.AddSkill(in)
+}
+
+func (s *SkillServerServer) UpdateSkill(ctx context.Context, in *skill.UpdateSkillReq) (*skill.CommonResp, error) {
+	l := logic.NewUpdateSkillLogic(ctx, s.svcCtx)
+	return l.UpdateSkill(in)
+}
+
+func (s *SkillServerServer) DeleteSkill(ctx context.Context, in *skill.DeleteSkillReq) (*skill.CommonResp, error) {
+	l := logic.NewDeleteSkillLogic(ctx, s.svcCtx)
+	return l.DeleteSkill(in)
+}

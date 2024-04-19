@@ -31,3 +31,8 @@ func (s *PalServerServer) ListPal(ctx context.Context, in *pal.ListPalReq) (*pal
 	l := logic.NewListPalLogic(ctx, s.svcCtx)
 	return l.ListPal(in)
 }
+
+func (s *PalServerServer) GetPalByIds(ctx context.Context, in *pal.GetPalByIdsReq) (*pal.GetPalByIdsResp, error) {
+	l := logic.NewGetPalByIdsLogic(ctx, s.svcCtx)
+	return l.GetPalByIds(in)
+}

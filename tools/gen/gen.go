@@ -43,6 +43,7 @@ func genSkillServer() {
 	g.ApplyBasic(
 		// 从当前数据库中生成所有表的结构
 		g.GenerateModel("skill"),
+		g.GenerateModel("pal_skill_map"),
 	)
 
 	// 生成代码

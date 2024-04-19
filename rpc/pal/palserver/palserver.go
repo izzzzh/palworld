@@ -13,18 +13,22 @@ import (
 )
 
 type (
-	Ability     = pal.Ability
-	GetPalReq   = pal.GetPalReq
-	GetPalResp  = pal.GetPalResp
-	ListPal     = pal.ListPal
-	ListPalReq  = pal.ListPalReq
-	ListPalResp = pal.ListPalResp
-	Pal         = pal.Pal
-	Skill       = pal.Skill
+	Ability         = pal.Ability
+	GetPalByIdsReq  = pal.GetPalByIdsReq
+	GetPalByIdsResp = pal.GetPalByIdsResp
+	GetPalReq       = pal.GetPalReq
+	GetPalResp      = pal.GetPalResp
+	ListPal         = pal.ListPal
+	ListPalReq      = pal.ListPalReq
+	ListPalResp     = pal.ListPalResp
+	Pal             = pal.Pal
+	PalIdsInfo      = pal.PalIdsInfo
+	Skill           = pal.Skill
 
 	PalServer interface {
 		GetPal(ctx context.Context, in *GetPalReq, opts ...grpc.CallOption) (*GetPalResp, error)
 		ListPal(ctx context.Context, in *ListPalReq, opts ...grpc.CallOption) (*ListPalResp, error)
+		GetPalByIds(ctx context.Context, in *GetPalByIdsReq, opts ...grpc.CallOption) (*GetPalByIdsResp, error)
 	}
 
 	defaultPalServer struct {
@@ -46,4 +50,9 @@ func (m *defaultPalServer) GetPal(ctx context.Context, in *GetPalReq, opts ...gr
 func (m *defaultPalServer) ListPal(ctx context.Context, in *ListPalReq, opts ...grpc.CallOption) (*ListPalResp, error) {
 	client := pal.NewPalServerClient(m.cli.Conn())
 	return client.ListPal(ctx, in, opts...)
+}
+
+func (m *defaultPalServer) GetPalByIds(ctx context.Context, in *GetPalByIdsReq, opts ...grpc.CallOption) (*GetPalByIdsResp, error) {
+	client := pal.NewPalServerClient(m.cli.Conn())
+	return client.GetPalByIds(ctx, in, opts...)
 }

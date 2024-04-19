@@ -1,13 +1,45 @@
 syntax = "v1"
 import "./base.api"
 
-type ListSkillReq {
-     AttributeID int32 `json:"attribute_id,optional"`
+type SkillInfo {
+    ID int64 `json:"id"`
+    Name string `json:"name"`
+    Desc string `json:"desc"`
+    CT int32 `json:"ct"`
+    Power int32 `json:"power"`
+    AttributeID int32 `json:"attribute_id"`
+    Pals []SkillPal `json:"pals"`
 }
 
-type ListSkillResp {
-    Base
-    Data []Skill `json:"data"`
+type AddSkillReq {
+    Name string `form:"name"`
+    Description string `form:"description"`
+    CT int32 `form:"ct"`
+    Power int32 `form:"power"`
+    AttributeID int32 `form:"attribute_id"`
+}
+
+type DeleteSkillReq {
+    ID int32 `path:"id"`
+}
+
+type UpdateSkillReq {
+    ID int32 `path:"id"`
+    Name string `form:"name"`
+    Description string `form:"description"`
+    CT int32 `form:"ct"`
+    Power int32 `form:"power"`
+    AttributeID int32 `form:"attribute_id"`
+}
+
+type GetSkillPalsReq {
+    SkillID int32 `path:"id"`
+}
+
+type SkillPal {
+    ID int64 `json:"id"`
+    Name string `json:"name"`
+    Image string `json:"image"`
 }
 
 @server(
@@ -18,5 +50,25 @@ type ListSkillResp {
 service palworld-api {
     @doc "技能列表"
     @handler ListSkillHandler
-    get /skill (ListSkillReq) returns (ListSkillResp)
+    get /skill returns ([]SkillInfo)
+}
+
+@server(
+    prefix : /api/v1
+    group: skill
+    jwt: Auth
+)
+
+service palworld-api {
+    @doc "添加技能"
+    @handler AddSkillHandler
+    post /skill (AddSkillReq)
+
+    @doc "删除技能"
+    @handler DeleteSkillHandler
+    delete /skill/:id (DeleteSkillReq)
+
+    @doc "更新技能"
+    @handler UpdateSkillHandler
+    put /skill/:id (UpdateSkillReq)
 }

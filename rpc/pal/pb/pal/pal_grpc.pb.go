@@ -19,8 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	PalServer_GetPal_FullMethodName  = "/pal.PalServer/GetPal"
-	PalServer_ListPal_FullMethodName = "/pal.PalServer/ListPal"
+	PalServer_GetPal_FullMethodName      = "/pal.PalServer/GetPal"
+	PalServer_ListPal_FullMethodName     = "/pal.PalServer/ListPal"
+	PalServer_GetPalByIds_FullMethodName = "/pal.PalServer/GetPalByIds"
 )
 
 // PalServerClient is the client API for PalServer service.
@@ -29,6 +30,7 @@ const (
 type PalServerClient interface {
 	GetPal(ctx context.Context, in *GetPalReq, opts ...grpc.CallOption) (*GetPalResp, error)
 	ListPal(ctx context.Context, in *ListPalReq, opts ...grpc.CallOption) (*ListPalResp, error)
+	GetPalByIds(ctx context.Context, in *GetPalByIdsReq, opts ...grpc.CallOption) (*GetPalByIdsResp, error)
 }
 
 type palServerClient struct {
@@ -57,12 +59,22 @@ func (c *palServerClient) ListPal(ctx context.Context, in *ListPalReq, opts ...g
 	return out, nil
 }
 
+func (c *palServerClient) GetPalByIds(ctx context.Context, in *GetPalByIdsReq, opts ...grpc.CallOption) (*GetPalByIdsResp, error) {
+	out := new(GetPalByIdsResp)
+	err := c.cc.Invoke(ctx, PalServer_GetPalByIds_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PalServerServer is the server API for PalServer service.
 // All implementations must embed UnimplementedPalServerServer
 // for forward compatibility
 type PalServerServer interface {
 	GetPal(context.Context, *GetPalReq) (*GetPalResp, error)
 	ListPal(context.Context, *ListPalReq) (*ListPalResp, error)
+	GetPalByIds(context.Context, *GetPalByIdsReq) (*GetPalByIdsResp, error)
 	mustEmbedUnimplementedPalServerServer()
 }
 
@@ -75,6 +87,9 @@ func (UnimplementedPalServerServer) GetPal(context.Context, *GetPalReq) (*GetPal
 }
 func (UnimplementedPalServerServer) ListPal(context.Context, *ListPalReq) (*ListPalResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListPal not implemented")
+}
+func (UnimplementedPalServerServer) GetPalByIds(context.Context, *GetPalByIdsReq) (*GetPalByIdsResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPalByIds not implemented")
 }
 func (UnimplementedPalServerServer) mustEmbedUnimplementedPalServerServer() {}
 
@@ -125,6 +140,24 @@ func _PalServer_ListPal_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PalServer_GetPalByIds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPalByIdsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PalServerServer).GetPalByIds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PalServer_GetPalByIds_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PalServerServer).GetPalByIds(ctx, req.(*GetPalByIdsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PalServer_ServiceDesc is the grpc.ServiceDesc for PalServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -139,6 +172,10 @@ var PalServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListPal",
 			Handler:    _PalServer_ListPal_Handler,
+		},
+		{
+			MethodName: "GetPalByIds",
+			Handler:    _PalServer_GetPalByIds_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -14,7 +14,15 @@ message Skill {
   int32 ct = 4;
   int32 power = 5;
   int32 attribute_id = 6;
+  repeated SkillPals pals = 7;
 }
+
+message SkillPals {
+  int64 id = 1;
+  string name = 2;
+  string image = 3;
+}
+
 
 message GetSkillResp {
   int64 code = 1 ;
@@ -32,8 +40,39 @@ message ListSkillResp {
   repeated Skill data = 3;
 }
 
+message AddSkillReq {
+  string name = 1;
+  string description = 2;
+  int32 ct = 3;
+  int32 power = 4;
+  int32 attribute_id = 5;
+  repeated int64 pal_ids = 6;
+}
+
+message UpdateSkillReq {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  int32 ct = 4;
+  int32 power = 5;
+  int32 attribute_id = 6;
+  repeated int64 pal_ids = 7;
+}
+
+message DeleteSkillReq {
+  int64 id = 1;
+}
+
+message CommonResp {
+  int64 code = 1 ;
+  string message = 2;
+}
+
 service SkillServer {
   rpc GetSkill(GetSkillReq) returns(GetSkillResp);
   rpc ListSkill(ListSkillReq) returns(ListSkillResp);
+  rpc AddSkill(AddSkillReq) returns(CommonResp);
+  rpc UpdateSkill(UpdateSkillReq) returns(CommonResp);
+  rpc DeleteSkill(DeleteSkillReq) returns(CommonResp);
 }
 

@@ -70,6 +70,28 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		[]rest.Route{
 			{
+				Method:  http.MethodPost,
+				Path:    "/skill",
+				Handler: skill.AddSkillHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodDelete,
+				Path:    "/skill/:id",
+				Handler: skill.DeleteSkillHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPut,
+				Path:    "/skill/:id",
+				Handler: skill.UpdateSkillHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithPrefix("/api/v1"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
 				Method:  http.MethodGet,
 				Path:    "/goods",
 				Handler: goods.ListGoodsHandler(serverCtx),

@@ -102,13 +102,45 @@ type Skill struct {
 	AttributeID int32  `json:"attribute_id"`
 }
 
-type ListSkillReq struct {
-	AttributeID int32 `json:"attribute_id,optional"`
+type SkillInfo struct {
+	ID          int64      `json:"id"`
+	Name        string     `json:"name"`
+	Desc        string     `json:"desc"`
+	CT          int32      `json:"ct"`
+	Power       int32      `json:"power"`
+	AttributeID int32      `json:"attribute_id"`
+	Pals        []SkillPal `json:"pals"`
 }
 
-type ListSkillResp struct {
-	Base
-	Data []Skill `json:"data"`
+type AddSkillReq struct {
+	Name        string `form:"name"`
+	Description string `form:"description"`
+	CT          int32  `form:"ct"`
+	Power       int32  `form:"power"`
+	AttributeID int32  `form:"attribute_id"`
+}
+
+type DeleteSkillReq struct {
+	ID int32 `path:"id"`
+}
+
+type UpdateSkillReq struct {
+	ID          int32  `path:"id"`
+	Name        string `form:"name"`
+	Description string `form:"description"`
+	CT          int32  `form:"ct"`
+	Power       int32  `form:"power"`
+	AttributeID int32  `form:"attribute_id"`
+}
+
+type GetSkillPalsReq struct {
+	SkillID int32 `path:"id"`
+}
+
+type SkillPal struct {
+	ID    int64  `json:"id"`
+	Name  string `json:"name"`
+	Image string `json:"image"`
 }
 
 type ListGoodsreq struct {

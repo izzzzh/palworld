@@ -114,13 +114,32 @@ type TechMaterial struct {
 }
 
 type GoodsMaterial struct {
+	ID         int64 `json:"id"`
 	GoodsID    int64 `json:"goods_id"`
 	MaterialID int64 `json:"material_id"`
-	Count      int   `json:"count"`
+	Cnt        int   `json:"cnt"`
 }
 
 func main() {
-	updateTech()
+	update()
+}
+
+func update() {
+	dsn := "root:123456@tcp(127.0.0.1:3306)/palworld?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	ret := make([]*GoodsMaterial, 0)
+	db.Table("goods_material").Find(&ret)
+
+	for i := 0; i < len(ret); i++ {
+		v := ret[i]
+		v.GoodsID -= 427
+		v.MaterialID -= 427
+		db.Table("goods_material").Save(v)
+	}
 }
 
 func updateTech() {
@@ -259,7 +278,7 @@ func updateGoods() {
 				gm := &GoodsMaterial{
 					GoodsID:    int64(mapGoods[ret[i]]),
 					MaterialID: int64(mapGoods[arr[0]]),
-					Count:      v,
+					Cnt:        v,
 				}
 				fmt.Println(gm)
 				db.Table("goods_material").Create(&gm)

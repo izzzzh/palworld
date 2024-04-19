@@ -65,7 +65,24 @@ message Pal {
   repeated Skill skills = 15;
 }
 
+message GetPalByIdsReq {
+  repeated int64 ids = 1;
+}
+
+message GetPalByIdsResp {
+  int64 code = 1 ;
+  string message = 2;
+  repeated PalIdsInfo data = 3;
+}
+
+message PalIdsInfo {
+  int64 id = 1;
+  string name = 2;
+  string image = 3;
+}
+
 service PalServer {
   rpc GetPal(GetPalReq) returns(GetPalResp);
   rpc ListPal(ListPalReq) returns(ListPalResp);
+  rpc GetPalByIds(GetPalByIdsReq) returns(GetPalByIdsResp);
 }

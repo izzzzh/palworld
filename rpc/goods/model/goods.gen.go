@@ -19,7 +19,6 @@ type Goods struct {
 	Description string         `gorm:"column:description;comment:描述" json:"description"`                                    // 描述
 	Image       string         `gorm:"column:image;comment:图片" json:"image"`                                                // 图片
 	Quality     int32          `gorm:"column:quality;comment:品质" json:"quality"`                                            // 品质
-	Workload    int32          `gorm:"column:workload;comment:工作量" json:"workload"`                                         // 工作量
 	Types       string         `gorm:"column:types;comment:类型" json:"types"`                                                // 类型
 	CreatedAt   time.Time      `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP;comment:创建时间" json:"created_at"` // 创建时间
 	UpdatedAt   time.Time      `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP;comment:更新时间" json:"updated_at"` // 更新时间
